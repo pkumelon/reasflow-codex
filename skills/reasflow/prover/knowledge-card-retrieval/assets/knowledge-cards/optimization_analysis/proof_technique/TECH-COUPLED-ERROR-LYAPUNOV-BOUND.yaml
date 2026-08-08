@@ -1,0 +1,46 @@
+id: TECH-COUPLED-ERROR-LYAPUNOV-BOUND
+type: proof_technique
+domain: optimization_analysis
+
+title: Coupled Error-Lyapunov Bounding
+description: A method to derive convergence rates for systems where the objective function descent is perturbed by an error term, and the error term itself evolves contractively but is perturbed by the gradient.
+
+problem_pattern:
+  - "Descent Lemma gives: f(k+1) <= f(k) - alpha*|grad|^2 + L*|error|^2."
+  - "Error Dynamics gives: |error(k+1)|^2 <= rho*|error(k)|^2 + alpha^2*|grad|^2."
+  - "Direct substitution leads to loose bounds or circular logic."
+
+structural_prerequisites:
+  - "L-smoothness."
+  - "Contractive error dynamics."
+
+execution_logic:
+  - step: "Write Individual Inequalities"
+    detail: "Write down the Descent Inequality and the Consensus/Error Inequality separately."
+
+  - step: "Unroll Error Recursion"
+    detail: "Express the accumulated squared error sum |e(k)|^2 in terms of past gradients."
+    algebraic_prototype: "sum |e(k)|^2 <= C1 * |e(0)|^2 + C2 * sum |grad|^2"
+
+  - step: "Substitute into Descent Sum"
+    detail: "Sum the descent inequality over k=0..K. Substitute the bound for sum |e(k)|^2."
+
+  - step: "Constraint Solving"
+    detail: "Ensure the coefficient of the negative gradient term remains negative after substitution. This imposes a constraint on the step size alpha."
+    algebraic_prototype: "alpha/2 - alpha * C * alpha > 0  => alpha < threshold"
+
+assumptions_required:
+  - "Step size alpha is small enough."
+
+expected_outcome_form: "Sum |grad|^2 <= (f(0)-f*)/alpha + Noise terms"
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 5 (Proof of Theorem 1)"
+
+tags:
+  - lyapunov_analysis
+  - coupled_inequalities
+  - convergence_rate
+  - non_convex

@@ -1,0 +1,48 @@
+id: TECH-SMALL-GAIN-THEOREM-STABILITY
+type: proof_technique
+domain: optimization_analysis
+
+title: Small-Gain Theorem for Geometric Convergence
+description: A control-theoretic technique to prove the stability and geometric convergence of interconnected dynamical systems (e.g., coupled error terms in optimization algorithms) by analyzing the product of gain coefficients in a cyclic dependency graph.
+
+problem_pattern:
+  - "The system has multiple coupled error terms (e.g., optimization error and consensus error)."
+  - "Directly constructing a single Lyapunov function is difficult due to complex coupling."
+  - "Individual error terms can be bounded by linear combinations of other error terms (plus decaying inputs)."
+
+structural_prerequisites:
+  - "The error dynamics can be modeled as a directed cycle of dependencies."
+  - "Boundedness of error terms in a weighted ergodic norm metric implies geometric convergence."
+
+execution_logic:
+  - step: "Define Weighted Ergodic Norm"
+    detail: "Define a norm ||x||^{lambda, K} = max_{0<=k<=K} lambda^{-k} ||x(k)|| for a rate parameter lambda in (0,1)."
+    algebraic_prototype: "||x||^{lambda} = sup_{k>=0} lambda^{-k} ||x(k)||"
+
+  - step: "Establish Cyclic Inequalities"
+    detail: "Show that for each error term s^i, its norm is bounded by the norm of the next term s^{i+1} with a gain gamma_i and an offset omega_i."
+    algebraic_prototype: "||s^{next}||^{lambda, K} <= gamma_i * ||s^{curr}||^{lambda, K} + omega_i"
+
+  - step: "Check Small Gain Condition"
+    detail: "Verify that the product of all gains around the cycle is strictly less than 1."
+    algebraic_prototype: "gamma_1 * gamma_2 * ... * gamma_m < 1"
+
+  - step: "Conclude Boundedness"
+    detail: "Apply the Small-Gain Theorem to conclude that all norms ||s^i||^{lambda} are finite, implying ||s^i(k)|| <= C * lambda^k."
+
+assumptions_required:
+  - "The bounds holds for any finite horizon K."
+  - "The gains gamma_i are non-negative."
+
+expected_outcome_form: "||Error(k)|| = O(lambda^k)"
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Section 3.2 (Theorem 3.5)"
+
+tags:
+  - small_gain_theorem
+  - geometric_convergence
+  - coupled_dynamics
+  - control_theory

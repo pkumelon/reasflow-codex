@@ -1,0 +1,57 @@
+id: PLAN-DUAL-EQUIVALENCE-REDUCTION
+type: proof_plan
+domain: optimization
+
+title: Convergence via Primal-Dual Algorithm Equivalence
+description: A high-level proof strategy that establishes convergence of a new algorithm by proving it is mathematically equivalent (under variable transformation) to a known, convergent algorithm applied to the dual problem.
+
+problem_pattern:
+  - "New algorithm is a Primal-Dual variant of an existing Operator Splitting method."
+  - "Direct convergence analysis is complex or redundant because a similar algorithm exists."
+  - "Need to transfer convergence rates (e.g., O(1/k)) and properties (e.g., partial participation robustness) from a reference algorithm."
+
+structural_prerequisites:
+  - "The Primal Problem can be reformulated into a constrained form suitable for Dual decomposition."
+  - "There exists a reference algorithm (e.g., FedDR) with established convergence guarantees."
+  - "The sampling/participation model in the new algorithm matches the reference algorithm."
+
+execution_logic:
+  - step: "Dual Problem Formulation"
+    detail: "Rewrite the primal problem min F(x) as a constrained problem, then derive the Dual Problem max -F*(-z) - g*(z)."
+    dependency_check: "Requires convex/closed functions for strong duality or equivalent splitting interpretation."
+    algebraic_prototype: "min f(x) + g(x) -> min f(x) + g(z) s.t. x=z"
+
+  - step: "Reference Algorithm Application"
+    detail: "Apply the known Reference Algorithm (e.g., Douglas-Rachford) strictly to the Dual Problem."
+    algebraic_prototype: "Apply FedDR to Dual Objective."
+
+  - step: "Variable Mapping Construction"
+    detail: "Construct a bijective linear mapping between the iterates of the Reference Algorithm on the Dual and the Target Algorithm on the Primal."
+    algebraic_prototype: "Define s_i^k, u_i^k in terms of x_i^k, z_i^k."
+
+  - step: "Equivalence Theorem Proof"
+    detail: "Prove that one step of the Reference Algorithm maps exactly to one step of the Target Algorithm under the constructed mapping."
+    algebraic_prototype: "Show u^{k+1} = map(x^{k+1}) holds for all k."
+
+  - step: "Convergence Inheritance"
+    detail: "Translate the convergence bound of the Reference Algorithm (in terms of dual variables) into the error metric of the Target Algorithm (primal/dual gap or gradient norm)."
+    algebraic_prototype: "||grad F(x)||^2 <= C * (Dual Gap) <= O(1/k)"
+
+assumptions_required:
+  - "Lipschitz differentiability of component functions."
+  - "Boundedness of the objective function."
+  - "Proper sampling scheme (for randomized variants)."
+
+expected_outcome_form: "A theorem stating that the new algorithm converges with the same rate as the reference algorithm."
+
+source:
+  paper: "FedADMM: A Federated Primal-Dual Algorithm Allowing Partial Participation"
+  arxiv: "2203.15104"
+  section: "Section 4 & 5"
+
+tags:
+  - proof-plan
+  - reduction-strategy
+  - primal-dual
+  - equivalence
+  - convergence-transfer

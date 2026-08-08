@@ -1,0 +1,53 @@
+id: TECH-DISTRIBUTED-VARIANCE-REDUCTION
+type: proof_technique
+domain: optimization
+title: Distributed Variance Reduction (Linear Speedup)
+description: >
+  A fundamental technique for analyzing distributed/parallel stochastic algorithms. It leverages the independence of stochastic noise across N workers to reduce the variance of the aggregated gradient by a factor of 1/N, leading to linear speedup.
+tags:
+  - optimization
+  - distributed-learning
+  - federated-learning
+  - variance-reduction
+  - linear-speedup
+
+problem_pattern:
+  - "Analyzing convergence of distributed SGD or Federated Averaging."
+  - "Need to show that using N workers provides 1/N reduction in noise variance."
+  - "Standard Jensen's inequality bound (||mean||^2 <= mean(|| ||^2)) is too loose and loses the 1/N factor."
+  - "Aggregating independent zero-mean stochastic vectors."
+
+structural_prerequisites:
+  - "Noise vectors xi_i must be zero-mean: E[xi_i] = 0."
+  - "Noise vectors across workers must be independent: E[<xi_i, xi_j>] = 0 for i != j."
+  - "The aggregation operation is a simple average: 1/N sum(xi_i)."
+
+execution_logic:
+  - step: "Decomposition into Mean and Noise"
+    detail: 'Decompose the stochastic update vector into its expected value (drift/signal) and zero-mean noise. Do NOT apply norm bounds to the whole sum immediately.'
+    algebraic_prototype: "v_i = bar{v} + xi_i"
+
+  - step: "Orthogonality of Independent Noise"
+    detail: 'Expand the squared norm of the sum of noise vectors. Use the independence property to eliminate cross-terms E[<xi_i, xi_j>] = 0.'
+    dependency_check: "Requires independence of noise across workers."
+    algebraic_prototype: "E[||sum xi_i||^2] = sum E[||xi_i||^2]"
+
+  - step: "Variance Reduction Scaling"
+    detail: 'Apply the 1/N^2 factor from the averaging operation to the sum of N variances. This results in a 1/N scaling factor for the final variance.'
+    algebraic_prototype: "E[||1/N sum xi_i||^2] = 1/N^2 * N * sigma^2 = sigma^2 / N"
+
+  - step: "Handling Bias/Drift Terms"
+    detail: 'For the bias/drift part (non-random or correlated), use standard inequalities (Jensen or Cauchy-Schwarz) which do not provide 1/N reduction. Combine with the reduced variance term.'
+    algebraic_prototype: "E[||Update||^2] <= ||Drift||^2 + sigma^2/N"
+
+assumptions_required:
+  - "Independent Noise"
+  - "Unbiased Estimators (for the noise part)"
+  - "Bounded Variance"
+
+expected_outcome_form: "Variance term scales as O(sigma^2 / N) instead of O(sigma^2)."
+
+source:
+  paper: "General Distributed/Federated Optimization Theory"
+  arxiv: "N/A"
+  section: "Standard Variance Analysis"

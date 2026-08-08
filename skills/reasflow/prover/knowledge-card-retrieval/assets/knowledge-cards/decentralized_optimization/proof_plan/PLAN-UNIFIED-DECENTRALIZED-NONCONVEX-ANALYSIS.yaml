@@ -1,0 +1,59 @@
+id: PLAN-UNIFIED-DECENTRALIZED-NONCONVEX-ANALYSIS
+type: proof_plan
+domain: decentralized_optimization
+
+title: Unified Non-Convex Analysis via Matrix Factorization
+description: A comprehensive proof roadmap for analyzing the convergence of a wide class of decentralized algorithms (including DGD, EXTRA, Exact-Diffusion, Gradient-Tracking) under non-convex stochastic settings. The key is transforming disparate update rules into a unified canonical form.
+
+problem_pattern:
+  - "Analyzing multiple decentralized algorithms with a single framework."
+  - "Non-convex objective functions with stochastic gradients."
+  - "Need to improve network topology dependency bounds (e.g., spectral gap)."
+
+structural_prerequisites:
+  - "Algorithms can be expressed in a General Unified form: x+ = A(Cx - alpha*g) - By; y+ = y + Bx+."
+  - "Matrices A, B, C commute (are polynomials of mixing matrix W)."
+  - "Objective is L-smooth; Noise is bounded variance."
+
+execution_logic:
+  - step: "Canonical Transformation"
+    detail: "Transform the primal-dual incremental updates into a non-incremental error dynamic system. Decompose state into 'average' (mean-field) and 'consensus error' (deviation)."
+    algebraic_prototype: "x_bar(k+1) = x_bar(k) - alpha * g_bar(k); e(k+1) = G * e(k) + perturbations"
+
+  - step: "Matrix Diagonalization/Jordan Form"
+    detail: "Analyze the stability of the error evolution matrix G. Use block diagonalization or Jordan decomposition to bound the spectral radius gamma < 1."
+    algebraic_prototype: "G = V * Gamma * V_inv, ||Gamma|| < 1"
+
+  - step: "Coupled Lyapunov Analysis"
+    detail: "Construct a Lyapunov function combining the function value f(x_bar) and the consensus error norm ||e(k)||^2."
+    algebraic_prototype: "V(k) = f(x_bar(k)) + C * ||e(k)||^2"
+
+  - step: "Derive Descent Inequality"
+    detail: "Show that f(x_bar) decreases up to error terms proportional to step size and noise."
+    algebraic_prototype: "f(next) <= f(curr) - alpha*||grad||^2 + L^2*||e||^2 + noise"
+
+  - step: "Bound Consensus Error"
+    detail: "Use the contractive property of G to bound the accumulated consensus error."
+    algebraic_prototype: "||e(k+1)||^2 <= gamma * ||e(k)||^2 + alpha^2 * ||grad||^2"
+
+  - step: "Total Convergence Rate"
+    detail: "Sum inequalities over K iterations. Balance coefficients to cancel positive error terms with negative descent terms. Derive rates O(1/sqrt(K)) or better."
+
+assumptions_required:
+  - "W is doubly stochastic and symmetric."
+  - "L-smoothness."
+  - "Bounded variance noise."
+
+expected_outcome_form: "Rate = O(1/sqrt(K) + n/(1-lambda)^2 K)"
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 4 & 5"
+
+tags:
+  - unified_analysis
+  - non_convex_optimization
+  - matrix_factorization
+  - decentralized_learning
+  - stochastic_gradient

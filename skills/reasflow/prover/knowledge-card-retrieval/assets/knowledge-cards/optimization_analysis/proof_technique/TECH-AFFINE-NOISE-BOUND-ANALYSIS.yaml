@@ -1,0 +1,47 @@
+id: TECH-AFFINE-NOISE-BOUND-ANALYSIS
+type: proof_technique
+domain: optimization_analysis
+title: Affine Noise Bound Analysis
+description: |
+  A technique to analyze stochastic optimization algorithms under a relaxed "Affine Growth" noise assumption, replacing the unrealistic "Uniform Bounded Variance" assumption. Crucial for Non-Convex optimization.
+
+problem_pattern:
+  - "Assumption of uniformly bounded variance is too strong."
+  - "Noise scales with the gradient norm."
+  - "Standard descent lemma needs modification."
+
+structural_prerequisites:
+  - "Affine Noise Assumption: E[||noise||^2] <= sigma^2 + M ||grad||^2."
+
+execution_logic:
+  - step: "Variance Decomposition"
+    detail: "When bounding E[||noise||^2] in the descent lemma, apply the affine bound instead of a constant."
+    algebraic_prototype: "E[||g_stoch - g_true||^2] <= sigma^2 + M ||g_true||^2"
+
+  - step: "Term Grouping"
+    detail: "Group the resulting M ||grad||^2 term with the primary descent term -eta ||grad||^2."
+    algebraic_prototype: "(-eta/2 + eta*L*M/2) ||grad||^2"
+
+  - step: "Stepsize Constraint"
+    detail: "Solve for eta such that the net coefficient is negative. This introduces a noise-dependent upper bound on the stepsize."
+    algebraic_prototype: "eta <= 1 / (L * (1+M))"
+
+  - step: "Higher-Order Effects"
+    detail: "Ensure that the M ||grad||^2 term in drift recursions can also be absorbed."
+    algebraic_prototype: "Check coupled inequalities."
+
+assumptions_required:
+  - "Bounded second moment of noise."
+
+expected_outcome_form: "Convergence holds with modified stepsize constraints."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD"
+  arxiv: "2003.10422"
+  section: "Assumption 2"
+
+tags:
+  - stochastic-optimization
+  - noise-models
+  - non-convex
+  - stepsize-tuning

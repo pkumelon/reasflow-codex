@@ -1,0 +1,45 @@
+id: MECH-LOCAL-EXACT-DIFFUSION
+type: algorithm_mechanism
+domain: decentralized_optimization
+title: Local Exact-Diffusion (LED)
+description: |
+  A decentralized optimization algorithm that integrates the "Exact-Diffusion" (also known as NIDS or D^2) bias-correction mechanism with multiple local stochastic gradient updates. It addresses the data heterogeneity issue inherent in Local-DSGD while reducing communication overhead.
+
+problem_pattern:
+  - "Standard Decentralized SGD (D-SGD) converges to a biased solution when data is heterogeneous."
+  - "Local-SGD reduces communication but suffers from drift."
+  - "Need to combine bias correction (Exact Diffusion) with communication efficiency (Local Steps)."
+
+structural_prerequisites:
+  - "Nodes maintain primal variables phi, communicated variables x, and dual variables y."
+  - "Communication occurs every tau steps."
+
+execution_logic:
+  - step: "Local Primal Updates"
+    detail: "Each node i performs tau local updates starting from x_i^r. Update rule involves local gradient and the fixed dual variable (bias correction)."
+    algebraic_prototype: "phi_{i,t+1}^r = phi_{i,t}^r - alpha * grad(phi_{i,t}^r) - beta * y_i^r"
+
+  - step: "Diffusion (Communication)"
+    detail: "Nodes exchange the final local iterates phi_{j,tau}^r to compute the new anchor point."
+    algebraic_prototype: "x_i^{r+1} = sum_{j in N_i} w_{ij} * phi_{j,tau}^r"
+
+  - step: "Local Dual Update"
+    detail: "Nodes update their dual variables to track the gradient difference, ensuring exact convergence."
+    algebraic_prototype: "y_i^{r+1} = y_i^r + phi_{i,tau}^r - x_i^{r+1}"
+
+assumptions_required:
+  - "Differentiable Objective Function."
+  - "Connected Graph."
+
+expected_outcome_form: "Convergence to exact solution with linear speedup and reduced communication frequency."
+
+source:
+  paper: "Local Exact-Diffusion"
+  arxiv: "2105.08023"
+  section: "Algorithm 1"
+
+tags:
+  - decentralized-optimization
+  - local-updates
+  - bias-correction
+  - exact-diffusion

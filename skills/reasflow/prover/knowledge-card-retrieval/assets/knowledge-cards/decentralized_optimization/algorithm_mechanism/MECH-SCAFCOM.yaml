@@ -1,0 +1,43 @@
+id: MECH-SCAFCOM
+domain: Decentralized Optimization
+type: Algorithm Mechanism
+title: "SCAFCOM: Stochastic Controlled Averaging with Biased Compression"
+description: An extension of SCALLION to support biased compression (e.g., Top-k, SignSGD) in Federated Learning, employing an Error Feedback mechanism combined with Control Variates to handle heterogeneity.
+
+problem_pattern:
+  - "Unbiased compressors (like random quantization) may have high variance."
+  - "Biased compressors (like Top-k) are often more aggressive but introduce bias that accumulates."
+  - "Combining biased compression with variance reduction is non-trivial."
+
+structural_prerequisites:
+  - "Stateful Clients: Control variates $c_i$ + Error Feedback Buffer $e_i$."
+  - "Biased Compressor $C$: Satisfies contraction property."
+
+execution_logic:
+  - step: "Drift-Corrected Local Update"
+    detail: "Identical to SCALLION/SCAFFOLD."
+    algebraic_prototype: "y_{i, k+1} = y_{i, k} - \\eta_l (g_{i, k} - c_i + c)"
+
+  - step: "Error-Compensated Compression"
+    detail: "Add error buffer to the combined update, then compress."
+    algebraic_prototype: "p_i = \\Delta_i + e_i; \\quad m_i = C(p_i); \\quad e_i^+ = p_i - m_i"
+
+  - step: "Server Aggregation"
+    detail: "Update model using biased compressed messages."
+    algebraic_prototype: "x^+ = x + \\eta_g \\text{Avg}(m_i)"
+assumptions_required:
+  - "Biased Compression with Error Feedback."
+  - "Bounded second moment of gradients (standard)."
+
+expected_outcome_form: "Convergence robust to both heterogeneity and compression bias, suitable for extreme bandwidth constraints."
+
+source:
+  paper: "Stochastic Controlled Averaging for Federated Learning with Communication Compression"
+  arxiv: "2308.08165"
+  section: "Algorithm 2"
+
+tags:
+  - algorithm-mechanism
+  - federated-learning
+  - biased-compression
+  - error-feedback

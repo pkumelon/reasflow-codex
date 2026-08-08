@@ -1,0 +1,47 @@
+id: PLAN-EXACT-DIFFUSION-CONVERGENCE
+type: proof_plan
+domain: optimization
+
+title: Convergence Proof for Exact Diffusion / NIDS
+description: A proof roadmap for showing that D2/Exact-Diffusion achieves convergence rates independent of data heterogeneity.
+
+problem_pattern:
+- "Proving convergence of bias-correcting decentralized algorithms."
+- "Comparing transient stages of different decentralized algorithms."
+
+structural_prerequisites:
+- "Algorithm follows the Exact Diffusion / NIDS update structure."
+
+execution_logic:
+- step: "Descent Lemma Formulation"
+  detail: "Establish a descent inequality for the mean variable, involving the consensus error term."
+  algebraic_prototype: "E[||bar{x}_{k+1} - x*||^2] <= E[||bar{x}_k - x*||^2] - gamma * Gap + C * gamma * E[||ConsensusError||^2]"
+
+- step: "Consensus Error Decoupling"
+  detail: "Use TECH-HETEROGENEITY-REMOVAL-TRANSFORMED-DYNAMICS to bound the consensus error. Show it depends only on noise and initial state, not on heterogeneity bias b^2."
+  algebraic_prototype: "Sum(||Z_k||^2) <= O(1/(1-rho) * (Initial + Noise))"
+
+- step: "Recursion Solving"
+  detail: "Substitute the consensus error bound into the descent lemma. Sum over k=0 to T to telescope the distance terms."
+  algebraic_prototype: "Sum(Gap) <= Dist_0 + C * Sum(||Z_k||^2) -> Solve for rate."
+
+- step: "Transient Stage Analysis"
+  detail: "Analyze the dominant terms in the rate. Identify the 'transient' term (typically higher order in 1/(1-beta)) and comparing it to the 'asymptotic' term."
+
+assumptions_required:
+- "L-Smoothness"
+- "Convexity (General or Strong)"
+- "Bounded Gradient Noise"
+- "Spectral Gap exists"
+
+expected_outcome_form: "Rate = O(1/sqrt(nT)) + O(1/((1-beta)T))"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Section 4 & 5"
+
+tags:
+- proof-plan
+- decentralized-optimization
+- exact-diffusion

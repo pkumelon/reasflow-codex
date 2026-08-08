@@ -1,0 +1,1859 @@
+[
+  {
+    "id": "TECH-BLOCK-MATRIX-JORDAN-DECOMPOSITION",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-BLOCK-MATRIX-JORDAN-DECOMPOSITION.yaml",
+    "embedding_text": "Title: Block Matrix Jordan Decomposition for Stability\nSummary: A technique to analyze the stability of high-dimensional coupled recurrence relations by decomposing the block transition matrix into lower-dimensional blocks (usually 2x2) using the structure of the underlying graph Laplacian/Adjacency matrix.\nSolves Problems: System state is a concatenation of multiple variables (x, y, z) per agent., The transition matrix involves Kronecker products with the mixing matrix W., Need to find the spectral radius or contraction factor.\nKeywords: matrix_analysis, stability_theory, jordan_form, spectral_analysis",
+    "metadata": {
+      "title": "Block Matrix Jordan Decomposition for Stability",
+      "tags": [
+        "matrix_analysis",
+        "stability_theory",
+        "jordan_form",
+        "spectral_analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-INCREMENTAL-TO-STATE-SPACE-TRANSFORMATION",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-INCREMENTAL-TO-STATE-SPACE-TRANSFORMATION.yaml",
+    "embedding_text": "Title: Incremental to State-Space Transformation\nSummary: A change-of-variable technique to transform algorithms with incremental updates (involving differences x(k+1)-x(k) or sums y(k+1)=y(k)+...) into a canonical state-space form suitable for spectral analysis.\nSolves Problems: Algorithm involves auxiliary variables updating via cumulative sums (e.g., dual variables, integral action)., Direct recursion x(k+1) = f(x(k), x(k-1)) is hard to analyze., Need to construct a contractive error system.\nKeywords: change_of_variables, system_transformation, state_space, integral_action",
+    "metadata": {
+      "title": "Incremental to State-Space Transformation",
+      "tags": [
+        "change_of_variables",
+        "system_transformation",
+        "state_space",
+        "integral_action"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MATRIX-MIXING-CONTRACTION",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-MATRIX-MIXING-CONTRACTION.yaml",
+    "embedding_text": "Title: B-Step Matrix Mixing Contraction\nSummary: A fundamental result in consensus theory bounding the contraction of a vector by a product of stochastic matrices over a B-step window.\nSolves Problems: Need to bound the deviation from consensus (average)., The mixing process is time-varying., Graph connectivity is guaranteed only over a window of time B.\nKeywords: consensus_theory, matrix_analysis, contraction_mapping, time_varying_graphs",
+    "metadata": {
+      "title": "B-Step Matrix Mixing Contraction",
+      "tags": [
+        "consensus_theory",
+        "matrix_analysis",
+        "contraction_mapping",
+        "time_varying_graphs"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SIMILARITY-TRANSFORM-CONDITIONING",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-SIMILARITY-TRANSFORM-CONDITIONING.yaml",
+    "embedding_text": "Title: Similarity Transform Conditioning\nSummary: A technique to implicitly bound the condition number of the similarity transformation matrix X used to diagonalize a system, ensuring it does not introduce scaling factors that depend unfavorably on the problem dimension n or network topology.\nSolves Problems: Need to diagonalize a non-symmetric block matrix (e.g., [W, -I; I, 0])., Direct eigenvalue analysis requires a similarity transform z = X^-1 u., The constant ||X|| ||X^-1|| appears in the error bound and might be loose (e.g., depend on n).\nKeywords: matrix_analysis, condition_number, eigenvector_construction, dimension_independence, spectral_analysis",
+    "metadata": {
+      "title": "Similarity Transform Conditioning",
+      "tags": [
+        "matrix_analysis",
+        "condition_number",
+        "eigenvector_construction",
+        "dimension_independence",
+        "spectral_analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SQUARE-ROOT-FACTORIZATION",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-SQUARE-ROOT-FACTORIZATION.yaml",
+    "embedding_text": "Title: Coupling Symmetrization via Square-Root Factorization\nSummary: An algebraic trick to handle coupling terms in Lyapunov analysis by factoring a coupling matrix M into U^2 (or U^T U), allowing cross-terms to be treated as inner products in a transformed space.\nSolves Problems: Lyapunov analysis involves a term like <x, M y> where M is a positive semidefinite matrix., Need to bound or absorb this cross-term into norms like ||x||^2 and ||y||^2., Direct Cauchy-Schwarz is too loose or destroys the structure needed for cancellation.\nKeywords: algebra, matrix_factorization, lyapunov_analysis, symmetrization",
+    "metadata": {
+      "title": "Coupling Symmetrization via Square-Root Factorization",
+      "tags": [
+        "algebra",
+        "matrix_factorization",
+        "lyapunov_analysis",
+        "symmetrization"
+      ]
+    }
+  },
+  {
+    "id": "TECH-TAU-SLOW-SEQUENCE-ALGEBRA",
+    "type": "proof_technique",
+    "domain": "algebraic_manipulation",
+    "file_path": "algebraic_manipulation\\proof_technique\\TECH-TAU-SLOW-SEQUENCE-ALGEBRA.yaml",
+    "embedding_text": "Title: Tau-Slow Stepsize Sequences for Lagged Systems\nSummary: An algebraic technique to handle coupled recursions in optimization proofs where updates involve delays, periods, or intervals (e.g., Local SGD, Asynchronous SGD, Gradient Tracking). It enables the analysis of time-varying stepsizes in the presence of a time lag tau.\nSolves Problems: The error bound involves terms from the past: sum_{j=t-tau}^{t} eta_j^2 * error_j., Standard 1/t decay might change too drastically over the interval [t-tau, t], breaking the algebraic bounds., Need to bound sum_{j} eta_j^2 by C * eta_t^2 or similar.\nKeywords: stepsize-schedule, delay-tolerance, multi-step-methods, convergence-analysis",
+    "metadata": {
+      "title": "Tau-Slow Stepsize Sequences for Lagged Systems",
+      "tags": [
+        "stepsize-schedule",
+        "delay-tolerance",
+        "multi-step-methods",
+        "convergence-analysis"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-TRANSIENT-TIME-LOWER-BOUND",
+    "type": "proof_plan",
+    "domain": "complexity_analysis",
+    "file_path": "complexity_analysis\\proof_plan\\PLAN-TRANSIENT-TIME-LOWER-BOUND.yaml",
+    "embedding_text": "Title: Lower Bound for Transient Time in Decentralized Optimization\nSummary: A comprehensive roadmap to prove the fundamental lower bound on the transient time for decentralized algorithms, demonstrating that a linear speedup cannot be achieved before a critical time threshold proportional to the network spectral gap.\nSolves Problems: Goal is to show that no algorithm in a certain class can converge faster than a specific rate., Need to prove that network topology dependency is unavoidable., Constructing a worst-case scenario to certify optimality.\nKeywords: lower_bound, complexity_theory, transient_time, decentralized_optimization, worst_case_analysis",
+    "metadata": {
+      "title": "Lower Bound for Transient Time in Decentralized Optimization",
+      "tags": [
+        "lower_bound",
+        "complexity_theory",
+        "transient_time",
+        "decentralized_optimization",
+        "worst_case_analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LYAPUNOV-RECURSION-UNROLLING",
+    "type": "Proof Technique",
+    "domain": "Optimization",
+    "file_path": "complexity_analysis\\proof_technique\\TECH-LYAPUNOV-RECURSION-UNROLLING.yaml",
+    "embedding_text": "Title: Convergence Rate Derivation via Recursion Unrolling\nSummary: A set of standard lemmas for deriving final convergence rates (linear or sub-linear) from scalar recursive inequalities obtained from Lyapunov analysis.\nSolves Problems: After Lyapunov analysis, one obtains a recursive inequality of the form $d_r \\le (1 - \\rho) d_{r-1} + C$ or similar., Need to solve this recursion to state the final complexity $O(1/T)$ or $O(e^{-\\rho T})$.\nKeywords: proof-technique, convergence-rate, recursion-solver",
+    "metadata": {
+      "title": "Convergence Rate Derivation via Recursion Unrolling",
+      "tags": ["proof-technique", "convergence-rate", "recursion-solver"]
+    }
+  },
+  {
+    "id": "TECH-PERTURBED-STRONG-CONVEXITY",
+    "type": "Proof Technique",
+    "domain": "Optimization",
+    "file_path": "convex_analysis\\proof_technique\\TECH-PERTURBED-STRONG-CONVEXITY.yaml",
+    "embedding_text": "Title: Perturbed Strong Convexity Inequality\nSummary: A variation of the standard strong convexity inequality that relates gradients computed at one point to function values at different points, accounting for smoothness.\nSolves Problems: Need to bound inner product $\\langle \\nabla h(x), z - y \\rangle$ where gradients are evaluated at $x$ but we care about $z$ and $y$., Useful when $x$ is a perturbed version of $y$ or $z$ (e.g., in local updates).\nKeywords: proof-technique, convexity, inequalities",
+    "metadata": {
+      "title": "Perturbed Strong Convexity Inequality",
+      "tags": ["proof-technique", "convexity", "inequalities"]
+    }
+  },
+  {
+    "id": "TECH-RSC-LINEAR-CONVERGENCE-NEIGHBORHOOD",
+    "type": "proof_technique",
+    "domain": "convex_analysis",
+    "file_path": "convex_analysis\\proof_technique\\TECH-RSC-LINEAR-CONVERGENCE-NEIGHBORHOOD.yaml",
+    "embedding_text": "Title: Linear Convergence to Error Neighborhood via RSC\nSummary: A technique to prove that Restricted Strongly Convex (RSC) functions admit linear convergence rates up to a noise floor (error neighborhood), even if the function is not globally strongly convex or if there is persistent additive noise.\nSolves Problems: Objective function is flat in some directions but curved towards the solution set (RSC)., Algorithm has a persistent noise term (e.g., from consensus error or quantization)., Need to show linear convergence rate until the noise dominates.\nKeywords: linear_convergence, restricted_strong_convexity, noise_tolerance, error_floor",
+    "metadata": {
+      "title": "Linear Convergence to Error Neighborhood via RSC",
+      "tags": [
+        "linear_convergence",
+        "restricted_strong_convexity",
+        "noise_tolerance",
+        "error_floor"
+      ]
+    }
+  },
+  {
+    "id": "TECH-RSC-PENALTY-TRANSFER",
+    "type": "proof_technique",
+    "domain": "convex_analysis",
+    "file_path": "convex_analysis\\proof_technique\\TECH-RSC-PENALTY-TRANSFER.yaml",
+    "embedding_text": "Title: Restricted Strong Convexity Transfer to Penalized Objective\nSummary: Proves that if a global objective function is Restricted Strongly Convex (RSC), then an augmented/penalized version of the objective (used in the analysis) inherits this property, enabling linear convergence proofs.\nSolves Problems: Individual local functions f_i are convex but not strongly convex., The global sum \bar{f} is strongly convex (or RSC)., The algorithm analysis relies on a Lyapunov function that includes a penalty term (e.g., ||x||_{W-W}^2)., Need to verify that the Lyapunov function itself satisfies a strong convexity-like condition to get linear rates.\nKeywords: strong_convexity, linear_convergence, penalized_objective, convex_analysis",
+    "metadata": {
+      "title": "Restricted Strong Convexity Transfer to Penalized Objective",
+      "tags": [
+        "strong_convexity",
+        "linear_convergence",
+        "penalized_objective",
+        "convex_analysis"
+      ]
+    }
+  },
+  {
+    "id": "MECH-DIFFERENCE-BASED-BIAS-CORRECTION",
+    "type": "algorithm_mechanism",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-DIFFERENCE-BASED-BIAS-CORRECTION.yaml",
+    "embedding_text": "Title: Difference-Based Bias Correction\nSummary: A mechanism to eliminate static data heterogeneity bias in decentralized optimization by incorporating difference terms (e.g., x(k) - x(k-1)) into the update rule, effectively enabling exact convergence to the global optimum.\nSolves Problems: Standard Decentralized SGD (D-SGD) converges to a biased solution when data is heterogeneous., Need to achieve exact convergence without communicating full gradients or hessians., Want to correct the gradient direction using only local information and neighbor communication.\nKeywords: bias_correction, exact_convergence, difference_method, nids, extra",
+    "metadata": {
+      "title": "Difference-Based Bias Correction",
+      "tags": [
+        "bias_correction",
+        "exact_convergence",
+        "difference_method",
+        "nids",
+        "extra"
+      ]
+    }
+  },
+  {
+    "id": "MECH-FEDAVG-M",
+    "type": "Algorithm Mechanism",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-FEDAVG-M.yaml",
+    "embedding_text": "Title: FedAvg with Global Momentum Anchoring\nSummary: A federated learning mechanism that uses a persistent global momentum buffer to anchor local updates, enabling convergence without bounded heterogeneity assumptions.\nSolves Problems: Client drift caused by unbounded data heterogeneity., Instability when using constant local learning rates in FedAvg., Need to incorporate momentum without increasing uplink communication costs.\nKeywords: federated-learning, momentum, client-drift",
+    "metadata": {
+      "title": "FedAvg with Global Momentum Anchoring",
+      "tags": ["federated-learning", "momentum", "client-drift"]
+    }
+  },
+  {
+    "id": "MECH-FEDSUB-MECHANISM",
+    "type": "algorithm_mechanism",
+    "domain": "federated_learning",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-FEDSUB-MECHANISM.yaml",
+    "embedding_text": "Title: FedSub (Subspace Federated Learning with Dual Correction)\nSummary: An efficient FL algorithm that projects client updates into low-dimensional subspaces to save resources while maintaining low-dimensional dual variables to correct client drift caused by data heterogeneity.\nSolves Problems: FL with high communication/computation costs (e.g., LLM training)., Non-IID data causing slow convergence or divergence., Need for a unified solution for efficiency and drift correction.\nKeywords: federated-learning, subspace-method, communication-efficient, dual-correction",
+    "metadata": {
+      "title": "FedSub (Subspace Federated Learning with Dual Correction)",
+      "tags": [
+        "federated-learning",
+        "subspace-method",
+        "communication-efficient",
+        "dual-correction"
+      ]
+    }
+  },
+  {
+    "id": "MECH-HYBRID-GOSSIP-PGA",
+    "type": "algorithm_mechanism",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-HYBRID-GOSSIP-PGA.yaml",
+    "embedding_text": "Title: Hybrid Gossip with Periodic Global Averaging (PGA)\nSummary: A hybrid communication strategy that combines frequent but sparse neighbor communication (Gossip) with infrequent but dense global synchronization (Periodic Global Averaging/All-Reduce). This mechanism addresses the \"spectral gap bottleneck\" of pure Gossip algorithms on large/sparse networks.\nSolves Problems: Gossip SGD converges slowly on sparse networks (large spectral gap)., Pure Local SGD (periodic averaging) lacks fast neighbor-mixing between periods., Need to balance communication cost and convergence speed in large-scale training.\nKeywords: gossip-learning, periodic-averaging, hybrid-communication, transient-acceleration",
+    "metadata": {
+      "title": "Hybrid Gossip with Periodic Global Averaging (PGA)",
+      "tags": [
+        "gossip-learning",
+        "periodic-averaging",
+        "hybrid-communication",
+        "transient-acceleration"
+      ]
+    }
+  },
+  {
+    "id": "MECH-LOCAL-EXACT-DIFFUSION",
+    "type": "algorithm_mechanism",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-LOCAL-EXACT-DIFFUSION.yaml",
+    "embedding_text": "Title: Local Exact-Diffusion (LED)\nSummary: A decentralized optimization algorithm that integrates the \"Exact-Diffusion\" (also known as NIDS or D^2) bias-correction mechanism with multiple local stochastic gradient updates. It addresses the data heterogeneity issue inherent in Local-DSGD while reducing communication overhead.\nSolves Problems: Standard Decentralized SGD (D-SGD) converges to a biased solution when data is heterogeneous., Local-SGD reduces communication but suffers from drift., Need to combine bias correction (Exact Diffusion) with communication efficiency (Local Steps).\nKeywords: decentralized-optimization, local-updates, bias-correction, exact-diffusion",
+    "metadata": {
+      "title": "Local Exact-Diffusion (LED)",
+      "tags": [
+        "decentralized-optimization",
+        "local-updates",
+        "bias-correction",
+        "exact-diffusion"
+      ]
+    }
+  },
+  {
+    "id": "MECH-MG-DSGD",
+    "type": "algorithm_mechanism",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-MG-DSGD.yaml",
+    "embedding_text": "Title: Decentralized SGD with Multiple Gossip (MG-DSGD)\nSummary: An algorithm for smooth non-convex decentralized stochastic optimization that achieves optimal convergence rates by combining gradient accumulation with multi-round fast gossip averaging.\nSolves Problems: Convergence rate is dominated by the spectral gap factor (1-beta) in sparse graphs., Communication bandwidth is available, but latency or iteration count is the bottleneck., Need to reduce the 'Transient Stage' (time to reach linear speedup).\nKeywords: acceleration, chebyshev_acceleration, multi_round_gossip, spectral_gap",
+    "metadata": {
+      "title": "Decentralized SGD with Multiple Gossip (MG-DSGD)",
+      "tags": [
+        "acceleration",
+        "chebyshev_acceleration",
+        "multi_round_gossip",
+        "spectral_gap"
+      ]
+    }
+  },
+  {
+    "id": "MECH-OPTIMAL-GRADIENT-TRACKING-OGT",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-OPTIMAL-GRADIENT-TRACKING-OGT.yaml",
+    "embedding_text": "Title: Optimal Gradient Tracking (OGT)\nSummary: A decentralized optimization algorithm achieving optimal gradient computation and communication complexities by combining Snapshot Gradient Tracking with Loopless Chebyshev Acceleration.\nSolves Problems: Need to improve communication complexity dependence on graph condition number (1/sqrt(gap) instead of 1/gap)., Standard acceleration techniques (Chebyshev) usually require inner loops., Gradient Tracking is needed to handle heterogeneous data.\nKeywords: optimal_complexity, chebyshev_acceleration, loopless, gradient_tracking",
+    "metadata": {
+      "title": "Optimal Gradient Tracking (OGT)",
+      "tags": [
+        "optimal_complexity",
+        "chebyshev_acceleration",
+        "loopless",
+        "gradient_tracking"
+      ]
+    }
+  },
+  {
+    "id": "MECH-RANDOMIZED-SUBSPACE-OPTIMIZATION",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-RANDOMIZED-SUBSPACE-OPTIMIZATION.yaml",
+    "embedding_text": "Title: Randomized Subspace Optimization (RSO)\nSummary: A framework for reducing memory consumption in training large-scale models by decomposing the high-dimensional problem into a sequence of lower-dimensional subproblems. At each iteration k, a random projection matrix P^k is sampled.\nSolves Problems: Training Large Language Models (LLMs) requires massive memory for optimizer states., High-dimensional gradients are sparse or low-rank in nature., Need a memory-efficient optimizer that converges to the original solution.\nKeywords: memory-efficient, subspace-optimization, large-language-models, random-projection",
+    "metadata": {
+      "title": "Randomized Subspace Optimization (RSO)",
+      "tags": [
+        "memory-efficient",
+        "subspace-optimization",
+        "large-language-models",
+        "random-projection"
+      ]
+    }
+  },
+  {
+    "id": "MECH-SCAFCOM",
+    "type": "Algorithm Mechanism",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-SCAFCOM.yaml",
+    "embedding_text": "Title: SCAFCOM: Stochastic Controlled Averaging with Biased Compression\nSummary: An extension of SCALLION to support biased compression (e.g., Top-k, SignSGD) in Federated Learning, employing an Error Feedback mechanism combined with Control Variates to handle heterogeneity.\nSolves Problems: Unbiased compressors (like random quantization) may have high variance., Biased compressors (like Top-k) are often more aggressive but introduce bias that accumulates., Combining biased compression with variance reduction is non-trivial.\nKeywords: algorithm-mechanism, federated-learning, biased-compression, error-feedback",
+    "metadata": {
+      "title": "SCAFCOM: Stochastic Controlled Averaging with Biased Compression",
+      "tags": [
+        "algorithm-mechanism",
+        "federated-learning",
+        "biased-compression",
+        "error-feedback"
+      ]
+    }
+  },
+  {
+    "id": "MECH-SCAFFOLD-M",
+    "type": "Algorithm Mechanism",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-SCAFFOLD-M.yaml",
+    "embedding_text": "Title: SCAFFOLD with Momentum-Enhanced Updates\nSummary: A hybrid mechanism combining Control Variates (SCAFFOLD) with Momentum to achieve faster convergence in partial participation settings.\nSolves Problems: Slow convergence in Federated Learning with partial client participation., Need to combine variance reduction (Control Variates) with acceleration (Momentum)., Drift correction alone (SCAFFOLD) is insufficient for optimal rates.\nKeywords: scaffold, momentum, partial-participation",
+    "metadata": {
+      "title": "SCAFFOLD with Momentum-Enhanced Updates",
+      "tags": ["scaffold", "momentum", "partial-participation"]
+    }
+  },
+  {
+    "id": "MECH-SCAFFOLD",
+    "type": "Algorithm Mechanism",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-SCAFFOLD.yaml",
+    "embedding_text": "Title: SCAFFOLD: Stochastic Controlled Averaging for Federated Learning\nSummary: A variance reduction algorithm for Federated Learning that corrects for client drift using stateful control variates, allowing convergence under arbitrary data heterogeneity.\nSolves Problems: Client drift caused by data heterogeneity (non-IID data) slows down or destabilizes FedAvg., Need to simulate the global update direction on local clients without full communication.\nKeywords: federated-learning, variance-reduction, control-variates, client-drift",
+    "metadata": {
+      "title": "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning",
+      "tags": [
+        "federated-learning",
+        "variance-reduction",
+        "control-variates",
+        "client-drift"
+      ]
+    }
+  },
+  {
+    "id": "MECH-SCALLION",
+    "type": "Algorithm Mechanism",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-SCALLION.yaml",
+    "embedding_text": "Title: SCALLION: Stochastic Controlled Averaging with Linear Unbiased Compression\nSummary: A communication-efficient Federated Learning mechanism that combines variance reduction (Control Variates) with unbiased compression, characterized by a simplified uplink protocol that halves the communication cost compared to standard SCAFFOLD.\nSolves Problems: Need to reduce communication bandwidth in FL., Standard SCAFFOLD requires sending two vectors (model update + control update), negating some compression benefits., Data is heterogeneous, requiring variance reduction to prevent drift.\nKeywords: algorithm-mechanism, federated-learning, compression, variance-reduction",
+    "metadata": {
+      "title": "SCALLION: Stochastic Controlled Averaging with Linear Unbiased Compression",
+      "tags": [
+        "algorithm-mechanism",
+        "federated-learning",
+        "compression",
+        "variance-reduction"
+      ]
+    }
+  },
+  {
+    "id": "MECH-SNAPSHOT-GRADIENT-TRACKING",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\algorithm_mechanism\\MECH-SNAPSHOT-GRADIENT-TRACKING.yaml",
+    "embedding_text": "Title: Snapshot Gradient Tracking with Negative Momentum\nSummary: A gradient tracking mechanism that tracks the gradient of a snapshot point to reduce consensus error, coupled with negative momentum to control drift.\nSolves Problems: Standard gradient tracking suffers from large consensus errors due to iterate drift., Need to decouple the consensus speed from the gradient computation frequency., Gradient differences ||∇f(x_k) - ∇f(x_{k-1})|| are too large for standard tracking.\nKeywords: gradient_tracking, snapshot, variance_reduction, decentralized",
+    "metadata": {
+      "title": "Snapshot Gradient Tracking with Negative Momentum",
+      "tags": [
+        "gradient_tracking",
+        "snapshot",
+        "variance_reduction",
+        "decentralized"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-COMPRESSED-VARIANCE-REDUCED-FL",
+    "type": "Proof Plan",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-COMPRESSED-VARIANCE-REDUCED-FL.yaml",
+    "embedding_text": "Title: Convergence Analysis Plan for Compressed Variance-Reduced FL\nSummary: A structured framework for proving convergence of FL algorithms that combine Control Variates (like SCAFFOLD) with Communication Compression, specifically handling Partial Participation.\nSolves Problems: Analyzing algorithms that have three sources of noise: Stochastic Gradients, Participation Noise, and Compression Noise., The standard analysis fails because Compression Noise usually scales with heterogeneity.\nKeywords: proof-plan, convergence-analysis, compression, variance-reduction",
+    "metadata": {
+      "title": "Convergence Analysis Plan for Compressed Variance-Reduced FL",
+      "tags": [
+        "proof-plan",
+        "convergence-analysis",
+        "compression",
+        "variance-reduction"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-DECOUPLED-PRIMAL-DUAL-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-CONVEX-EXACT-DIFFUSION-ANALYSIS.yaml",
+    "embedding_text": "Title: Decoupled Primal-Dual Error Analysis\nSummary: A generic proof roadmap for analyzing decentralized algorithms with auxiliary variables (e.g., D2, EXTRA, NIDS, Gradient Tracking). It transforms coupled Primal-Dual updates into a decoupled system of \"Optimality Gap\" and \"Consensus Error\" via state-space diagonalization.\nSolves Problems: Algorithm involves coupled variables (e.g., primal x and dual/auxiliary y)., Direct analysis is difficult because x depends on y and y depends on x., Goal is to prove linear speedup in the presence of data heterogeneity.\nKeywords: primal_dual, decomposition, decentralized_optimization, error_dynamics, unified_analysis",
+    "metadata": {
+      "title": "Decoupled Primal-Dual Error Analysis",
+      "tags": [
+        "primal_dual",
+        "decomposition",
+        "decentralized_optimization",
+        "error_dynamics",
+        "unified_analysis"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-EXTRA-EXACT-CONSENSUS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-EXTRA-EXACT-CONSENSUS.yaml",
+    "embedding_text": "Title: Exact Consensus via Correction and G-Norm Analysis\nSummary: A proof roadmap for achieving exact convergence in decentralized optimization with fixed step sizes, utilizing a difference-form update and composite norm contraction.\nSolves Problems: Decentralized gradient descent with fixed step size converges to an approximate solution (bias)., Diminishing step sizes cause slow sublinear convergence., Need to prove linear convergence for consensus optimization without assuming local strong convexity.\nKeywords: decentralized, exact_convergence, fixed_step_size, primal_dual, g_norm",
+    "metadata": {
+      "title": "Exact Consensus via Correction and G-Norm Analysis",
+      "tags": [
+        "decentralized",
+        "exact_convergence",
+        "fixed_step_size",
+        "primal_dual",
+        "g_norm"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-HYBRID-CONSENSUS-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-HYBRID-CONSENSUS-ANALYSIS.yaml",
+    "embedding_text": "Title: Hybrid Consensus Analysis Framework\nSummary: A proof framework for analyzing algorithms that switch between two different consensus mechanisms (e.g., Gossip vs. Global Averaging). The key idea is to derive a \"Unified Consensus Lemma\" that bounds the consensus error by taking the minimum of the contraction properties of both mechanisms.\nSolves Problems: Need to bound ||x_k - x_bar_k||^2 when global averaging happens every H steps., The algorithm mixes local updates (Gossip/SGD) with periodic global synchronization., Requires unified analysis for 'sparse/large' networks and 'dense/small' networks.\nKeywords: proof-plan, hybrid-analysis, transient-stage, consensus-error",
+    "metadata": {
+      "title": "Hybrid Consensus Analysis Framework",
+      "tags": [
+        "proof-plan",
+        "hybrid-analysis",
+        "transient-stage",
+        "consensus-error"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-INEXACT-CONVERGENCE-NEIGHBORHOOD",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-INEXACT-CONVERGENCE-NEIGHBORHOOD.yaml",
+    "embedding_text": "Title: Mean-Field Decomposition for Inexact Convergence\nSummary: A proof roadmap for analyzing multi-agent systems by decomposing dynamics into a \"Mean-Field\" trajectory (consensus manifold) and \"Orthogonal Deviations\". Proves convergence to an error neighborhood defined by the interplay between step size and spectral gap.\nSolves Problems: Algorithm uses a fixed step size causing steady-state error., System has a natural conservation law or invariant subspace (e.g., mean value)., Need to distinguish between 'drift of the system' and 'dispersion of agents'.\nKeywords: mean_field_analysis, subspace_decomposition, inexact_convergence, error_bound, two_stage_proof",
+    "metadata": {
+      "title": "Mean-Field Decomposition for Inexact Convergence",
+      "tags": [
+        "mean_field_analysis",
+        "subspace_decomposition",
+        "inexact_convergence",
+        "error_bound",
+        "two_stage_proof"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-LINEAR-GEOMETRIC-CONVERGENCE-SMALL-GAIN",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-LINEAR-GEOMETRIC-CONVERGENCE-SMALL-GAIN.yaml",
+    "embedding_text": "Title: Linear Geometric Convergence via Small-Gain Theorem\nSummary: A proof roadmap for establishing the R-linear (geometric) convergence of distributed algorithms (like DIGing) by modeling the coupled errors as an interconnected dynamical system and applying the Small-Gain Theorem.\nSolves Problems: Distributed algorithm with multiple coupled error states (e.g., optimization error, consensus error, tracking error)., Convergence analysis requires handling the interplay between these errors over time., The graph topology might be time-varying, making standard spectral analysis difficult.\nKeywords: small_gain_theorem, geometric_convergence, linear_rate, coupled_errors",
+    "metadata": {
+      "title": "Linear Geometric Convergence via Small-Gain Theorem",
+      "tags": [
+        "small_gain_theorem",
+        "geometric_convergence",
+        "linear_rate",
+        "coupled_errors"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-LOCAL-EXACT-DIFFUSION-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-LOCAL-EXACT-DIFFUSION-ANALYSIS.yaml",
+    "embedding_text": "Title: Local Exact-Diffusion (LED) Analysis Plan\nSummary: A comprehensive analysis framework for analyzing \"Local Exact-Diffusion\" (LED) and similar primal-dual decentralized algorithms with local updates. The core challenge addressed is the bidirectional coupling between the \"local drift\" and the \"consensus/tracking error\".\nSolves Problems: Analyzing a primal-dual algorithm with multiple local steps (tau > 1)., Local Drift depends on gradients AND the dual variable., Tracking Error depends on the gradients AND the local drift.\nKeywords: proof-plan, primal-dual, local-updates, coupled-dynamics",
+    "metadata": {
+      "title": "Local Exact-Diffusion (LED) Analysis Plan",
+      "tags": ["proof-plan", "primal-dual", "local-updates", "coupled-dynamics"]
+    }
+  },
+  {
+    "id": "PLAN-MOMENTUM-FL-PROOF",
+    "type": "Proof Plan",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-MOMENTUM-FL-PROOF.yaml",
+    "embedding_text": "Title: Convergence Proof Framework for Momentum-Based FL\nSummary: A structured roadmap for proving convergence of non-convex Federated Learning with momentum, utilizing amortized drift analysis.\nSolves Problems: Need to prove convergence of FedAvg-M/SCAFFOLD-M., Handling multiple interacting error terms: Momentum Error, Client Drift, and Control Variate Error.\nKeywords: proof-plan, federated-learning, convergence-analysis",
+    "metadata": {
+      "title": "Convergence Proof Framework for Momentum-Based FL",
+      "tags": ["proof-plan", "federated-learning", "convergence-analysis"]
+    }
+  },
+  {
+    "id": "PLAN-OPTIMAL-GRADIENT-TRACKING-PROOF",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-OPTIMAL-GRADIENT-TRACKING-PROOF.yaml",
+    "embedding_text": "Title: Proof Plan for Optimal Gradient Tracking (OGT)\nSummary: A structured proof plan for establishing the optimal convergence rate of OGT using Loopless Chebyshev Acceleration and Snapshot Gradient Tracking.\nSolves Problems: Prove linear convergence of a complex decentralized algorithm with multiple auxiliary variables and acceleration., Algorithm involves both probabilistic updates (snapshot) and deterministic acceleration (Chebyshev).\nKeywords: proof_plan, optimal_complexity, chebyshev_acceleration",
+    "metadata": {
+      "title": "Proof Plan for Optimal Gradient Tracking (OGT)",
+      "tags": ["proof_plan", "optimal_complexity", "chebyshev_acceleration"]
+    }
+  },
+  {
+    "id": "PLAN-OPTIMAL-NONCONVEX-ANALYSIS-WITH-RING-LATTICE",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-OPTIMAL-NONCONVEX-ANALYSIS-WITH-RING-LATTICE.yaml",
+    "embedding_text": "Title: Optimal Non-Convex Analysis with Ring-Lattice Lower Bound\nSummary: A comprehensive proof plan for establishing optimal convergence rates in smooth non-convex decentralized optimization, featuring a novel lower bound construction using Ring-Lattice graphs.\nSolves Problems: Need to prove that the obtained convergence rate is optimal., Need to construct a 'hard instance' that enforces sequential propagation., Linear graphs are insufficient for general spectral gaps.\nKeywords: lower-bound, complexity-theory, ring-lattice, optimal-rate",
+    "metadata": {
+      "title": "Optimal Non-Convex Analysis with Ring-Lattice Lower Bound",
+      "tags": [
+        "lower-bound",
+        "complexity-theory",
+        "ring-lattice",
+        "optimal-rate"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-PRIMAL-DUAL-EXACT-CONSENSUS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-PRIMAL-DUAL-EXACT-CONSENSUS.yaml",
+    "embedding_text": "Title: Exact Convergence via Primal-Dual Recursive Restructuring\nSummary: A proof roadmap for proving linear/exact convergence of fixed-step algorithms. Key strategy is restructuring the iteration into a Primal-Dual dynamical system using difference forms to eliminate static bias, then analyzing stability via a composite metric.\nSolves Problems: Analyzing a distributed algorithm that uses fixed step-sizes but claims exact convergence., Standard contraction mapping proofs fail because the operator is only non-expansive, not contractive, at the solution., The update rule involves history terms (x^{k-1}, \\nabla f^{k-1}).\nKeywords: primal_dual, proof_framework, recursive_analysis, decentralized, linear_convergence",
+    "metadata": {
+      "title": "Exact Convergence via Primal-Dual Recursive Restructuring",
+      "tags": [
+        "primal_dual",
+        "proof_framework",
+        "recursive_analysis",
+        "decentralized",
+        "linear_convergence"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-RANDOMIZED-SUBSPACE-DESCENT",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-RANDOMIZED-SUBSPACE-DESCENT.yaml",
+    "embedding_text": "Title: Randomized Subspace Descent Proof Framework\nSummary: A general proof framework for analyzing randomized subspace optimization methods. The core idea is to bound the expected descent in the global objective function f(W) by relating it to the progress made in the local subspace subproblem.\nSolves Problems: Optimization happens in a random lower-dimensional subspace P^k., Need to relate subspace gradient P^T g to full gradient g., Need to handle inexact subproblem solutions.\nKeywords: proof-plan, subspace-descent, randomized-algorithms, non-convex-convergence",
+    "metadata": {
+      "title": "Randomized Subspace Descent Proof Framework",
+      "tags": [
+        "proof-plan",
+        "subspace-descent",
+        "randomized-algorithms",
+        "non-convex-convergence"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-SCAFFOLD-CONVERGENCE",
+    "type": "Proof Plan",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-SCAFFOLD-CONVERGENCE.yaml",
+    "embedding_text": "Title: Convergence Analysis Plan for SCAFFOLD\nSummary: A structured proof framework for demonstrating the convergence of SCAFFOLD in convex and non-convex settings, focusing on bounding the coupled errors of model parameters and control variates.\nSolves Problems: Proving convergence of an algorithm with stateful variables (control variates) that are updated periodically or stochastically., Handling the interaction between Client Drift and Control Lag.\nKeywords: proof-plan, convergence-analysis, lyapunov-function, scaffold",
+    "metadata": {
+      "title": "Convergence Analysis Plan for SCAFFOLD",
+      "tags": [
+        "proof-plan",
+        "convergence-analysis",
+        "lyapunov-function",
+        "scaffold"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-UNIFIED-DECENTRALIZED-NONCONVEX-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-UNIFIED-DECENTRALIZED-NONCONVEX-ANALYSIS.yaml",
+    "embedding_text": "Title: Unified Non-Convex Analysis via Matrix Factorization\nSummary: A comprehensive proof roadmap for analyzing the convergence of a wide class of decentralized algorithms (including DGD, EXTRA, Exact-Diffusion, Gradient-Tracking) under non-convex stochastic settings. The key is transforming disparate update rules into a unified canonical form.\nSolves Problems: Analyzing multiple decentralized algorithms with a single framework., Non-convex objective functions with stochastic gradients., Need to improve network topology dependency bounds (e.g., spectral gap).\nKeywords: unified_analysis, non_convex_optimization, matrix_factorization, decentralized_learning, stochastic_gradient",
+    "metadata": {
+      "title": "Unified Non-Convex Analysis via Matrix Factorization",
+      "tags": [
+        "unified_analysis",
+        "non_convex_optimization",
+        "matrix_factorization",
+        "decentralized_learning",
+        "stochastic_gradient"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-UNIFIED-GENERALIZED-DECENTRALIZED-SGD",
+    "type": "proof_plan",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_plan\\PLAN-UNIFIED-GENERALIZED-DECENTRALIZED-SGD.yaml",
+    "embedding_text": "Title: Unified Analysis for Generalized Decentralized SGD\nSummary: A unified proof framework for Decentralized SGD that accommodates changing topologies, local updates (Local SGD), and decentralized communication (Gossip) under a single analysis. The framework relies on a generalized mixing assumption.\nSolves Problems: Need to analyze Local SGD, Gossip SGD, and Time-Varying topologies in one go., Consensus contraction happens only every tau steps., Stepsize eta_t varies.\nKeywords: unified-analysis, local-sgd, time-varying-topology, generalized-mixing",
+    "metadata": {
+      "title": "Unified Analysis for Generalized Decentralized SGD",
+      "tags": [
+        "unified-analysis",
+        "local-sgd",
+        "time-varying-topology",
+        "generalized-mixing"
+      ]
+    }
+  },
+  {
+    "id": "TECH-ALGORITHM-REDUCTION-TO-PRIMAL-DUAL",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-ALGORITHM-REDUCTION-TO-PRIMAL-DUAL.yaml",
+    "embedding_text": "Title: Algorithm Reduction to Primal-Dual Methods\nSummary: A conceptual technique to analyze new distributed algorithms by mapping them to known operator splitting or primal-dual methods (like PDFP2O, Condat-Vu) applied to a reformulated problem.\nSolves Problems: Analyzing a new algorithm that looks like a heuristic modification of SGD., Need to prove stability or convergence without starting from scratch., Algorithm involves auxiliary variables resembling dual variables.\nKeywords: reduction-technique, primal-dual, operator-splitting, theoretical-grounding",
+    "metadata": {
+      "title": "Algorithm Reduction to Primal-Dual Methods",
+      "tags": [
+        "reduction-technique",
+        "primal-dual",
+        "operator-splitting",
+        "theoretical-grounding"
+      ]
+    }
+  },
+  {
+    "id": "TECH-AMORTIZED-DRIFT-ANALYSIS",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-AMORTIZED-DRIFT-ANALYSIS.yaml",
+    "embedding_text": "Title: Amortized Drift Analysis via Gradient History\nSummary: A proof technique that bounds the cumulative client drift by the cumulative gradient norm, eliminating the need for bounded heterogeneity assumptions.\nSolves Problems: Convergence analysis fails because drift bound contains a non-vanishing constant $\\zeta^2$., Unbounded data heterogeneity $\\zeta \\to \\infty$., Constant learning rate is required (preventing diminishing $\\eta$ solutions).\nKeywords: amortized-analysis, drift-bound, unbounded-heterogeneity",
+    "metadata": {
+      "title": "Amortized Drift Analysis via Gradient History",
+      "tags": ["amortized-analysis", "drift-bound", "unbounded-heterogeneity"]
+    }
+  },
+  {
+    "id": "TECH-CONTROL-VARIATE-DRIFT-CORRECTION",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-CONTROL-VARIATE-DRIFT-CORRECTION.yaml",
+    "embedding_text": "Title: Drift Correction via Control Variates\nSummary: A technique to neutralize the systematic bias (drift) in local updates caused by heterogeneous data by introducing a correction term derived from stateful control variates.\nSolves Problems: In Federated Learning, $\\nabla f_i(x) \\neq \\nabla f(x)$ causes local updates to drift towards local optima., The drift error $||x_i - x||^2$ scales with heterogeneity bounded by $G^2$.\nKeywords: proof-technique, variance-reduction, control-variates, heterogeneity-robustness",
+    "metadata": {
+      "title": "Drift Correction via Control Variates",
+      "tags": [
+        "proof-technique",
+        "variance-reduction",
+        "control-variates",
+        "heterogeneity-robustness"
+      ]
+    }
+  },
+  {
+    "id": "TECH-ERROR-NEIGHBORHOOD-QUANTIFICATION",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-ERROR-NEIGHBORHOOD-QUANTIFICATION.yaml",
+    "embedding_text": "Title: Consensus Error Quantification via Geometric Series\nSummary: A technique to bound the deviation of local states from their mean (consensus error) in distributed algorithms, explicitly relating the error magnitude to the step size and spectral gap.\nSolves Problems: Need to quantify how far agents drift apart in a distributed process., The drift is driven by heterogeneous local gradients.\nKeywords: error_bound, spectral_gap, geometric_series, consensus_error",
+    "metadata": {
+      "title": "Consensus Error Quantification via Geometric Series",
+      "tags": [
+        "error_bound",
+        "spectral_gap",
+        "geometric_series",
+        "consensus_error"
+      ]
+    }
+  },
+  {
+    "id": "TECH-GRADIENT-ENERGY-PRESERVATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-GRADIENT-ENERGY-PRESERVATION.yaml",
+    "embedding_text": "Title: Gradient Energy Preservation in Random Subspaces\nSummary: A fundamental technique for analyzing randomized subspace methods. It establishes that the expected squared norm of the \"projected gradient\" (gradient in the subspace) is proportional to the squared norm of the full gradient.\nSolves Problems: Optimization step uses P^T g instead of g., Need to prove that P^T g is a good descent direction in expectation., Need to relate E[||P^T g||^2] to ||g||^2.\nKeywords: probability, linear-algebra, subspace-methods, random-projection",
+    "metadata": {
+      "title": "Gradient Energy Preservation in Random Subspaces",
+      "tags": [
+        "probability",
+        "linear-algebra",
+        "subspace-methods",
+        "random-projection"
+      ]
+    }
+  },
+  {
+    "id": "TECH-GRADIENT-TRACKING-DYNAMIC-AVERAGE",
+    "type": "algorithm_mechanism",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-GRADIENT-TRACKING-DYNAMIC-AVERAGE.yaml",
+    "embedding_text": "Title: Gradient Tracking via Dynamic Average Consensus\nSummary: A mechanism to allow agents in a distributed network to estimate the global average gradient by maintaining a local auxiliary variable that tracks the dynamic changes in local gradients.\nSolves Problems: Distributed optimization where local gradients do not sum to zero at the optimum (unlike consensus)., Standard distributed gradient descent (DGD) suffers from a steady-state error proportional to the step size., Need to correct the local descent direction to align with the global gradient sum.\nKeywords: gradient_tracking, dynamic_average_consensus, exact_convergence, variance_reduction",
+    "metadata": {
+      "title": "Gradient Tracking via Dynamic Average Consensus",
+      "tags": [
+        "gradient_tracking",
+        "dynamic_average_consensus",
+        "exact_convergence",
+        "variance_reduction"
+      ]
+    }
+  },
+  {
+    "id": "TECH-GRADIENT-TRACKING-ERROR-CYCLE",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-GRADIENT-TRACKING-ERROR-CYCLE.yaml",
+    "embedding_text": "Title: The Gradient Tracking Error Cycle\nSummary: The canonical dependency structure used to prove convergence of Gradient Tracking algorithms (like DIGing, EXTRA, NEXT). It models the system as four coupled error variables forming a closed feedback loop.\nSolves Problems: Proving linear convergence for algorithms that use a 'tracking' variable y to estimate average gradients., Directly bounding the distance to optimum is impossible due to consensus errors.\nKeywords: gradient_tracking, error_decomposition, proof_structure, dependency_graph",
+    "metadata": {
+      "title": "The Gradient Tracking Error Cycle",
+      "tags": [
+        "gradient_tracking",
+        "error_decomposition",
+        "proof_structure",
+        "dependency_graph"
+      ]
+    }
+  },
+  {
+    "id": "TECH-HESSIAN-DISSIMILARITY-ANALYSIS",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-HESSIAN-DISSIMILARITY-ANALYSIS.yaml",
+    "embedding_text": "Title: Local Step Benefit Analysis via Hessian Dissimilarity\nSummary: A technique to theoretically justify the benefit of local steps (K > 1) in Federated Learning by quantifying client similarity using Hessian differences ($\\delta$-BHD) rather than gradient differences.\nSolves Problems: Standard analysis using Gradient Dissimilarity (G) often shows local steps hurt convergence or provide no benefit., Empirically, local steps help when clients are 'similar'., Need a theoretical framework to capture this 'similarity' benefit.\nKeywords: proof-technique, federated-learning, local-steps, hessian-dissimilarity",
+    "metadata": {
+      "title": "Local Step Benefit Analysis via Hessian Dissimilarity",
+      "tags": [
+        "proof-technique",
+        "federated-learning",
+        "local-steps",
+        "hessian-dissimilarity"
+      ]
+    }
+  },
+  {
+    "id": "TECH-IMPLICIT-CONTROL-VARIATE-COMMUNICATION",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-IMPLICIT-CONTROL-VARIATE-COMMUNICATION.yaml",
+    "embedding_text": "Title: Implicit Control Variate Communication via Momentum\nSummary: A protocol design technique that halves the uplink communication cost in variance-reduced FL (like SCAFFOLD) by encoding the control variate update implicitly within the model update.\nSolves Problems: SCAFFOLD requires sending two vectors $(\\Delta x, \\Delta c)$ per round, doubling communication cost., Need to achieve the same variance reduction benefit with only one vector per round.\nKeywords: proof-technique, protocol-design, communication-efficiency, momentum",
+    "metadata": {
+      "title": "Implicit Control Variate Communication via Momentum",
+      "tags": [
+        "proof-technique",
+        "protocol-design",
+        "communication-efficiency",
+        "momentum"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LOOPLESS-CHEBYSHEV-ACCELERATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-LOOPLESS-CHEBYSHEV-ACCELERATION.yaml",
+    "embedding_text": "Title: Loopless Chebyshev Acceleration\nSummary: A technique to achieve the acceleration effect of Chebyshev polynomials without inner loops by using state augmentation and specific matrix constructions.\nSolves Problems: Need to accelerate consensus or optimization processes over networks., Inner loops increase communication or coordination overhead., Standard gossip matrix W leads to slow 1/gap convergence.\nKeywords: chebyshev_acceleration, loopless, matrix_augmentation, spectral_analysis",
+    "metadata": {
+      "title": "Loopless Chebyshev Acceleration",
+      "tags": [
+        "chebyshev_acceleration",
+        "loopless",
+        "matrix_augmentation",
+        "spectral_analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LOW-DIMENSIONAL-DUAL-DRIFT-CORRECTION",
+    "type": "proof_technique",
+    "domain": "federated_learning",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-LOW-DIMENSIONAL-DUAL-DRIFT-CORRECTION.yaml",
+    "embedding_text": "Title: Client Drift Mitigation via Low-Dimensional Dual Variables\nSummary: A technique to correct client drift in Federated Learning by maintaining dual variables in a low-rank subspace, which implicitly track the difference between local and global gradients without full-dimensional communication.\nSolves Problems: Federated Learning with data heterogeneity (non-IID) causing client drift., Communication and memory constraints prohibit transmitting full-dimensional control variates (like SCAFFOLD)., Need to maintain drift correction capability while operating in a compressed/subspace regime.\nKeywords: federated-learning, client-drift, primal-dual, subspace-learning",
+    "metadata": {
+      "title": "Client Drift Mitigation via Low-Dimensional Dual Variables",
+      "tags": [
+        "federated-learning",
+        "client-drift",
+        "primal-dual",
+        "subspace-learning"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MOMENTUM-DRIFT-MITIGATION",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-MOMENTUM-DRIFT-MITIGATION.yaml",
+    "embedding_text": "Title: Drift Mitigation via Global Momentum Anchoring\nSummary: A technique to bound the divergence of local models by anchoring their updates to a globally shared, slowly changing momentum vector.\nSolves Problems: Local updates $x_i^{r,k}$ drift away from $x^r$ due to $\\nabla f_i \\neq \\nabla f$., Standard drift bound $E[||x_i - x||^2]$ depends on heterogeneity $\\zeta^2$., Need to suppress the heterogeneity term in the drift bound.\nKeywords: drift-analysis, momentum, bounding-technique",
+    "metadata": {
+      "title": "Drift Mitigation via Global Momentum Anchoring",
+      "tags": ["drift-analysis", "momentum", "bounding-technique"]
+    }
+  },
+  {
+    "id": "TECH-MULTI-ROUND-GOSSIP-ACCELERATION",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-MULTI-ROUND-GOSSIP-ACCELERATION.yaml",
+    "embedding_text": "Title: Multi-Round Gossip Acceleration\nSummary: A technique to exponentially improve network topology dependence (spectral gap) by performing multiple rounds of gossip communication per computation step, often combined with gradient accumulation.\nSolves Problems: Convergence rate is dominated by the spectral gap factor (1-beta) (e.g., in sparse graphs)., Communication bandwidth is available, but latency or iteration count is the bottleneck., Need to reduce the 'Transient Stage' (time to reach linear speedup).\nKeywords: acceleration, chebyshev_acceleration, multi_round_gossip, spectral_gap, topology_dependence",
+    "metadata": {
+      "title": "Multi-Round Gossip Acceleration",
+      "tags": [
+        "acceleration",
+        "chebyshev_acceleration",
+        "multi_round_gossip",
+        "spectral_gap",
+        "topology_dependence"
+      ]
+    }
+  },
+  {
+    "id": "TECH-PRIMAL-DUAL-AVG-DEV-DECOMPOSITION",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-PRIMAL-DUAL-AVG-DEV-DECOMPOSITION.yaml",
+    "embedding_text": "Title: Primal-Dual Average-Deviation Decomposition\nSummary: A technique to analyze decentralized algorithms by transforming the primal and dual updates into a deviation-from-average form using specific matrix decompositions. Crucial for analyzing methods like Exact-Diffusion and LED.\nSolves Problems: Primal and Dual variables are coupled., Mixing matrix W acts on the variables., Need to separate the consensus dynamics (eigenvalue 1) from the error dynamics.\nKeywords: primal-dual, decomposition, eigenvalue-analysis, decentralized",
+    "metadata": {
+      "title": "Primal-Dual Average-Deviation Decomposition",
+      "tags": [
+        "primal-dual",
+        "decomposition",
+        "eigenvalue-analysis",
+        "decentralized"
+      ]
+    }
+  },
+  {
+    "id": "TECH-PRIMAL-DUAL-LOCAL-DRIFT-BOUND",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-PRIMAL-DUAL-LOCAL-DRIFT-BOUND.yaml",
+    "embedding_text": "Title: Local Drift Bound for Primal-Dual Algorithms\nSummary: A technique to bound the \"local drift\" in decentralized primal-dual algorithms with multiple local updates. Unlike standard Local-SGD, the drift is also driven by the dual (bias-correction) variables.\nSolves Problems: Local updates involve both gradients and dual variables., Need to bound ||x_{i,t} - x_{i,0}||^2., Standard drift analysis (O(eta^2 sigma^2)) is insufficient due to dual term.\nKeywords: drift-analysis, primal-dual, local-updates, inequality-techniques",
+    "metadata": {
+      "title": "Local Drift Bound for Primal-Dual Algorithms",
+      "tags": [
+        "drift-analysis",
+        "primal-dual",
+        "local-updates",
+        "inequality-techniques"
+      ]
+    }
+  },
+  {
+    "id": "TECH-RELATIVE-COMPRESSION-OF-DRIFT-CORRECTED-UPDATES",
+    "type": "Proof Technique",
+    "domain": "Decentralized Optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-RELATIVE-COMPRESSION-OF-DRIFT-CORRECTED-UPDATES.yaml",
+    "embedding_text": "Title: Relative Compression Analysis of Drift-Corrected Updates\nSummary: A technique to prove convergence of compressed Federated Learning without assuming bounded data heterogeneity, by compressing the *drift-corrected* difference rather than the raw gradient or model difference.\nSolves Problems: Standard compressed FL fails or requires bounded heterogeneity because compression noise $E\\|Q(x)-x\\|^2$ scales with $\\|x\\|^2$, and usually $\\|x\\| \\approx \\|\\nabla f_i\\|$ is large., Need to compress a quantity that naturally goes to zero as the algorithm converges.\nKeywords: proof-technique, compression, variance-reduction, heterogeneity-robustness",
+    "metadata": {
+      "title": "Relative Compression Analysis of Drift-Corrected Updates",
+      "tags": [
+        "proof-technique",
+        "compression",
+        "variance-reduction",
+        "heterogeneity-robustness"
+      ]
+    }
+  },
+  {
+    "id": "TECH-RING-LATTICE-TOPOLOGY-CONSTRUCTION",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-RING-LATTICE-TOPOLOGY-CONSTRUCTION.yaml",
+    "embedding_text": "Title: Ring-Lattice Topology Construction for General Lower Bounds\nSummary: A construction technique for lower bound analysis that uses Ring-Lattice graphs to establish a tight relationship between graph diameter and spectral gap for a broad class of weight matrices, overcoming limitations of linear graphs.\nSolves Problems: Need to prove lower bounds for general weight matrices, not just specific topologies like linear graphs., Linear graphs restrict beta to specific values (e.g., cos(pi/n)) for fixed n., Standard topologies (like Linear-Star) yield suboptimal Diameter vs. Beta relationships.\nKeywords: lower_bound, topology_construction, ring_lattice, spectral_gap, diameter",
+    "metadata": {
+      "title": "Ring-Lattice Topology Construction for General Lower Bounds",
+      "tags": [
+        "lower_bound",
+        "topology_construction",
+        "ring_lattice",
+        "spectral_gap",
+        "diameter"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SNAPSHOT-GRADIENT-TRACKING-ANALYSIS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-SNAPSHOT-GRADIENT-TRACKING-ANALYSIS.yaml",
+    "embedding_text": "Title: Snapshot Gradient Tracking Analysis\nSummary: Analysis framework for gradient tracking methods that use snapshot points to decouple gradient computation from consensus steps.\nSolves Problems: Need to analyze convergence of algorithms with probabilistic updates., Gradient tracker does not track the current gradient but a snapshot gradient., Need to bound errors from both consensus and stale gradients.\nKeywords: lyapunov_analysis, stochastic_analysis, snapshot_method, gradient_tracking",
+    "metadata": {
+      "title": "Snapshot Gradient Tracking Analysis",
+      "tags": [
+        "lyapunov_analysis",
+        "stochastic_analysis",
+        "snapshot_method",
+        "gradient_tracking"
+      ]
+    }
+  },
+  {
+    "id": "TECH-TRANSIENT-STAGE-ANALYSIS",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-TRANSIENT-STAGE-ANALYSIS.yaml",
+    "embedding_text": "Title: Transient Stage Analysis for Linear Speedup\nSummary: A technique to quantify the \"time to reach linear speedup\" for distributed optimization algorithms. It separates the convergence rate into a \"dominant term\" (stochastic) and \"higher-order terms\" (network).\nSolves Problems: Convergence bound has form A/sqrt(T) + B/T., Need to define when A/sqrt(T) dominates B/T., Comparing algorithms based on their network sensitivity.\nKeywords: complexity-analysis, linear-speedup, transient-time, convergence-rate",
+    "metadata": {
+      "title": "Transient Stage Analysis for Linear Speedup",
+      "tags": [
+        "complexity-analysis",
+        "linear-speedup",
+        "transient-time",
+        "convergence-rate"
+      ]
+    }
+  },
+  {
+    "id": "TECH-UNIFIED-PRIMAL-DUAL-FORM",
+    "type": "proof_technique",
+    "domain": "decentralized_optimization",
+    "file_path": "decentralized_optimization\\proof_technique\\TECH-UNIFIED-PRIMAL-DUAL-FORM.yaml",
+    "embedding_text": "Title: Unified Primal-Dual Algorithmic Form (UDA)\nSummary: A generalized matrix-vector recurrence relation that encapsulates multiple decentralized optimization algorithms (EXTRA, D^2, Gradient Tracking, DLM) by parameterizing them via polynomial matrices of the graph Laplacian.\nSolves Problems: Need to analyze or compare multiple decentralized algorithms., Algorithms look different (some track gradients, some use differences) but share underlying structure.\nKeywords: unified_framework, primal_dual, algorithm_design, generalized_analysis",
+    "metadata": {
+      "title": "Unified Primal-Dual Algorithmic Form (UDA)",
+      "tags": [
+        "unified_framework",
+        "primal_dual",
+        "algorithm_design",
+        "generalized_analysis"
+      ]
+    }
+  },
+  {
+    "id": "MECH-FEDERATED-PARTIAL-PARTICIPATION-ADMM",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "optimization\\algorithm_mechanism\\MECH-FEDERATED-PARTIAL-PARTICIPATION-ADMM.yaml",
+    "embedding_text": "Title: Federated ADMM with Partial Participation (FedADMM)\nSummary: A mechanism to adapt ADMM for Federated Learning with partial client participation by freezing the state (primal and dual) of inactive clients and aggregating incremental updates.\nSolves Problems: Applying ADMM to a federated setting where only a subset of clients participate in each round., Standard ADMM requires full variable updates which is infeasible in FL., Need to handle non-smooth regularizers (like L1) in a distributed manner.\nKeywords: federated-learning, admm, partial-participation, primal-dual",
+    "metadata": {
+      "title": "Federated ADMM with Partial Participation (FedADMM)",
+      "tags": [
+        "federated-learning",
+        "admm",
+        "partial-participation",
+        "primal-dual"
+      ]
+    }
+  },
+  {
+    "id": "MECH-GOSSIP-PERIODIC-GLOBAL-AVERAGING",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "optimization\\algorithm_mechanism\\MECH-GOSSIP-PERIODIC-GLOBAL-AVERAGING.yaml",
+    "embedding_text": "Title: Gossip SGD with Periodic Global Averaging (Gossip-PGA)\nSummary: A hybrid decentralized optimization mechanism combining fast local Gossip communication with periodic global All-Reduce synchronization to accelerate convergence.\nSolves Problems: Gossip SGD converges slowly on sparse networks (large spectral gap)., Pure Local SGD (periodic averaging) lacks fast neighbor-mixing between periods., Need to balance communication cost and convergence speed in large-scale training.\nKeywords: gossip-learning, periodic-averaging, hybrid-communication, transient-acceleration",
+    "metadata": {
+      "title": "Gossip SGD with Periodic Global Averaging (Gossip-PGA)",
+      "tags": [
+        "gossip-learning",
+        "periodic-averaging",
+        "hybrid-communication",
+        "transient-acceleration"
+      ]
+    }
+  },
+  {
+    "id": "MECH-GRADIENT-LOW-RANK-PROJECTION-OPTIMIZATION",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "optimization\\algorithm_mechanism\\MECH-GRADIENT-LOW-RANK-PROJECTION-OPTIMIZATION.yaml",
+    "embedding_text": "Title: Gradient Low-Rank Projection (GaLore)\nSummary: A memory-efficient training strategy that projects gradients into a low-rank subspace via SVD, maintains optimizer states in this compact space, and periodically updates the subspace to allow full-parameter learning over time.\nSolves Problems: Training Large Language Models (LLMs) requires massive memory for optimizer states (e.g., Adam states are 2x model size)., Standard low-rank adaptation (LoRA) restricts the search space permanently, limiting performance., Need a way to save memory like LoRA but achieve Full-Rank training performance.\nKeywords: memory-efficient, low-rank-adaptation, subspace-learning, svd-projection",
+    "metadata": {
+      "title": "Gradient Low-Rank Projection (GaLore)",
+      "tags": [
+        "memory-efficient",
+        "low-rank-adaptation",
+        "subspace-learning",
+        "svd-projection"
+      ]
+    }
+  },
+  {
+    "id": "MECH-NEOLITHIC",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "optimization\\algorithm_mechanism\\MECH-NEOLITHIC.yaml",
+    "embedding_text": "Title: NEOLITHIC (Nearly Optimal Algorithm with Compression)\nSummary: A distributed algorithm combining Nesterov acceleration with Multi-Step Compression and Gradient Accumulation to achieve near-optimal rates in compressed settings.\nSolves Problems: Need to apply Nesterov acceleration in a distributed setting with lossy communication., Base compressor precision is insufficient for accelerated convergence rates., Stochastic variance dominates the convergence rate, preventing acceleration.\nKeywords: Nesterov Acceleration, Variance Reduction, Distributed Optimization, Communication Compression",
+    "metadata": {
+      "title": "NEOLITHIC (Nearly Optimal Algorithm with Compression)",
+      "tags": [
+        "Nesterov Acceleration",
+        "Variance Reduction",
+        "Distributed Optimization",
+        "Communication Compression"
+      ]
+    }
+  },
+  {
+    "id": "MECH-RANDOM-PROJECTED-ADAPTIVE-OPTIMIZATION",
+    "type": "algorithm_mechanism",
+    "domain": "optimization",
+    "file_path": "optimization\\algorithm_mechanism\\MECH-RANDOM-PROJECTED-ADAPTIVE-OPTIMIZATION.yaml",
+    "embedding_text": "Title: Random Projected Adaptive Optimization (APOLLO)\nSummary: A memory-efficient optimization mechanism that maintains optimizer states (like first and second moments) in a low-rank subspace via random projection, approximating the channel-wise adaptive learning rates of AdamW.\nSolves Problems: Training Large Language Models (LLMs) is memory-bound due to optimizer states (typically 2x model size for Adam)., Standard low-rank methods (like GaLore) require expensive SVD and frequent subspace switching., Need a static, cheap, yet effective way to compress optimizer states without sacrificing convergence.\nKeywords: memory-efficient, llm-training, random-projection, adaptive-optimizer",
+    "metadata": {
+      "title": "Random Projected Adaptive Optimization (APOLLO)",
+      "tags": [
+        "memory-efficient",
+        "llm-training",
+        "random-projection",
+        "adaptive-optimizer"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-ACCELERATED-COMPRESSED-CONVERGENCE",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-ACCELERATED-COMPRESSED-CONVERGENCE.yaml",
+    "embedding_text": "Title: Convergence Analysis for Accelerated SGD with Compression\nSummary: A proof strategy for establishing convergence of Nesterov-accelerated methods in the presence of compression error and stochastic noise.\nSolves Problems: Proving convergence of an accelerated algorithm where the gradient is inexact., Handling two sources of error: compression bias/variance and stochastic sampling variance., The standard Nesterov proof breaks because the error terms do not decay naturally.\nKeywords: Nesterov Acceleration, Lyapunov Analysis, Noise Robustness, Error Decomposition",
+    "metadata": {
+      "title": "Convergence Analysis for Accelerated SGD with Compression",
+      "tags": [
+        "Nesterov Acceleration",
+        "Lyapunov Analysis",
+        "Noise Robustness",
+        "Error Decomposition"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-DUAL-EQUIVALENCE-REDUCTION",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-DUAL-EQUIVALENCE-REDUCTION.yaml",
+    "embedding_text": "Title: Convergence via Primal-Dual Algorithm Equivalence\nSummary: A high-level proof strategy that establishes convergence of a new algorithm by proving it is mathematically equivalent (under variable transformation) to a known, convergent algorithm applied to the dual problem.\nSolves Problems: New algorithm is a Primal-Dual variant of an existing Operator Splitting method., Direct convergence analysis is complex or redundant because a similar algorithm exists., Need to transfer convergence rates (e.g., O(1/k)) and properties (e.g., partial participation robustness) from a reference algorithm.\nKeywords: proof-plan, reduction-strategy, primal-dual, equivalence, convergence-transfer",
+    "metadata": {
+      "title": "Convergence via Primal-Dual Algorithm Equivalence",
+      "tags": [
+        "proof-plan",
+        "reduction-strategy",
+        "primal-dual",
+        "equivalence",
+        "convergence-transfer"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-EXACT-DIFFUSION-CONVERGENCE",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-EXACT-DIFFUSION-CONVERGENCE.yaml",
+    "embedding_text": "Title: Convergence Proof for Exact Diffusion / NIDS\nSummary: A proof roadmap for showing that D2/Exact-Diffusion achieves convergence rates independent of data heterogeneity.\nSolves Problems: Proving convergence of bias-correcting decentralized algorithms., Comparing transient stages of different decentralized algorithms.\nKeywords: proof-plan, decentralized-optimization, exact-diffusion",
+    "metadata": {
+      "title": "Convergence Proof for Exact Diffusion / NIDS",
+      "tags": ["proof-plan", "decentralized-optimization", "exact-diffusion"]
+    }
+  },
+  {
+    "id": "PLAN-FEDAVG-LINEAR-SPEEDUP",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-FEDAVG-LINEAR-SPEEDUP.yaml",
+    "embedding_text": "Title: Proof Plan for Linear Speedup in FedAvg with Partial Participation\nSummary: A comprehensive roadmap to prove linear speedup for Generalized FedAvg under non-IID data and partial worker participation.\nSolves Problems: Proving convergence rate for Federated Averaging (FedAvg) or similar algorithms., Handling non-IID data distributions across workers., Incorporating partial worker participation (sampling)., Aiming to show that increasing the number of workers (m) or local steps (K) linearly speeds up convergence.\nKeywords: federated_learning, proof_roadmap, linear_speedup, non_iid",
+    "metadata": {
+      "title": "Proof Plan for Linear Speedup in FedAvg with Partial Participation",
+      "tags": [
+        "federated_learning",
+        "proof_roadmap",
+        "linear_speedup",
+        "non_iid"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-GOLORE-CONVERGENCE",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-GOLORE-CONVERGENCE.yaml",
+    "embedding_text": "Title: GoLore Convergence Proof Plan\nSummary: A proof plan for establishing the convergence of GoLore (and similar subspace optimization algorithms with random projections) in non-convex stochastic settings. The plan relies on establishing contraction properties for the momentum term in the projected subspace and then bounding the accumulated momentum error.\nSolves Problems: Need to prove convergence for subspace optimization methods with random projections., Handling momentum updates in changing subspaces., Dealing with non-convex stochastic settings.\nKeywords: optimization, stochastic-gradient-descent, subspace-optimization, non-convex, convergence-analysis, golore",
+    "metadata": {
+      "title": "GoLore Convergence Proof Plan",
+      "tags": [
+        "optimization",
+        "stochastic-gradient-descent",
+        "subspace-optimization",
+        "non-convex",
+        "convergence-analysis",
+        "golore"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-HYBRID-COMMUNICATION-RATE-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-HYBRID-COMMUNICATION-RATE-ANALYSIS.yaml",
+    "embedding_text": "Title: Convergence Analysis for Hybrid Communication Algorithms\nSummary: A proof plan for analyzing algorithms that alternate between different communication primitives (e.g., Gossip and Global Averaging), focusing on unifying consensus bounds across different regimes.\nSolves Problems: Algorithm switches between two or more communication modes (e.g., Local mixing vs. Global sync)., Need to prove that the hybrid approach is strictly better than using either mode exclusively., The dominant error source shifts depending on network topology (beta) and period (H).\nKeywords: proof-plan, hybrid-communication, unified-analysis, gossip-pga",
+    "metadata": {
+      "title": "Convergence Analysis for Hybrid Communication Algorithms",
+      "tags": [
+        "proof-plan",
+        "hybrid-communication",
+        "unified-analysis",
+        "gossip-pga"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-OPTIMAL-GRADIENT-TRACKING",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-OPTIMAL-GRADIENT-TRACKING.yaml",
+    "embedding_text": "Title: Single-Loop Optimal Gradient Tracking (OGT)\nSummary: A proof strategy for achieving optimal gradient and communication complexity in decentralized optimization using SS-GT and LCA.\nSolves Problems: Minimize finite sum of strongly convex functions over a network., Goal: Optimal gradient complexity O(sqrt(kappa)) and communication complexity O(sqrt(kappa/gap))., Constraint: Single-loop algorithm (no inner consensus loops).\nKeywords: optimal_algorithm, decentralized, gradient_tracking, acceleration",
+    "metadata": {
+      "title": "Single-Loop Optimal Gradient Tracking (OGT)",
+      "tags": [
+        "optimal_algorithm",
+        "decentralized",
+        "gradient_tracking",
+        "acceleration"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-SUBSPACE-SCAFFOLD-CONVERGENCE",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-SUBSPACE-SCAFFOLD-CONVERGENCE.yaml",
+    "embedding_text": "Title: Convergence Proof for Subspace SCAFFOLD\nSummary: Roadmap for proving convergence of Federated Learning with subspace-restricted updates and control variates.\nSolves Problems: Federated Learning with control variates (SCAFFOLD)., Updates restricted to random subspace to save memory/comm., Non-convex objective.\nKeywords: proof_plan, scaffold, subspace, convergence",
+    "metadata": {
+      "title": "Convergence Proof for Subspace SCAFFOLD",
+      "tags": ["proof_plan", "scaffold", "subspace", "convergence"]
+    }
+  },
+  {
+    "id": "PLAN-TRANSIENT-STAGE-ANALYSIS",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-TRANSIENT-STAGE-ANALYSIS.yaml",
+    "embedding_text": "Title: Transient Stage Analysis Methodology\nSummary: A systematic approach to determine the number of iterations required for a distributed algorithm to reach the linear speedup regime.\nSolves Problems: Determining when a distributed algorithm matches the performance of a centralized one (scaled by n)., Comparing the efficiency of distributed algorithms on sparse networks., Quantifying the 'start-up' cost of decentralized optimization.\nKeywords: proof-plan, transient-analysis, convergence-rate",
+    "metadata": {
+      "title": "Transient Stage Analysis Methodology",
+      "tags": ["proof-plan", "transient-analysis", "convergence-rate"]
+    }
+  },
+  {
+    "id": "PLAN-UNIFIED-DECENTRALIZED-SGD",
+    "type": "proof_plan",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_plan\\PLAN-UNIFIED-DECENTRALIZED-SGD.yaml",
+    "embedding_text": "Title: Proof Plan for Unified Decentralized SGD with Changing Topology\nSummary: A comprehensive roadmap to prove convergence of Decentralized SGD with changing topology and local updates.  The proof decouples the analysis into a \"Descent Lemma\" for the virtual average iterate and a \"Consensus Recursion\" for the disagreement error, handling the multi-step mixing property of the topology.\nSolves Problems: Decentralized optimization with time-varying mixing matrices., Local updates (multiple SGD steps before communication)., Non-uniform mixing (only contracting every tau steps).\nKeywords: decentralized-learning, consensus-optimization, changing-topology, local-sgd, proof-plan",
+    "metadata": {
+      "title": "Proof Plan for Unified Decentralized SGD with Changing Topology",
+      "tags": [
+        "decentralized-learning",
+        "consensus-optimization",
+        "changing-topology",
+        "local-sgd",
+        "proof-plan"
+      ]
+    }
+  },
+  {
+    "id": "TECH-COUPLED-RECURSION-SOLVER",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-COUPLED-RECURSION-SOLVER.yaml",
+    "embedding_text": "Title: Solving Coupled Descent and Consensus Recursions\nSummary: A technique for solving a system of two coupled recursive inequalities often found in decentralized optimization: one for the optimization error (Descent) and one for the consensus error (Consensus). It uses a weighted summation approach to decouple and bound the total error.\nSolves Problems: Have two coupled recursions:, 1. r_{t+1} <= (1-a)r_t + B*Xi_t + ..., 2. Xi_t <= (1-p)Xi_{t-1} + C*e_t + ..., Need to derive a final convergence rate for e_t (or r_t).\nKeywords: recursion-solver, coupled-inequalities, convergence-analysis, decentralized-optimization",
+    "metadata": {
+      "title": "Solving Coupled Descent and Consensus Recursions",
+      "tags": [
+        "recursion-solver",
+        "coupled-inequalities",
+        "convergence-analysis",
+        "decentralized-optimization"
+      ]
+    }
+  },
+  {
+    "id": "TECH-CUMULATIVE-ERROR-CORRECTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-CUMULATIVE-ERROR-CORRECTION.yaml",
+    "embedding_text": "Title: Steady-State Error Elimination via Cumulative Correction\nSummary: A technique to modify fixed-step gradient descent to achieve exact convergence by introducing a cumulative correction term (or integral action) that cancels steady-state bias.\nSolves Problems: Gradient descent with fixed step size stalls at a neighborhood of the solution due to heterogeneous local gradients summing to non-zero vectors locally., Consensus error does not vanish asymptotically with fixed step sizes.\nKeywords: error_correction, integral_action, difference_form, exact_convergence",
+    "metadata": {
+      "title": "Steady-State Error Elimination via Cumulative Correction",
+      "tags": [
+        "error_correction",
+        "integral_action",
+        "difference_form",
+        "exact_convergence"
+      ]
+    }
+  },
+  {
+    "id": "TECH-DISTRIBUTED-COMPRESSION-LOWER-BOUNDS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-DISTRIBUTED-COMPRESSION-LOWER-BOUNDS.yaml",
+    "embedding_text": "Title: Lower Bound Construction for Distributed Compression\nSummary: A methodology for deriving information-theoretic lower bounds in distributed optimization by constructing \"hard\" function instances that limit information propagation through compressed channels.\nSolves Problems: Need to prove that a specific convergence rate is optimal for a given compression class., Need to find the fundamental limit of distributed algorithms under communication constraints.\nKeywords: Lower Bound, Information Theory, Hard Instance, Zero-Respecting",
+    "metadata": {
+      "title": "Lower Bound Construction for Distributed Compression",
+      "tags": [
+        "Lower Bound",
+        "Information Theory",
+        "Hard Instance",
+        "Zero-Respecting"
+      ]
+    }
+  },
+  {
+    "id": "TECH-DISTRIBUTED-VARIANCE-REDUCTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-DISTRIBUTED-VARIANCE-REDUCTION.yaml",
+    "embedding_text": "Title: Distributed Variance Reduction (Linear Speedup)\nSummary: A fundamental technique for analyzing distributed/parallel stochastic algorithms. It leverages the independence of stochastic noise across N workers to reduce the variance of the aggregated gradient by a factor of 1/N, leading to linear speedup.\nSolves Problems: Analyzing convergence of distributed SGD or Federated Averaging., Need to show that using N workers provides 1/N reduction in noise variance., Standard Jensen's inequality bound (||mean||^2 <= mean(|| ||^2)) is too loose and loses the 1/N factor., Aggregating independent zero-mean stochastic vectors.\nKeywords: optimization, distributed-learning, federated-learning, variance-reduction, linear-speedup",
+    "metadata": {
+      "title": "Distributed Variance Reduction (Linear Speedup)",
+      "tags": [
+        "optimization",
+        "distributed-learning",
+        "federated-learning",
+        "variance-reduction",
+        "linear-speedup"
+      ]
+    }
+  },
+  {
+    "id": "TECH-EIGENVECTOR-SHIFT-LOWER-BOUND",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-EIGENVECTOR-SHIFT-LOWER-BOUND.yaml",
+    "embedding_text": "Title: Lower Bound Construction via Eigenvector-Shifted Quadratics\nSummary: A technique for proving lower bounds in decentralized optimization by constructing a \"hard instance\" using quadratic functions shifted along the eigenvector of the mixing matrix corresponding to the spectral gap (second largest eigenvalue). This aligns the \"disagreement\" with the slowest decaying mode of the network graph.\nSolves Problems: Need to prove that the convergence rate dependence on the spectral gap (1-p) or graph topology is tight., Decentralized averaging or optimization algorithms.\nKeywords: lower-bound, decentralized-optimization, spectral-gap, hard-instance-construction",
+    "metadata": {
+      "title": "Lower Bound Construction via Eigenvector-Shifted Quadratics",
+      "tags": [
+        "lower-bound",
+        "decentralized-optimization",
+        "spectral-gap",
+        "hard-instance-construction"
+      ]
+    }
+  },
+  {
+    "id": "TECH-ERGODIC-CONSENSUS-BOUND",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-ERGODIC-CONSENSUS-BOUND.yaml",
+    "embedding_text": "Title: Ergodic Consensus Bound via Weighted Sum\nSummary: A technique to bound the weighted sum of consensus errors in strongly convex decentralized optimization.\nSolves Problems: Need to bound Sum(h_k * ||E_k||^2) where E_k is an error term., The weights h_k are chosen to cancel out linear terms in the descent lemma., Strongly convex setting where simple averaging is insufficient.\nKeywords: proof-technique, weighted-sum, strong-convexity",
+    "metadata": {
+      "title": "Ergodic Consensus Bound via Weighted Sum",
+      "tags": ["proof-technique", "weighted-sum", "strong-convexity"]
+    }
+  },
+  {
+    "id": "TECH-FIXED-HORIZON-STEPSIZE-TUNING",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-FIXED-HORIZON-STEPSIZE-TUNING.yaml",
+    "embedding_text": "Title: Fixed-Horizon Stepsize Tuning for Rates with Noise and Drift\nSummary: A systematic method to select a constant stepsize \\eta for a finite horizon T, balancing optimization error (1/T\\eta), stochastic noise (\\eta), and higher-order drift terms (\\eta^2). Crucial for obtaining tight rates in decentralized/non-IID settings.\nSolves Problems: Convergence bound has the form: Rate <= C1/(eta*T) + C2*eta + C3*eta^2., Need to pick eta to minimize the RHS for a fixed T., Common in non-convex and weakly convex stochastic optimization.\nKeywords: stepsize-tuning, convergence-rate, finite-horizon, trade-off-analysis",
+    "metadata": {
+      "title": "Fixed-Horizon Stepsize Tuning for Rates with Noise and Drift",
+      "tags": [
+        "stepsize-tuning",
+        "convergence-rate",
+        "finite-horizon",
+        "trade-off-analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-HETEROGENEITY-REMOVAL-TRANSFORMED-DYNAMICS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-HETEROGENEITY-REMOVAL-TRANSFORMED-DYNAMICS.yaml",
+    "embedding_text": "Title: Heterogeneity Removal via Transformed Error Dynamics\nSummary: A technique to analyze decentralized algorithms (like Exact Diffusion/NIDS) by lifting the state space to decouple consensus error from data heterogeneity bias.\nSolves Problems: Consensus error bound depends on data heterogeneity (bias term) in standard D-SGD analysis., Algorithm uses momentum or correction steps (like D2/NIDS) to handle heterogeneity., Need to show that the algorithm converges to the exact solution despite local data differences.\nKeywords: decentralized-optimization, exact-diffusion, bias-correction, state-space-analysis",
+    "metadata": {
+      "title": "Heterogeneity Removal via Transformed Error Dynamics",
+      "tags": [
+        "decentralized-optimization",
+        "exact-diffusion",
+        "bias-correction",
+        "state-space-analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LAG-TOLERANT-STEPSIZE",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LAG-TOLERANT-STEPSIZE.yaml",
+    "embedding_text": "Title: Tau-Slow Stepsize Sequences for Lagged Systems\nSummary: A technique for defining valid stepsize sequences {eta_t} in systems with time lags, delays, or multi-step accumulation (like Local SGD). It ensures that the stepsize does not decay too fast relative to the system's delay parameter (tau), allowing current bounds to control past errors.\nSolves Problems: The error bound involves terms from the past: sum_{j=t-tau}^{t} eta_j^2 * error_j., Standard 1/t decay might change too drastically over the interval [t-tau, t], breaking the algebraic bounds., Need to bound sum_{j} eta_j^2 by C * eta_t^2 or similar.\nKeywords: stepsize-schedule, delay-tolerance, multi-step-methods, convergence-analysis",
+    "metadata": {
+      "title": "Tau-Slow Stepsize Sequences for Lagged Systems",
+      "tags": [
+        "stepsize-schedule",
+        "delay-tolerance",
+        "multi-step-methods",
+        "convergence-analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LARGE-BATCH-NOISE-REDUCTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LARGE-BATCH-NOISE-REDUCTION.yaml",
+    "embedding_text": "Title: Large Batch Noise Reduction for Subspace Selection\nSummary: A technique to salvage the convergence of biased subspace selection methods (like GaLore) by using large-batch gradients specifically for the subspace selection step.\nSolves Problems: Biased subspace selection fails when noise dominates signal., SVD on stochastic gradients aligns with noise., Need to ensure subspace selection captures true gradient direction.\nKeywords: optimization, stochastic-gradient, variance-reduction, galore",
+    "metadata": {
+      "title": "Large Batch Noise Reduction for Subspace Selection",
+      "tags": [
+        "optimization",
+        "stochastic-gradient",
+        "variance-reduction",
+        "galore"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LAZY-UPDATE-DRIFT-BOUND",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LAZY-UPDATE-DRIFT-BOUND.yaml",
+    "embedding_text": "Title: Tight Drift Bounding for Lazy/Subspace Updates\nSummary: Bounds the client drift with optimal dependency on steps K by separating noise variance (linear in K) from deterministic drift (quadratic in K).\nSolves Problems: Local updates y_i occur in a subspace P., Global model x is updated after K local steps., Need to bound sum_k ||y_i^k - x||^2 tightly.\nKeywords: drift, federated_learning, lazy_update, subspace, tight_bound",
+    "metadata": {
+      "title": "Tight Drift Bounding for Lazy/Subspace Updates",
+      "tags": [
+        "drift",
+        "federated_learning",
+        "lazy_update",
+        "subspace",
+        "tight_bound"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LOCAL-DRIFT-RECURSION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LOCAL-DRIFT-RECURSION.yaml",
+    "embedding_text": "Title: Recursive Bounding of Local Model Drift\nSummary: A technique to bound the divergence between a local model and a reference point over multiple stochastic steps, using a specific relaxation of the triangle inequality to manage error accumulation.\nSolves Problems: Need to bound the distance ||x_{t,k}^i - x_t||^2 after k local SGD steps., Standard triangle inequality leads to loose exponential bounds if not handled carefully., The drift is caused by both local gradient variance and data heterogeneity.\nKeywords: federated_learning, drift_analysis, recursion_unrolling, inequality_relaxation",
+    "metadata": {
+      "title": "Recursive Bounding of Local Model Drift",
+      "tags": [
+        "federated_learning",
+        "drift_analysis",
+        "recursion_unrolling",
+        "inequality_relaxation"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LOOPLESS-CHEBYSHEV-ACCELERATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LOOPLESS-CHEBYSHEV-ACCELERATION.yaml",
+    "embedding_text": "Title: Loopless Chebyshev Acceleration via Augmented Matrix\nSummary: Achieves the acceleration effect of Chebyshev polynomials without inner loops by lifting the state space with an augmented mixing matrix.\nSolves Problems: Need to improve dependence on graph condition number from O(1/gap) to O(1/sqrt(gap))., Cannot use inner loops (standard Chebyshev) due to communication/synchronization constraints., Need a single-loop algorithm with optimal communication complexity.\nKeywords: chebyshev_acceleration, acceleration, decentralized, spectral_gap",
+    "metadata": {
+      "title": "Loopless Chebyshev Acceleration via Augmented Matrix",
+      "tags": [
+        "chebyshev_acceleration",
+        "acceleration",
+        "decentralized",
+        "spectral_gap"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LYAPUNOV-CONSENSUS-BOUNDING",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-LYAPUNOV-CONSENSUS-BOUNDING.yaml",
+    "embedding_text": "Title: Lyapunov Function for Coupled Consensus Errors\nSummary: Bounds multiple coupled consensus errors by showing their weighted sum forms a Q-linearly convergent sequence with perturbations.\nSolves Problems: Multiple variables (X, Z, Y, U, G) have coupled consensus dynamics., Updates involve mixing (contraction) and additions (perturbation)., Need to prove that all consensus errors remain bounded and decay.\nKeywords: lyapunov, consensus_error, stability_analysis, decentralized",
+    "metadata": {
+      "title": "Lyapunov Function for Coupled Consensus Errors",
+      "tags": [
+        "lyapunov",
+        "consensus_error",
+        "stability_analysis",
+        "decentralized"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MOMENTUM-PROJECTION-ANALYSIS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-MOMENTUM-PROJECTION-ANALYSIS.yaml",
+    "embedding_text": "Title: Momentum Projection Analysis\nSummary: A technique for analyzing momentum-based optimization algorithms that operate in changing subspaces. It involves defining a \"projected momentum\" variable in the full space and analyzing its evolution and error relative to the full gradient.\nSolves Problems: Analyzing momentum-based algorithms in changing subspaces., Tracking effective update direction in full parameter space., Handling projection errors and restart errors.\nKeywords: optimization, momentum, subspace-optimization, convergence-analysis",
+    "metadata": {
+      "title": "Momentum Projection Analysis",
+      "tags": [
+        "optimization",
+        "momentum",
+        "subspace-optimization",
+        "convergence-analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MULTI-ROUND-GOSSIP-ACCELERATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-MULTI-ROUND-GOSSIP-ACCELERATION.yaml",
+    "embedding_text": "Title: Multi-Round Gossip Acceleration\nSummary: Improving network topology dependence by performing multiple rounds of accelerated gossip communication per gradient update.\nSolves Problems: Algorithm performance is bottlenecked by poor network connectivity (1-beta is small)., Communication is cheaper than computation, or linear speedup is delayed by large consensus error., Standard D-SGD suffers from heavy transient stages in sparse networks.\nKeywords: proof-technique, acceleration, multi-round-gossip, network-dependence",
+    "metadata": {
+      "title": "Multi-Round Gossip Acceleration",
+      "tags": [
+        "proof-technique",
+        "acceleration",
+        "multi-round-gossip",
+        "network-dependence"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MULTI-STEP-COMPRESSION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-MULTI-STEP-COMPRESSION.yaml",
+    "embedding_text": "Title: Multi-Step Compression (MSC)\nSummary: An iterative compression technique that reduces quantization error exponentially with the number of communication steps.\nSolves Problems: The available compressor has low precision (high variance or low contraction factor)., The algorithm requires a gradient estimator with arbitrarily small bias/variance., Need to trade off communication bandwidth (linearly) for precision (exponentially).\nKeywords: Compression, Error Feedback, Residual Quantization, Precision Refinement",
+    "metadata": {
+      "title": "Multi-Step Compression (MSC)",
+      "tags": [
+        "Compression",
+        "Error Feedback",
+        "Residual Quantization",
+        "Precision Refinement"
+      ]
+    }
+  },
+  {
+    "id": "TECH-MULTI-STEP-MIXING-CONTRACTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-MULTI-STEP-MIXING-CONTRACTION.yaml",
+    "embedding_text": "Title: Consensus Contraction with Multi-Step Mixing\nSummary: Bounds the consensus error when the network topology only guarantees contraction over a multi-step interval (tau steps), rather than at every single step. This is crucial for analyzing time-varying topologies that may be disconnected at individual steps but connected over time.\nSolves Problems: Network topology changes at every step (time-varying)., Mixing matrix W_t does not contract at every step (e.g., disconnected)., Contraction property holds only for the product of matrices over tau steps: ||X W_{t,tau} - bar{X}|| <= (1-p)||X - bar{X}||., Need to bound consensus error Xi_t at an arbitrary step t.\nKeywords: consensus-optimization, time-varying-topology, multi-step-contraction, error-bounding",
+    "metadata": {
+      "title": "Consensus Contraction with Multi-Step Mixing",
+      "tags": [
+        "consensus-optimization",
+        "time-varying-topology",
+        "multi-step-contraction",
+        "error-bounding"
+      ]
+    }
+  },
+  {
+    "id": "TECH-OPTIMIZATION-HARMONIC-STEPSIZE",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-OPTIMIZATION-HARMONIC-STEPSIZE.yaml",
+    "embedding_text": "Title: Harmonic Stepsize Selection Strategy (The 'Sum of Inverses' Trick)\nSummary: A rigorous method to select a single stepsize that minimizes a convergence bound with multiple competing error terms and stability constraints.\nSolves Problems: Need to select a stepsize eta to minimize a bound like A/eta + B*eta + C*eta^2., Bound contains competing terms (e.g., optimization error vs variance vs drift)., Stepsize is subject to a hard stability constraint (eta <= eta_max)., Avoid piecewise definitions of stepsize for cleaner theorems.\nKeywords: optimization, complexity-analysis, stepsize-selection, convergence-rate",
+    "metadata": {
+      "title": "Harmonic Stepsize Selection Strategy (The 'Sum of Inverses' Trick)",
+      "tags": [
+        "optimization",
+        "complexity-analysis",
+        "stepsize-selection",
+        "convergence-rate"
+      ]
+    }
+  },
+  {
+    "id": "TECH-PARTIAL-PARTICIPATION-BOUND",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-PARTIAL-PARTICIPATION-BOUND.yaml",
+    "embedding_text": "Title: Variance Bounding for Partial Worker Participation\nSummary: A technique to bound the variance introduced by sampling a subset of workers in federated learning, handling both replacement and non-replacement strategies.\nSolves Problems: Need to bound the variance of the aggregated gradient when only a subset of workers participate., The subset of workers is sampled randomly (with or without replacement)., The global update direction is an unbiased estimator of the full participation update.\nKeywords: federated_learning, partial_participation, variance_reduction, sampling_theory",
+    "metadata": {
+      "title": "Variance Bounding for Partial Worker Participation",
+      "tags": [
+        "federated_learning",
+        "partial_participation",
+        "variance_reduction",
+        "sampling_theory"
+      ]
+    }
+  },
+  {
+    "id": "TECH-PERIODIC-CONSENSUS-BOUNDING",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-PERIODIC-CONSENSUS-BOUNDING.yaml",
+    "embedding_text": "Title: Periodic Consensus Bounding with Unified Dominance\nSummary: A technique to bound the consensus error (distance between local and average iterates) when synchronization happens periodically, handling both communication-dominated and period-dominated regimes.\nSolves Problems: Need to bound ||x_k - x_bar_k||^2 when global averaging happens every H steps., The algorithm mixes local updates (Gossip/SGD) with periodic global synchronization., Requires unified analysis for 'sparse/large' networks (beta -> 1) and 'dense/small' networks (beta -> 0).\nKeywords: consensus-error, periodic-averaging, gossip-algorithm, unified-bound",
+    "metadata": {
+      "title": "Periodic Consensus Bounding with Unified Dominance",
+      "tags": [
+        "consensus-error",
+        "periodic-averaging",
+        "gossip-algorithm",
+        "unified-bound"
+      ]
+    }
+  },
+  {
+    "id": "TECH-PRIMAL-DUAL-EQUIVALENCE-MAPPING",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-PRIMAL-DUAL-EQUIVALENCE-MAPPING.yaml",
+    "embedding_text": "Title: Primal-Dual Algorithm Equivalence Mapping\nSummary: Proves convergence of a Primal-Dual algorithm (e.g., ADMM) by establishing a linear bijection to a known Operator Splitting algorithm (e.g., Douglas-Rachford) and inheriting its convergence guarantees.\nSolves Problems: Need to prove convergence for a Primal-Dual algorithm (like FedADMM) without re-deriving all bounds., The algorithm structure resembles a known Operator Splitting method (DRS, Peaceman-Rachford) applied to the dual problem., The algorithm involves primal variables, dual variables, and auxiliary variables that interact linearly.\nKeywords: primal-dual, operator-splitting, equivalence-proof, admm, douglas-rachford",
+    "metadata": {
+      "title": "Primal-Dual Algorithm Equivalence Mapping",
+      "tags": [
+        "primal-dual",
+        "operator-splitting",
+        "equivalence-proof",
+        "admm",
+        "douglas-rachford"
+      ]
+    }
+  },
+  {
+    "id": "TECH-R-LINEAR-SEQUENCE-BOUNDING",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-R-LINEAR-SEQUENCE-BOUNDING.yaml",
+    "embedding_text": "Title: Bounding R-Linear Sequences with Perturbations\nSummary: A technique to bound a sequence that decays R-linearly (but not necessarily Q-linearly) with additive error terms, by mapping it to a Q-linear surrogate.\nSolves Problems: Sequence ||E_k||^2 <= C * rho^{2k} * ||E_0||^2 + Sum(rho^{k-i} * Error_i)., The sequence is not Q-linear (i.e., ||E_{k+1}|| <= rho ||E_k|| does not hold pointwise)., Need to include this sequence in a Lyapunov analysis.\nKeywords: r_linear_convergence, sequence_bounding, analysis_trick",
+    "metadata": {
+      "title": "Bounding R-Linear Sequences with Perturbations",
+      "tags": ["r_linear_convergence", "sequence_bounding", "analysis_trick"]
+    }
+  },
+  {
+    "id": "TECH-RANDOM-PROJECTION-NORM-PRESERVATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-RANDOM-PROJECTION-NORM-PRESERVATION.yaml",
+    "embedding_text": "Title: Norm Preservation via Random Projection (JL Lemma Application)\nSummary: Utilizing the Johnson-Lindenstrauss (JL) Lemma to approximate the norm of high-dimensional gradient vectors using low-dimensional random projections, enabling memory-efficient optimizer state maintenance.\nSolves Problems: Need to estimate element-wise or channel-wise scaling factors (e.g., adaptive learning rates) without storing full-dimensional statistics., High memory cost of optimizer states (e.g., second moments in Adam)., Gradient vectors have high dimensionality but may exhibit low effective rank or structural redundancy.\nKeywords: random-projection, dimension-reduction, memory-efficiency, adaptive-optimization",
+    "metadata": {
+      "title": "Norm Preservation via Random Projection (JL Lemma Application)",
+      "tags": [
+        "random-projection",
+        "dimension-reduction",
+        "memory-efficiency",
+        "adaptive-optimization"
+      ]
+    }
+  },
+  {
+    "id": "TECH-RANDOM-SUBSPACE-MOMENTS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-RANDOM-SUBSPACE-MOMENTS.yaml",
+    "embedding_text": "Title: Expectation of Random Subspace Projections\nSummary: Handles the expectation of vectors and norms when projected onto a uniformly sampled random subspace.\nSolves Problems: Gradient is projected onto a random subspace P before update., Need to relate projected gradient norm E[||Pg||^2] to full norm ||g||^2., Subspace is sampled independently at each outer iteration.\nKeywords: subspace, projection, expectation, dimensionality_reduction",
+    "metadata": {
+      "title": "Expectation of Random Subspace Projections",
+      "tags": [
+        "subspace",
+        "projection",
+        "expectation",
+        "dimensionality_reduction"
+      ]
+    }
+  },
+  {
+    "id": "TECH-RANDOM-SUBSPACE-PROJECTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-RANDOM-SUBSPACE-PROJECTION.yaml",
+    "embedding_text": "Title: Random Subspace Projection for Noise Robustness\nSummary: A technique to ensure convergence in subspace optimization when gradient noise is dominant (e.g., near local minima). Instead of using SVD which might capture noise components, use random projections sampled from the Stiefel manifold. This technique relies on the property that random projections are unbiased in expectation (up to a scaling factor) and do not preferentially align with noise directions.\nSolves Problems: Gradient noise dominates signal near convergence., SVD-based subspace selection captures noise., Need unbiased subspace projection.\nKeywords: optimization, subspace-optimization, random-projection, stochastic-gradient, noise-robustness",
+    "metadata": {
+      "title": "Random Subspace Projection for Noise Robustness",
+      "tags": [
+        "optimization",
+        "subspace-optimization",
+        "random-projection",
+        "stochastic-gradient",
+        "noise-robustness"
+      ]
+    }
+  },
+  {
+    "id": "TECH-STEP-SIZE-HARMONIC-MEAN",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-STEP-SIZE-HARMONIC-MEAN.yaml",
+    "embedding_text": "Title: Optimal Step Size Selection via Harmonic Mean\nSummary: A technique to select a single step size that balances multiple error terms (linear and quadratic) in a convergence bound.\nSolves Problems: Convergence rate bound is a function of step size eta: Bound(eta) = A/eta + B*eta + C*eta^2., Step size is constrained by stability: eta <= eta_max., Need to find the optimal eta to minimize the bound.\nKeywords: step_size, optimization, convergence_rate, harmonic_mean",
+    "metadata": {
+      "title": "Optimal Step Size Selection via Harmonic Mean",
+      "tags": ["step_size", "optimization", "convergence_rate", "harmonic_mean"]
+    }
+  },
+  {
+    "id": "TECH-STOCHASTIC-GRADIENT-ACCUMULATION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-STOCHASTIC-GRADIENT-ACCUMULATION.yaml",
+    "embedding_text": "Title: Stochastic Gradient Accumulation for Variance Reduction\nSummary: Reducing the variance of the stochastic gradient estimator by averaging multiple independent samples.\nSolves Problems: Stochastic variance sigma^2 is too large to support the desired learning rate or acceleration., The 'noise' term in the convergence analysis dominates the rate., Need to simulate a 'large batch' setting without memory overhead (though with compute overhead).\nKeywords: Variance Reduction, Mini-batching, Stochastic Optimization",
+    "metadata": {
+      "title": "Stochastic Gradient Accumulation for Variance Reduction",
+      "tags": ["Variance Reduction", "Mini-batching", "Stochastic Optimization"]
+    }
+  },
+  {
+    "id": "TECH-SUBSPACE-ERROR-DECOMPOSITION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-SUBSPACE-ERROR-DECOMPOSITION.yaml",
+    "embedding_text": "Title: Orthogonal Subspace Error Decomposition via Independence-Preserving Reference\nSummary: Decomposes error terms by anchoring to a reference vector that is statistically independent of the current random operator, avoiding bias/scaling artifacts.\nSolves Problems: Variables are updated using a random operator P (e.g., projection, mask)., Direct error analysis w.r.t. current state introduces bias or inverse-scaling factors (e.g., 1/rho)., Need to prove contraction using properties like E[P^T P] = rho I.\nKeywords: decomposition, subspace, independence, error_bound",
+    "metadata": {
+      "title": "Orthogonal Subspace Error Decomposition via Independence-Preserving Reference",
+      "tags": ["decomposition", "subspace", "independence", "error_bound"]
+    }
+  },
+  {
+    "id": "TECH-TWO-SIDED-LEARNING-RATE-ANALYSIS",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-TWO-SIDED-LEARNING-RATE-ANALYSIS.yaml",
+    "embedding_text": "Title: Convergence Analysis with Two-Sided Learning Rates\nSummary: A technique to analyze convergence when local updates and global updates have different learning rates, decoupling local and global dynamics.\nSolves Problems: Algorithm uses distinct learning rates for local steps (worker side) and global aggregation (server side)., Need to analyze how the interaction between local learning rate (eta_L) and global learning rate (eta) affects convergence., Standard one-step descent analysis needs to account for the accumulated local updates.\nKeywords: federated_learning, learning_rate_scheduling, convergence_analysis, non_convex_optimization",
+    "metadata": {
+      "title": "Convergence Analysis with Two-Sided Learning Rates",
+      "tags": [
+        "federated_learning",
+        "learning_rate_scheduling",
+        "convergence_analysis",
+        "non_convex_optimization"
+      ]
+    }
+  },
+  {
+    "id": "TECH-VIRTUAL-AVERAGE-PERTURBED-ITERATE",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-VIRTUAL-AVERAGE-PERTURBED-ITERATE.yaml",
+    "embedding_text": "Title: Virtual Average Iterate Analysis for Decentralized SGD\nSummary: Analyzes Decentralized SGD by tracking the evolution of the average iterate bar{x}, treating it as a 'Virtual Sequence' that follows a perturbed SGD update. The perturbation comes from the consensus error (disagreement among workers). This technique effectively decouples the optimization analysis from the consensus analysis.\nSolves Problems: Analyzing convergence of decentralized algorithms where workers have different local parameters x_i., Global objective is defined on the average of local functions: f(x) = 1/n sum f_i(x)., Standard SGD analysis fails because local gradients are computed at x_i, not at the global average bar{x}.\nKeywords: decentralized-optimization, virtual-sequence, perturbed-iterate, descent-lemma",
+    "metadata": {
+      "title": "Virtual Average Iterate Analysis for Decentralized SGD",
+      "tags": [
+        "decentralized-optimization",
+        "virtual-sequence",
+        "perturbed-iterate",
+        "descent-lemma"
+      ]
+    }
+  },
+  {
+    "id": "TECH-VIRTUAL-MIXING-ABSTRACTION",
+    "type": "proof_technique",
+    "domain": "optimization",
+    "file_path": "optimization\\proof_technique\\TECH-VIRTUAL-MIXING-ABSTRACTION.yaml",
+    "embedding_text": "Title: Virtual Mixing Abstraction for Algorithmic Unification\nSummary: A modeling technique that unifies diverse distributed algorithms (Local SGD, Async SGD, Periodic Gossip) by representing algorithmic behaviors (computation vs. communication) purely as a sequence of time-varying mixing matrices W_t. This converts algorithmic variations into spectral variations of the matrix sequence product.\nSolves Problems: Need to analyze a variant of distributed SGD with complex communication rules (e.g., periodic, random, loopless)., Standard analysis requires re-deriving bounds for each communication pattern., The algorithm involves periods of local computation without communication.\nKeywords: modeling-abstraction, unification, local-sgd, time-varying-topology",
+    "metadata": {
+      "title": "Virtual Mixing Abstraction for Algorithmic Unification",
+      "tags": [
+        "modeling-abstraction",
+        "unification",
+        "local-sgd",
+        "time-varying-topology"
+      ]
+    }
+  },
+  {
+    "id": "PLAN-SUBSPACE-PRIMAL-DUAL-CONVERGENCE",
+    "type": "proof_plan",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_plan\\PLAN-SUBSPACE-PRIMAL-DUAL-CONVERGENCE.yaml",
+    "embedding_text": "Title: Convergence Analysis for Subspace Primal-Dual Federated Learning\nSummary: A proof framework for analyzing Federated Learning algorithms that combine subspace projection (for efficiency) with Primal-Dual updates (for drift correction), establishing convergence in non-convex settings.\nSolves Problems: Analyzing FL algorithms that project updates into random or fixed subspaces., Algorithms using dual variables or control variates to handle heterogeneity., Need to bound the error introduced by subspace projection (I - P P^T).\nKeywords: convergence-analysis, primal-dual, lyapunov-function, non-convex-optimization",
+    "metadata": {
+      "title": "Convergence Analysis for Subspace Primal-Dual Federated Learning",
+      "tags": [
+        "convergence-analysis",
+        "primal-dual",
+        "lyapunov-function",
+        "non-convex-optimization"
+      ]
+    }
+  },
+  {
+    "id": "TECH-AFFINE-NOISE-BOUND-ANALYSIS",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-AFFINE-NOISE-BOUND-ANALYSIS.yaml",
+    "embedding_text": "Title: Affine Noise Bound Analysis\nSummary: A technique to analyze stochastic optimization algorithms under a relaxed \"Affine Growth\" noise assumption, replacing the unrealistic \"Uniform Bounded Variance\" assumption. Crucial for Non-Convex optimization.\nSolves Problems: Assumption of uniformly bounded variance is too strong., Noise scales with the gradient norm., Standard descent lemma needs modification.\nKeywords: stochastic-optimization, noise-models, non-convex, stepsize-tuning",
+    "metadata": {
+      "title": "Affine Noise Bound Analysis",
+      "tags": [
+        "stochastic-optimization",
+        "noise-models",
+        "non-convex",
+        "stepsize-tuning"
+      ]
+    }
+  },
+  {
+    "id": "TECH-COMPOSITE-G-NORM-CONTRACTION",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-COMPOSITE-G-NORM-CONTRACTION.yaml",
+    "embedding_text": "Title: Reverse-Engineered G-Norm Contraction\nSummary: A methodology for analyzing coupled dynamics by first postulating a G-norm structure and then reverse-engineering the required spectral constraints on algorithmic parameters to ensure contraction.\nSolves Problems: Designing a new algorithm with coupled variables (e.g., primal-dual) where stability conditions are unknown., Need to determine the valid range of mixing matrices or step sizes.\nKeywords: stability_analysis, reverse_engineering, parameter_tuning, spectral_constraints",
+    "metadata": {
+      "title": "Reverse-Engineered G-Norm Contraction",
+      "tags": [
+        "stability_analysis",
+        "reverse_engineering",
+        "parameter_tuning",
+        "spectral_constraints"
+      ]
+    }
+  },
+  {
+    "id": "TECH-CONSENSUS-ERROR-CONTRACTION",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-CONSENSUS-ERROR-CONTRACTION.yaml",
+    "embedding_text": "Title: Consensus Error Contraction Analysis\nSummary: A method to establish that the consensus error (deviation from the mean) contracts geometrically at each step, despite perturbation from gradients, by carefully tuning coefficient bounds using Jensen's or Young's inequalities.\nSolves Problems: Need to bound the evolution of the consensus error norm ||z_check(k)||^2., The error update involves a contractive matrix D (spectral radius < 1) and additive perturbation terms (gradients)., Direct squaring (||Dz + g||^2) creates cross-terms that are difficult to bound directly.\nKeywords: consensus_error, contraction_mapping, spectral_radius, lyapunov_stability, perturbation_analysis",
+    "metadata": {
+      "title": "Consensus Error Contraction Analysis",
+      "tags": [
+        "consensus_error",
+        "contraction_mapping",
+        "spectral_radius",
+        "lyapunov_stability",
+        "perturbation_analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-COUPLED-ERROR-LYAPUNOV-BOUND",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-COUPLED-ERROR-LYAPUNOV-BOUND.yaml",
+    "embedding_text": "Title: Coupled Error-Lyapunov Bounding\nSummary: A method to derive convergence rates for systems where the objective function descent is perturbed by an error term, and the error term itself evolves contractively but is perturbed by the gradient.\nSolves Problems: Descent Lemma gives: f(k+1) <= f(k) - alpha*|grad|^2 + L*|error|^2., Error Dynamics gives: |error(k+1)|^2 <= rho*|error(k)|^2 + alpha^2*|grad|^2., Direct substitution leads to loose bounds or circular logic.\nKeywords: lyapunov_analysis, coupled_inequalities, convergence_rate, non_convex",
+    "metadata": {
+      "title": "Coupled Error-Lyapunov Bounding",
+      "tags": [
+        "lyapunov_analysis",
+        "coupled_inequalities",
+        "convergence_rate",
+        "non_convex"
+      ]
+    }
+  },
+  {
+    "id": "TECH-CYCLIC-ERROR-BOUND-CONSTRUCTION",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-CYCLIC-ERROR-BOUND-CONSTRUCTION.yaml",
+    "embedding_text": "Title: Cyclic Error Bound Construction\nSummary: A method to systematically construct a set of inequalities linking multiple error terms (like consensus error, gradient error, and optimality gap) in a cyclic manner to enable the application of the Small-Gain Theorem.\nSolves Problems: Analyzing complex distributed algorithms with multiple state variables., Direct Lyapunov function construction is too difficult., Need to prepare the system for Small-Gain analysis.\nKeywords: small_gain_theorem, error_bounds, inequality_chain, distributed_systems",
+    "metadata": {
+      "title": "Cyclic Error Bound Construction",
+      "tags": [
+        "small_gain_theorem",
+        "error_bounds",
+        "inequality_chain",
+        "distributed_systems"
+      ]
+    }
+  },
+  {
+    "id": "TECH-LYAPUNOV-GRADIENT-BOUNDEDNESS",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-LYAPUNOV-GRADIENT-BOUNDEDNESS.yaml",
+    "embedding_text": "Title: Gradient Boundedness via Lyapunov Stability\nSummary: A technique to prove that gradients remain bounded along the optimization trajectory without assuming global gradient boundedness or compact domain, by ensuring the step size is small enough to make a specific Lyapunov function non-increasing.\nSolves Problems: Standard proofs assume ||\\nabla f(x)|| <= G, which is unrealistic for quadratic functions on unbounded domains., Need to prove stability/boundedness of iterates before proving convergence rates.\nKeywords: stability_analysis, lyapunov_function, gradient_bound, coercive_functions",
+    "metadata": {
+      "title": "Gradient Boundedness via Lyapunov Stability",
+      "tags": [
+        "stability_analysis",
+        "lyapunov_function",
+        "gradient_bound",
+        "coercive_functions"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SEQUENTIAL-MIXING-CONSENSUS",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-SEQUENTIAL-MIXING-CONSENSUS.yaml",
+    "embedding_text": "Title: Sequential Mixing Consensus Analysis\nSummary: A technique to bound the consensus error when the network topology changes over time or when communication is infrequent (Local SGD). Instead of assuming contraction at every step, it assumes a contraction factor (1-p) occurs over a period of tau steps.\nSolves Problems: Consensus error Xi_t needs to be bounded., Contraction is not guaranteed at every step t., Generalized Mixing assumption holds over tau steps.\nKeywords: consensus-error, time-varying-topology, sequential-mixing, drift-analysis",
+    "metadata": {
+      "title": "Sequential Mixing Consensus Analysis",
+      "tags": [
+        "consensus-error",
+        "time-varying-topology",
+        "sequential-mixing",
+        "drift-analysis"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SMALL-GAIN-THEOREM-STABILITY",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-SMALL-GAIN-THEOREM-STABILITY.yaml",
+    "embedding_text": "Title: Small-Gain Theorem for Geometric Convergence\nSummary: A control-theoretic technique to prove the stability and geometric convergence of interconnected dynamical systems (e.g., coupled error terms in optimization algorithms) by analyzing the product of gain coefficients in a cyclic dependency graph.\nSolves Problems: The system has multiple coupled error terms (e.g., optimization error and consensus error)., Directly constructing a single Lyapunov function is difficult due to complex coupling., Individual error terms can be bounded by linear combinations of other error terms (plus decaying inputs).\nKeywords: small_gain_theorem, geometric_convergence, coupled_dynamics, control_theory",
+    "metadata": {
+      "title": "Small-Gain Theorem for Geometric Convergence",
+      "tags": [
+        "small_gain_theorem",
+        "geometric_convergence",
+        "coupled_dynamics",
+        "control_theory"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SPECTRAL-DECOUPLED-DESCENT",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-SPECTRAL-DECOUPLED-DESCENT.yaml",
+    "embedding_text": "Title: Spectral Decoupling for Descent Lemma\nSummary: A technique to derive the descent lemma for the mean-field variable (optimality gap) in decentralized optimization by exploiting the orthogonality between the average subspace and the consensus error subspace.\nSolves Problems: The update rule for the mean variable x_bar involves network-dependent error terms., Direct substitution into the smoothness inequality creates circular dependencies between x_bar and local errors., Need to isolate the negative gradient term for x_bar while bounding the perturbation caused by consensus error.\nKeywords: descent_lemma, spectral_analysis, decentralized_optimization, orthogonality, subspace_decomposition",
+    "metadata": {
+      "title": "Spectral Decoupling for Descent Lemma",
+      "tags": [
+        "descent_lemma",
+        "spectral_analysis",
+        "decentralized_optimization",
+        "orthogonality",
+        "subspace_decomposition"
+      ]
+    }
+  },
+  {
+    "id": "TECH-SURROGATE-FUNCTION-EQUIVALENCE",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-SURROGATE-FUNCTION-EQUIVALENCE.yaml",
+    "embedding_text": "Title: Lyapunov Construction via Surrogate Function Equivalence\nSummary: A powerful methodology for constructing Lyapunov functions by recognizing that a complex/distributed algorithm is mathematically equivalent to standard Gradient Descent (often with unit step size) on a distinct \"Surrogate Function\".\nSolves Problems: Struggling to guess a Lyapunov function for a complex fixed-step algorithm., The algorithm looks like gradient descent but has extra terms (e.g., mixing, penalty)., Need to prove boundedness/stability on unbounded domains.\nKeywords: lyapunov_construction, reverse_engineering, algorithmic_equivalence, stability_analysis, gradient_flow",
+    "metadata": {
+      "title": "Lyapunov Construction via Surrogate Function Equivalence",
+      "tags": [
+        "lyapunov_construction",
+        "reverse_engineering",
+        "algorithmic_equivalence",
+        "stability_analysis",
+        "gradient_flow"
+      ]
+    }
+  },
+  {
+    "id": "TECH-TRANSIENT-TIME-DERIVATION",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-TRANSIENT-TIME-DERIVATION.yaml",
+    "embedding_text": "Title: Transient Time Analysis for Linear Speedup\nSummary: A methodology to rigorously quantify the \"Transient Time\"—the number of iterations required for a distributed algorithm to match the convergence rate of its centralized counterpart (Linear Speedup).\nSolves Problems: Algorithm claims Linear Speedup (O(1/sqrt(nK)))., Need to determine *when* this regime begins., Need to compare algorithms' sensitivity to network topology (spectral gap).\nKeywords: complexity_analysis, linear_speedup, network_sensitivity, performance_metric",
+    "metadata": {
+      "title": "Transient Time Analysis for Linear Speedup",
+      "tags": [
+        "complexity_analysis",
+        "linear_speedup",
+        "network_sensitivity",
+        "performance_metric"
+      ]
+    }
+  },
+  {
+    "id": "TECH-WEIGHTED-COUPLED-RECURSION",
+    "type": "proof_technique",
+    "domain": "optimization_analysis",
+    "file_path": "optimization_analysis\\proof_technique\\TECH-WEIGHTED-COUPLED-RECURSION.yaml",
+    "embedding_text": "Title: Weighted Coupled Recursion Solver\nSummary: A technique to solve coupled recursive inequalities arising in unified decentralized analysis. Handles the coupling between the primary objective error and the secondary consensus error using a weighted summation sequence.\nSolves Problems: Primary Recursion: r_{t+1} <= (1-a)r_t + B*Xi_t., Secondary Recursion: Xi_t <= (1-p)Xi_{t-tau} + Drift., Coupling involves time lags.\nKeywords: recursion-solver, coupled-inequalities, convergence-analysis, weighted-sum",
+    "metadata": {
+      "title": "Weighted Coupled Recursion Solver",
+      "tags": [
+        "recursion-solver",
+        "coupled-inequalities",
+        "convergence-analysis",
+        "weighted-sum"
+      ]
+    }
+  },
+  {
+    "id": "MECH-INTEGRAL-ACTION-CORRECTION",
+    "type": "algorithm_mechanism",
+    "domain": "optimization_control",
+    "file_path": "optimization_control\\algorithm_mechanism\\MECH-INTEGRAL-ACTION-CORRECTION.yaml",
+    "embedding_text": "Title: Steady-State Bias Elimination via Integral Action\nSummary: A mechanism to achieve zero steady-state error (exact convergence) in fixed-step algorithms by introducing a cumulative correction term (mathematically equivalent to Integral Action in control theory) that absorbs heterogeneous local gradients.\nSolves Problems: Fixed step-size gradient descent converges to a biased solution where \\sum \\nabla f_i \\neq 0 locally., Need to cancel a constant disturbance/bias that lies in a specific subspace (e.g., the consensus complement)., The system has a 'type 0' response (finite gain) to disturbances, need 'type 1' (infinite gain at DC).\nKeywords: control_theory, integral_action, bias_cancellation, exact_convergence, difference_form",
+    "metadata": {
+      "title": "Steady-State Bias Elimination via Integral Action",
+      "tags": [
+        "control_theory",
+        "integral_action",
+        "bias_cancellation",
+        "exact_convergence",
+        "difference_form"
+      ]
+    }
+  }
+]

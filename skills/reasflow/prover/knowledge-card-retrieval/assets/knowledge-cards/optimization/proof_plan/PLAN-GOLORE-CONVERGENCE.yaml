@@ -1,0 +1,75 @@
+id: PLAN-GOLORE-CONVERGENCE
+type: proof_plan
+domain: optimization
+title: GoLore Convergence Proof Plan
+description: >
+  A proof plan for establishing the convergence of GoLore (and similar subspace optimization algorithms with random projections) in non-convex stochastic settings. The plan relies on establishing contraction properties for the momentum term in the projected subspace and then bounding the accumulated momentum error.
+tags:
+  - optimization
+  - stochastic-gradient-descent
+  - subspace-optimization
+  - non-convex
+  - convergence-analysis
+  - golore
+
+problem_pattern:
+  - "Need to prove convergence for subspace optimization methods with random projections."
+  - "Handling momentum updates in changing subspaces."
+  - "Dealing with non-convex stochastic settings."
+
+structural_prerequisites:
+  - "Algorithm uses random subspace projections."
+  - "Momentum is maintained in the subspace."
+  - "Subspace changes periodically."
+
+execution_logic:
+  - step: "Define Projected Momentum"
+    detail: >
+      Define the effective momentum term in the full space based on the subspace updates. For GoLore, this involves projecting the subspace momentum back to the full space using the projection matrices $\mP$ or $\mQ$.
+      Define $\tilde{\mM}_{\ell}^{(t)}$ as $\mP_{\ell}^{(t)}\mM_{\ell}^{(t)}$ (or $\mM_{\ell}^{(t)}(\mQ_{\ell}^{(t)})^\top$).
+    algebraic_prototype: "tilde{M}_t = P_t M_t"
+
+  - step: "Establish Projection Error Bounds"
+    detail: >
+      Derive bounds for the expected error introduced by the random subspace projection.
+      Show that $\E[\|\mP\mP^\top\mG-\mG\|_F^2] = (1 - \frac{r}{m})\|\mG\|_F^2$ for random projections (Lemma 7).
+    algebraic_prototype: "E[||P P^T G - G||^2] = (1 - r/m)||G||^2"
+
+  - step: "Prove Momentum Contraction"
+    detail: >
+      Show that the distance between the projected momentum and the true gradient contracts over time.
+      This involves analyzing the recurrence relation of the momentum term, handling the periodic subspace updates, and using the projection error bounds.
+      The analysis typically distinguishes between iterations where the subspace changes ($t \equiv 0 \pmod \tau$) and where it remains fixed.
+      (See Lemma 8: Momentum contraction).
+    algebraic_prototype: "||tilde{M}_t - grad f(x_t)||^2 <= (1-c)||tilde{M}_{t-1} - grad f(x_{t-1})||^2 + Error"
+
+  - step: "Bound Momentum Error"
+    detail: >
+      Sum the momentum contraction inequalities over a period or total iterations to derive a bound on the accumulated momentum error $\sum \E[\|\tilde{\mM}^{(t)} - \nabla f(\vx^{(t)})\|^2]$.
+      The bound will depend on the gradient norm, the path length (change in $\vx$), and the variance of the stochastic gradient.
+      (See Lemma 9: Momentum error).
+    algebraic_prototype: "sum E[||tilde{M}_t - grad f(x_t)||^2] <= Bound"
+
+  - step: "Apply Descent Lemma"
+    detail: >
+      Use the standard $L$-smoothness descent lemma: $f(\vx^{(t+1)}) \le f(\vx^{(t)}) - \dots$.
+      Substitute the momentum error bound into the descent inequality.
+    algebraic_prototype: "f(x_{t+1}) <= f(x_t) - eta <grad f(x_t), tilde{M}_t> + L/2 eta^2 ||tilde{M}_t||^2"
+
+  - step: "Derive Convergence Rate"
+    detail: >
+      Rearrange the terms in the descent inequality to bound $\sum \|\nabla f(\vx^{(t)})\|^2$ in terms of the initial function value gap and noise variance.
+      Divide by $T$ to obtain the convergence rate, typically $\mathcal{O}(1/\sqrt{T})$ for stochastic non-convex optimization.
+    algebraic_prototype: "1/T sum ||grad f(x_t)||^2 <= O(1/sqrt(T))"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Bounded Variance"
+  - "Random Subspace Projection Properties"
+
+expected_outcome_form: "O(1/sqrt(T))"
+
+source:
+  paper: "GoLore: Efficient Subspace Optimization"
+  arxiv: "N/A"
+  section: "N/A"

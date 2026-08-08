@@ -1,0 +1,49 @@
+id: MECH-GOSSIP-PERIODIC-GLOBAL-AVERAGING
+type: algorithm_mechanism
+domain: optimization
+
+title: Gossip SGD with Periodic Global Averaging (Gossip-PGA)
+description: A hybrid decentralized optimization mechanism combining fast local Gossip communication with periodic global All-Reduce synchronization to accelerate convergence.
+
+problem_pattern:
+  - "Gossip SGD converges slowly on sparse networks (large spectral gap)."
+  - "Pure Local SGD (periodic averaging) lacks fast neighbor-mixing between periods."
+  - "Need to balance communication cost and convergence speed in large-scale training."
+
+structural_prerequisites:
+  - "Network of nodes capable of peer-to-peer (Gossip) and global (All-Reduce) communication."
+  - "Global averaging period H is a tunable parameter."
+
+execution_logic:
+  - step: "Local Gradient Update"
+    detail: "Compute stochastic gradient and perform local descent step."
+    algebraic_prototype: "x_{k+1/2} = x_k - gamma * g_k"
+
+  - step: "Conditional Synchronization"
+    detail: "Check if current iteration is a multiple of H."
+    algebraic_prototype: "if mod(k+1, H) == 0: Global_Average() else: Gossip_Mix()"
+
+  - step: "Global Averaging (PGA)"
+    detail: "If condition met, perform exact All-Reduce averaging. This resets consensus error to zero."
+    algebraic_prototype: "x_{k+1} = Mean(x_{k+1/2})"
+
+  - step: "Gossip Mixing"
+    detail: "If condition not met, perform local neighbor averaging."
+    algebraic_prototype: "x_{k+1} = W * x_{k+1/2}"
+
+assumptions_required:
+  - "Connected network graph."
+  - "Access to All-Reduce primitive (or approximate implementation)."
+
+expected_outcome_form: "Improved transient stage complexity O(n^3 * beta^4 * C_beta^2 * D_beta^2), outperforming both Gossip SGD and Local SGD."
+
+source:
+  paper: "Accelerating Gossip SGD with Periodic Global Averaging"
+  arxiv: "2105.09080"
+  section: "Algorithm 1"
+
+tags:
+  - gossip-learning
+  - periodic-averaging
+  - hybrid-communication
+  - transient-acceleration

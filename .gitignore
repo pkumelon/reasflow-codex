@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+# install.sh local outputs (agents/skills/config installed into target project)
+.codex/agents/
+.agents/
+.reasflow-dev/
+# local editor/session state
+.opencode/

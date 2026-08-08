@@ -1,0 +1,41 @@
+id: TECH-IMPLICIT-CONTROL-VARIATE-COMMUNICATION
+domain: Decentralized Optimization
+type: Proof Technique
+title: Implicit Control Variate Communication via Momentum
+description: A protocol design technique that halves the uplink communication cost in variance-reduced FL (like SCAFFOLD) by encoding the control variate update implicitly within the model update.
+
+problem_pattern:
+  - "SCAFFOLD requires sending two vectors $(\\Delta x, \\Delta c)$ per round, doubling communication cost."
+  - "Need to achieve the same variance reduction benefit with only one vector per round."
+
+structural_prerequisites:
+  - "Algorithm uses control variates $c_i$ and global control $c$."
+  - "Standard updates involve $c^+ = c + \\frac{1}{N}\\sum (c_i^+ - c_i)$."
+
+execution_logic:
+  - step: "Combined Variable Definition"
+    detail: "Define the update variable $\\Delta_i$ to include both model progress and the necessary control shift."
+    algebraic_prototype: "\\Delta_i = (y_{i,K} - x) + \\eta K (c - c_i)"
+
+  - step: "Server-Side Reconstruction"
+    detail: "Show that aggregating $\\Delta_i$ allows the server to update the global model correctly, effectively 'absorbing' the control update."
+    algebraic_prototype: "x_{new} = x + \\text{Avg}(\\Delta_i)"
+
+  - step: "Implicit State Update"
+    detail: "Demonstrate that explicit maintenance of $c$ at the server is not needed if the aggregate effect is captured in the model update, or that $c$ can be updated using the same $\\Delta_i$ (depending on exact formulation)."
+
+assumptions_required:
+  - "Linearity of aggregation."
+
+expected_outcome_form: "An algorithm definition that is mathematically equivalent (or close) to the original but requires $50\\%$ less bandwidth."
+
+source:
+  paper: "Stochastic Controlled Averaging for Federated Learning with Communication Compression"
+  arxiv: "2308.08165"
+  section: "Section 3"
+
+tags:
+  - proof-technique
+  - protocol-design
+  - communication-efficiency
+  - momentum

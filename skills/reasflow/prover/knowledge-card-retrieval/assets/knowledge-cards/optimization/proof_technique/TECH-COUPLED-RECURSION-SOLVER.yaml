@@ -1,0 +1,66 @@
+id: TECH-COUPLED-RECURSION-SOLVER
+type: proof_technique
+domain: optimization
+title: Solving Coupled Descent and Consensus Recursions
+description: >
+  A technique for solving a system of two coupled recursive inequalities often found in decentralized optimization:
+  one for the optimization error (Descent) and one for the consensus error (Consensus).
+  It uses a weighted summation approach to decouple and bound the total error.
+
+tags:
+  - recursion-solver
+  - coupled-inequalities
+  - convergence-analysis
+  - decentralized-optimization
+
+problem_pattern:
+  - "Have two coupled recursions:"
+  - "1. r_{t+1} <= (1-a)r_t + B*Xi_t + ..."
+  - "2. Xi_t <= (1-p)Xi_{t-1} + C*e_t + ..."
+  - "Need to derive a final convergence rate for e_t (or r_t)."
+
+structural_prerequisites:
+  - "Linearity of the summation."
+  - "Existence of appropriate weights w_t to handle the lag/accumulation in the consensus term."
+
+execution_logic:
+  - step: "Unrolling Consensus Recursion"
+    detail: >
+      First, unroll the consensus recursion (Xi_t) to express it as a convolution of past errors (e_j) and noise.
+      Xi_t <= Sum_{j < t} (1-p)^{t-j} * (Drift_j + Noise_j).
+    algebraic_prototype: "Xi_t <= Sum (1-p)^k * e_{t-k}"
+
+  - step: "Weighted Summation"
+    detail: >
+      Instead of solving for r_T directly, sum the descent inequality over t=0 to T with weights w_t.
+      Sum(w_t * r_{t+1}) <= Sum(w_t * r_t) + Sum(w_t * Xi_t) ...
+    algebraic_prototype: "Sum w_t e_t <= ... + B * Sum w_t Xi_t"
+
+  - step: "Swapping Summation Order"
+    detail: >
+      Substitute the unrolled Xi_t into the weighted sum.
+      Swap the double summation: Sum_t w_t Sum_j (1-p)^{t-j} e_j  -->  Sum_j e_j Sum_t (1-p)^{t-j} w_t.
+      This isolates the term Sum(e_j) with a combined coefficient.
+    algebraic_prototype: "Sum_t w_t Xi_t <= C * Sum_j e_j * (GeometricSeriesSum)"
+
+  - step: "Coefficient Bounding"
+    detail: >
+      Bound the inner geometric series sum. Since (1-p) < 1, the series converges to 1/p.
+      This allows absorbing the consensus impact into a constant factor multiplier for the error term e_j.
+    algebraic_prototype: "Sum (1-p)^k <= 1/p"
+
+  - step: "Final Rearrangement"
+    detail: >
+      Move the e_j terms to the LHS (if they appear on RHS with small coefficients) or simply bound the total sum.
+      Solve for 1/W_T * Sum(w_t e_t).
+
+assumptions_required:
+  - "Contraction factor p in (0, 1]."
+  - "Non-negative error terms."
+
+expected_outcome_form: "Sum w_t e_t <= O(1/p) * (InitialError + Noise)"
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates"
+  arxiv: "2003.10422"
+  section: "Appendix C, Lemma 7"

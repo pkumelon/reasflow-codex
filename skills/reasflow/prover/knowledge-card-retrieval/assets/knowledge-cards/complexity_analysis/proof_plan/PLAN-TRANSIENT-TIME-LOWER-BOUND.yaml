@@ -1,0 +1,52 @@
+id: PLAN-TRANSIENT-TIME-LOWER-BOUND
+type: proof_plan
+domain: complexity_analysis
+
+title: Lower Bound for Transient Time in Decentralized Optimization
+description: A comprehensive roadmap to prove the fundamental lower bound on the transient time for decentralized algorithms, demonstrating that a linear speedup cannot be achieved before a critical time threshold proportional to the network spectral gap.
+
+problem_pattern:
+  - "Goal is to show that no algorithm in a certain class can converge faster than a specific rate."
+  - "Need to prove that network topology dependency is unavoidable."
+  - "Constructing a worst-case scenario to certify optimality."
+
+structural_prerequisites:
+  - "The algorithm class is defined (e.g., gossip-based, fixed step-size)."
+  - "The network topology can be adversarial (e.g., chain graph)."
+  - "The objective functions can be adversarial (e.g., quadratic)."
+
+execution_logic:
+  - step: "Worst-Case Instance Construction"
+    detail: "Design a specific 'hard' instance consisting of: 1) A graph with a known spectral gap (e.g., linear chain); 2) Quadratic local objective functions; 3) A specific noise distribution."
+    algebraic_prototype: "Graph: Chain; f_i(x) = (x - x_i*)^2; Noise ~ N(0, I)"
+
+  - step: "Error Propagation Dynamics"
+    detail: "Derive the exact recursion for the error term in the worst-case instance. Show that the consensus error evolves according to a diffusion process."
+    algebraic_prototype: "e(k+1) = W * e(k) + noise"
+
+  - step: "Consensus Error Lower Bound"
+    detail: "Prove that for t < T_critical, the consensus error remains significantly large (bounded away from zero). Use the slow mixing property of the chain graph."
+    dependency_check: "Requires spectral analysis of the specific graph (e.g., eigenvalues of chain)."
+    algebraic_prototype: "||e(t)||^2 >= c * (1 - lambda)^t * Initial_Error"
+
+  - step: "Transient Time Thresholding"
+    detail: "Compare the consensus error lower bound with the statistical error rate (sigma/sqrt(nT)). Define Transient Time as the smallest T where the consensus error drops below the statistical error."
+    algebraic_prototype: "Solve for T: (1-lambda)^T <= 1/sqrt(nT) => T >= Omega(n / (1-lambda))"
+
+assumptions_required:
+  - "Homogeneous Data (specifically for this lower bound proof)"
+  - "Strong Convexity"
+
+expected_outcome_form: "T_transient >= Omega(n / (1-beta))"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Appendix (Proof of Theorem 4)"
+
+tags:
+  - lower_bound
+  - complexity_theory
+  - transient_time
+  - decentralized_optimization
+  - worst_case_analysis

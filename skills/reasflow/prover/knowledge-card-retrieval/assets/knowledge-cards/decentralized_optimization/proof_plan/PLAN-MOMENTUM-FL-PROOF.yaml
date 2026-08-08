@@ -1,0 +1,48 @@
+id: PLAN-MOMENTUM-FL-PROOF
+domain: Decentralized Optimization
+type: Proof Plan
+title: Convergence Proof Framework for Momentum-Based FL
+description: A structured roadmap for proving convergence of non-convex Federated Learning with momentum, utilizing amortized drift analysis.
+
+problem_pattern:
+  - "Need to prove convergence of FedAvg-M/SCAFFOLD-M."
+  - "Handling multiple interacting error terms: Momentum Error, Client Drift, and Control Variate Error."
+
+structural_prerequisites:
+  - "Algorithm fits the Global Momentum Anchoring pattern."
+  - "Goal is to find a stationary point (gradient norm -> 0)."
+
+execution_logic:
+  - step: "Global Descent Inequality"
+    detail: "Derive the one-step descent lemma accounting for the difference between the true gradient and the update direction $g^{r+1}$."
+    algebraic_prototype: "E[f(x^{r+1})] \\le E[f(x^r)] - \\frac{\\eta}{2} ||\\nabla f||^2 + \\frac{\\eta}{2} E[||\\nabla f - g^{r+1}||^2]"
+
+  - step: "Momentum Error Recursion"
+    detail: "Bound the error $E_r = ||\\nabla f - g^{r+1}||^2$. Use the property that $g^{r+1}$ is a momentum update."
+    dependency_check: "Depends on client drift $U_r$."
+    algebraic_prototype: "E_r \\le (1-\\beta) E_{r-1} + C_1 U_r + C_2 \\sigma^2"
+
+  - step: "Amortized Drift Bounding"
+    detail: "Use TECH-AMORTIZED-DRIFT-ANALYSIS to bound $\\sum U_r$ in terms of $\\sum ||\\nabla f||^2$."
+    algebraic_prototype: "\\sum U_r \\le C_3 \\sum ||\\nabla f||^2 + R \\sigma^2"
+
+  - step: "Holistic Summation"
+    detail: "Sum the descent inequality and substitute the summed error bounds. Solve for $\\frac{1}{R} \\sum ||\\nabla f||^2$."
+    dependency_check: "Step size $\\eta$ must be chosen to ensure the net gradient coefficient is negative."
+    algebraic_prototype: "\\frac{1}{R} \\sum ||\\nabla f||^2 \\le \\frac{f(x^0) - f^*}{R} + \\frac{\\sigma}{\\sqrt{K R}}"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Bounded Variance"
+
+expected_outcome_form: "Convergence rate matching optimal SGD rates (e.g., 1/sqrt(T))."
+
+source:
+  paper: "Momentum Benefits Non-IID Federated Learning Simply and Provably"
+  arxiv: "2306.16504"
+  section: "Appendix A (Proofs)"
+
+tags:
+  - proof-plan
+  - federated-learning
+  - convergence-analysis

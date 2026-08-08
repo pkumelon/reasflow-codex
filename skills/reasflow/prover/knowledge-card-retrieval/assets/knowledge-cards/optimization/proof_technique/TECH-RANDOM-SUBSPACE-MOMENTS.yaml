@@ -1,0 +1,45 @@
+id: TECH-RANDOM-SUBSPACE-MOMENTS
+type: proof_technique
+domain: optimization
+
+title: Expectation of Random Subspace Projections
+description: Handles the expectation of vectors and norms when projected onto a uniformly sampled random subspace.
+
+problem_pattern:
+  - "Gradient is projected onto a random subspace P before update."
+  - "Need to relate projected gradient norm E[||Pg||^2] to full norm ||g||^2."
+  - "Subspace is sampled independently at each outer iteration."
+
+structural_prerequisites:
+  - "P is a projection matrix onto an r-dimensional subspace of R^d."
+  - "P is sampled uniformly from the Grassmannian or equivalent distribution."
+  - "P is independent of the vector v being projected (or v is fixed/conditioned)."
+
+execution_logic:
+  - step: "First Moment (Identity)"
+    detail: "The expectation of the projection matrix P^T P is a scaled identity."
+    algebraic_prototype: "E[P^T P] = (r/d) * I_d"
+
+  - step: "Second Moment (Norm)"
+    detail: "The expected squared norm of a projected vector scales by the compression ratio rho = r/d."
+    algebraic_prototype: "E[||P v||^2] = E[v^T P^T P v] = v^T E[P^T P] v = (r/d) ||v||^2"
+
+  - step: "Cross Term Handling"
+    detail: "When analyzing inner products <u, P^T P v>, use the linearity of expectation."
+    algebraic_prototype: "E[<u, P^T P v>] = <u, E[P^T P] v> = (r/d) <u, v>"
+
+assumptions_required:
+  - "Uniform sampling of subspace"
+  - "Independence between subspace and operands"
+
+expected_outcome_form: "Scalar scaling factors (rho = r/d) appearing in descent lemmas."
+
+source:
+  paper: "Subspace SCAFFOLD derivation"
+  section: "Preliminaries / Lemma 2"
+
+tags:
+  - subspace
+  - projection
+  - expectation
+  - dimensionality_reduction

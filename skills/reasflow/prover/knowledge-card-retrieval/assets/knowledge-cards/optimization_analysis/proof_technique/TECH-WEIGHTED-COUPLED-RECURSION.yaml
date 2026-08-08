@@ -1,0 +1,48 @@
+id: TECH-WEIGHTED-COUPLED-RECURSION
+type: proof_technique
+domain: optimization_analysis
+title: Weighted Coupled Recursion Solver
+description: |
+  A technique to solve coupled recursive inequalities arising in unified decentralized analysis. Handles the coupling between the primary objective error and the secondary consensus error using a weighted summation sequence.
+
+problem_pattern:
+  - "Primary Recursion: r_{t+1} <= (1-a)r_t + B*Xi_t."
+  - "Secondary Recursion: Xi_t <= (1-p)Xi_{t-tau} + Drift."
+  - "Coupling involves time lags."
+
+structural_prerequisites:
+  - "Two coupled inequalities."
+  - "Existence of 'tau-slow' weights."
+
+execution_logic:
+  - step: "Weighted Summation"
+    detail: "Introduce a weight sequence w_t. Sum the consensus recursion weighted by w_t to bound the total accumulated consensus error."
+    algebraic_prototype: "Sum w_t Xi_t <= ..."
+
+  - step: "Substitution"
+    detail: "Substitute the bound for Sum w_t Xi_t back into the summation of the primary recursion."
+    algebraic_prototype: "Sum w_t r_t <= ... + Bound(Xi)"
+
+  - step: "Telescoping"
+    detail: "Construct a telescoping sum for the primary variable r_t."
+    algebraic_prototype: "Sum (w_t r_{t+1} - w_t (1-a)r_t)"
+
+  - step: "Simplification"
+    detail: "Simplify the resulting inequality to isolate the convergence metric (e.g., r_T)."
+    algebraic_prototype: "r_T <= O(1/T) + O(1/sqrt(T))"
+
+assumptions_required:
+  - "Weights must decay slowly enough relative to tau."
+
+expected_outcome_form: "Final convergence rate expression."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD"
+  arxiv: "2003.10422"
+  section: "Appendix C"
+
+tags:
+  - recursion-solver
+  - coupled-inequalities
+  - convergence-analysis
+  - weighted-sum

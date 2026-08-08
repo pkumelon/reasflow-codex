@@ -1,0 +1,49 @@
+id: TECH-OPTIMIZATION-HARMONIC-STEPSIZE
+type: proof_technique
+domain: optimization
+
+title: Harmonic Stepsize Selection Strategy (The 'Sum of Inverses' Trick)
+description: >
+  A rigorous method to select a single stepsize that minimizes a convergence bound with multiple competing error terms and stability constraints.
+
+problem_pattern:
+- "Need to select a stepsize eta to minimize a bound like A/eta + B*eta + C*eta^2."
+- "Bound contains competing terms (e.g., optimization error vs variance vs drift)."
+- "Stepsize is subject to a hard stability constraint (eta <= eta_max)."
+- "Avoid piecewise definitions of stepsize for cleaner theorems."
+
+structural_prerequisites:
+- "The convergence bound must be convex-like in 1/eta (e.g., A/eta + increasing polynomial in eta)."
+- "All coefficients A, B, C must be positive."
+
+execution_logic:
+  - step: "Identify Critical Stepsizes"
+    detail: "For each error term i (where term is B_i * eta^{p_i}), find the stepsize eta_i that balances it against the optimization term A/eta."
+    algebraic_prototype: "eta_i = (A / B_i)^{1 / (1 + p_i)}"
+
+  - step: "Include Constraints"
+    detail: "Include the stability constraint as eta_0 = eta_max."
+    algebraic_prototype: "eta_0 = eta_max"
+
+  - step: "Construct Harmonic Stepsize"
+    detail: "Define the effective stepsize as the inverse sum of inverses of all critical stepsizes."
+    algebraic_prototype: "eta = (sum(1/eta_k))^{-1}"
+
+  - step: "Derive Final Bound"
+    detail: "Substitute eta back into the bound. The result is bounded by the sum of the 'worst-case' values A/eta_k for each critical point."
+    algebraic_prototype: "Rate <= sum((1 + C_k) * (A / eta_k))"
+
+assumptions_required:
+- "Convergence bound form is known."
+
+expected_outcome_form: "Sum of terms like O(1/T), O(1/sqrt(T)), O(1/T^{2/3})."
+
+source:
+  paper: "User Instruction"
+  section: "N/A"
+
+tags:
+- optimization
+- complexity-analysis
+- stepsize-selection
+- convergence-rate

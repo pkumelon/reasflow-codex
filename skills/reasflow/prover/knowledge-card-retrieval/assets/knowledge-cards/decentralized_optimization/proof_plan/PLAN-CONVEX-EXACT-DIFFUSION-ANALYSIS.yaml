@@ -1,0 +1,55 @@
+id: PLAN-DECOUPLED-PRIMAL-DUAL-ANALYSIS
+type: proof_plan
+domain: decentralized_optimization
+
+title: Decoupled Primal-Dual Error Analysis
+description: A generic proof roadmap for analyzing decentralized algorithms with auxiliary variables (e.g., D2, EXTRA, NIDS, Gradient Tracking). It transforms coupled Primal-Dual updates into a decoupled system of "Optimality Gap" and "Consensus Error" via state-space diagonalization.
+
+problem_pattern:
+  - "Algorithm involves coupled variables (e.g., primal x and dual/auxiliary y)."
+  - "Direct analysis is difficult because x depends on y and y depends on x."
+  - "Goal is to prove linear speedup in the presence of data heterogeneity."
+
+structural_prerequisites:
+  - "Update rules can be written as a linear dynamical system: u(k+1) = M * u(k) - alpha * G(u(k))."
+  - "The mixing matrix W is diagonalizable (typically symmetric)."
+
+execution_logic:
+  - step: "State Space Construction"
+    detail: "Stack all variables into a grand vector u = [x; y]. Write the update as a linear system governed by a transition matrix M."
+    algebraic_prototype: "u(k+1) = B * u(k) - gamma * Gradient_Vector"
+
+  - step: "Eigen-Decomposition (Fundamental Transformation)"
+    detail: "Compute the eigen-decomposition of M. Construct a similarity transformation matrix X such that X^-1 * M * X is block diagonal (or Jordan form). This decouples the 'Average Mode' (eigenvalue 1) from the 'Error Modes' (eigenvalues < 1)."
+    dependency_check: "Requires M to be diagonalizable or allow Jordan form."
+    algebraic_prototype: "z(k) = X^-1 * u(k);  z_bar corresponds to lambda=1; z_check corresponds to lambda < 1."
+
+  - step: "Decoupled Descent Lemma"
+    detail: "Analyze the 'Average Mode' z_bar. Derive a descent inequality. The 'Error Modes' z_check will appear as perturbation terms."
+    algebraic_prototype: "E[f(z_bar_next)] <= E[f(z_bar)] - alpha*||grad||^2 + L*||z_check||^2"
+
+  - step: "Error Contraction Analysis"
+    detail: "Analyze the 'Error Modes' z_check. Since the corresponding eigenvalues are < 1, this subsystem contracts geometrically, driven by gradient noise."
+    algebraic_prototype: "||z_check(k+1)||^2 <= rho^2 * ||z_check(k)||^2 + alpha^2 * ||grad||^2"
+
+  - step: "Lyapunov/Rate Assembly"
+    detail: "Combine the Descent Lemma and Error Contraction using a Lyapunov function V = f(z_bar) + c * ||z_check||^2 or by summing inequalities."
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Convexity (for standard rates) or Non-convexity"
+  - "Bounded Variance"
+
+expected_outcome_form: "Rate = O(sigma/sqrt(nT)) + O(1/T * Network_Factor)"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Section 3 & 4 (Generalized)"
+
+tags:
+  - primal_dual
+  - decomposition
+  - decentralized_optimization
+  - error_dynamics
+  - unified_analysis

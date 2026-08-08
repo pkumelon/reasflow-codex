@@ -1,0 +1,40 @@
+id: MECH-SCAFFOLD-M
+domain: Decentralized Optimization
+type: Algorithm Mechanism
+title: SCAFFOLD with Momentum-Enhanced Updates
+description: A hybrid mechanism combining Control Variates (SCAFFOLD) with Momentum to achieve faster convergence in partial participation settings.
+
+problem_pattern:
+  - "Slow convergence in Federated Learning with partial client participation."
+  - "Need to combine variance reduction (Control Variates) with acceleration (Momentum)."
+  - "Drift correction alone (SCAFFOLD) is insufficient for optimal rates."
+
+structural_prerequisites:
+  - "Clients and Server maintain Control Variates $c_i$ and $c$."
+  - "Server maintains a Global Momentum buffer $g^r$."
+
+execution_logic:
+  - step: "Dual-Corrected Direction"
+    detail: "Construct a local update direction that corrects for both client drift (via $c_i - c$) and history (via $g^r$)."
+    dependency_check: "Control variates $c_i$ must be updated locally; $g^r$ is global."
+    algebraic_prototype: "d_i = \\nabla F_i(x) - c_i + c; \\quad v_i = \\beta d_i + (1-\\beta) g^r"
+
+  - step: "State Update"
+    detail: "Update local model using the mixed direction. Update control variates and momentum at the end of the round."
+    algebraic_prototype: "x \\leftarrow x - \\eta v_i"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Unbiased Stochastic Gradients"
+
+expected_outcome_form: "Convergence rate O(1/(S*K*R)) with linear speedup in S (participating clients)."
+
+source:
+  paper: "Momentum Benefits Non-IID Federated Learning Simply and Provably"
+  arxiv: "2306.16504"
+  section: "Algorithm 2"
+
+tags:
+  - scaffold
+  - momentum
+  - partial-participation

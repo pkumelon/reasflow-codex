@@ -1,0 +1,46 @@
+id: PLAN-TRANSIENT-STAGE-ANALYSIS
+type: proof_plan
+domain: optimization
+
+title: Transient Stage Analysis Methodology
+description: A systematic approach to determine the number of iterations required for a distributed algorithm to reach the linear speedup regime.
+
+problem_pattern:
+- "Determining when a distributed algorithm matches the performance of a centralized one (scaled by n)."
+- "Comparing the efficiency of distributed algorithms on sparse networks."
+- "Quantifying the 'start-up' cost of decentralized optimization."
+
+structural_prerequisites:
+- "A non-asymptotic convergence rate bound is derived."
+- "The rate contains a 'linear speedup' term (scaling with n) and 'network dependent' terms."
+
+execution_logic:
+- step: "Rate Decomposition"
+  detail: "Express the convergence error as Error(T) <= Term_Linear(T, n) + Term_Network(T, n, beta) + Term_Initial(T)."
+  algebraic_prototype: "Rate <= O(sigma/sqrt(nT)) + O(1/((1-beta)T))"
+
+- step: "Dominance Condition"
+  detail: "Set up the inequality: Term_Network(T) <= Term_Linear(T). This defines when the network overhead becomes negligible compared to the statistical noise reduction."
+  algebraic_prototype: "O(1/((1-beta)T)) <= O(sigma/sqrt(nT))"
+
+- step: "Transient Calculation"
+  detail: "Solve the inequality for T. The solution T >= T_transient defines the transient stage."
+  algebraic_prototype: "T >= n / (1-beta)^2"
+
+- step: "Comparative Analysis"
+  detail: "Compare T_transient across algorithms. A smaller dependence on n and 1/(1-beta) indicates better scalability and robustness to topology."
+
+assumptions_required:
+- "Algorithm is capable of linear speedup (asymptotic rate matches centralized SGD)."
+
+expected_outcome_form: "Transient Stage T = Omega(poly(n, 1/(1-beta)))"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Section 3.1, Corollary 3"
+
+tags:
+- proof-plan
+- transient-analysis
+- convergence-rate

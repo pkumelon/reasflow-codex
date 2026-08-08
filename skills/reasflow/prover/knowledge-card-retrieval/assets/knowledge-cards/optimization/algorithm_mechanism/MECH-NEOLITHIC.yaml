@@ -1,0 +1,49 @@
+id: MECH-NEOLITHIC
+type: algorithm_mechanism
+domain: optimization
+
+title: NEOLITHIC (Nearly Optimal Algorithm with Compression)
+description: A distributed algorithm combining Nesterov acceleration with Multi-Step Compression and Gradient Accumulation to achieve near-optimal rates in compressed settings.
+
+problem_pattern:
+- "Need to apply Nesterov acceleration in a distributed setting with lossy communication."
+- "Base compressor precision is insufficient for accelerated convergence rates."
+- "Stochastic variance dominates the convergence rate, preventing acceleration."
+
+structural_prerequisites:
+- "Server acts as a parameter server (centralized)."
+- "Workers are capable of local computation (accumulation) and iterative communication."
+
+execution_logic:
+- step: "Nesterov Update (Server)"
+  detail: "The server performs a standard Nesterov Accelerated Gradient step using the received aggregated gradient."
+  algebraic_prototype: |
+    y_k = (1 - \tau)x_k + \tau z_k
+    x_{k+1} = y_k - \eta \hat{g}_k
+    z_{k+1} = (1 - \rho)z_k + \rho y_k - \gamma \hat{g}_k
+
+- step: "Gradient Accumulation (Worker)"
+  detail: "Workers compute an average of $R$ independent stochastic gradients to reduce variance."
+  dependency_check: "Samples must be independent."
+  algebraic_prototype: "g_{i,k} = \\frac{1}{R} \\sum_{r=1}^R \\nabla F(y_k; \\xi_{i,k,r})"
+
+- step: "Multi-Step Compression (Worker)"
+  detail: "Workers use the MSC technique to transmit the accumulated gradient with high precision."
+  algebraic_prototype: "\\hat{g}_{i,k} = \\text{MSC}(g_{i,k}, C_i, R)"
+assumptions_required:
+- "L-Smoothness"
+- "Convexity (Strong or General) for optimal rates"
+- "Bounded Variance of stochastic gradients"
+
+expected_outcome_form: "Convergence rate matching lower bounds (up to log factors) for SC and GC problems."
+
+source:
+  paper: "Lower Bounds and Accelerated Algorithms in Distributed Stochastic Optimization with Communication Compression"
+  arxiv: "2305.07612"
+  section: "Algorithm 2"
+
+tags:
+- Nesterov Acceleration
+- Variance Reduction
+- Distributed Optimization
+- Communication Compression

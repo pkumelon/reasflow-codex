@@ -1,0 +1,49 @@
+id: TECH-MULTI-STEP-COMPRESSION
+type: proof_technique
+domain: optimization
+
+title: Multi-Step Compression (MSC)
+description: An iterative compression technique that reduces quantization error exponentially with the number of communication steps.
+
+problem_pattern:
+- "The available compressor has low precision (high variance or low contraction factor)."
+- "The algorithm requires a gradient estimator with arbitrarily small bias/variance."
+- "Need to trade off communication bandwidth (linearly) for precision (exponentially)."
+
+structural_prerequisites:
+- "The base compressor C must be a contraction map (contractive) or unbiased."
+- "Both sender and receiver must maintain state during the multi-step process (or send multiple messages)."
+
+execution_logic:
+- step: "Residual Recursion"
+  detail: "Iteratively compress the error between the target vector and the current estimate."
+  dependency_check: "The compressor at step r acts on the residual from step r-1."
+  algebraic_prototype: |
+    v^{(0)} = 0
+    For r = 1 to R:
+      c^{(r-1)} = C(x - v^{(r-1)})
+      v^{(r)} = v^{(r-1)} + \text{Scale}(c^{(r-1)})
+
+- step: "Error Bounding (Contractive)"
+  detail: "For contractive compressors, the error norm decays geometrically."
+  algebraic_prototype: "\\|x - v^{(R)}\\|^2 \\le (1-\\delta)^R \\|x\\|^2"
+
+- step: "Error Bounding (Unbiased)"
+  detail: "For unbiased compressors, the scaled output remains unbiased, and variance decays."
+  algebraic_prototype: "\\mathbb{E}[\\|x - v^{(R)}\\|^2] \\le (1+\\omega)(\\frac{\\omega}{1+\\omega})^R \\|x\\|^2"
+assumptions_required:
+- "Compressor Contractivity: E[\\|C(x)-x\\|^2] <= (1-\\delta)\\|x\\|^2"
+- "OR Compressor Unbiasedness: E[C(x)]=x, E[\\|C(x)-x\\|^2] <= \\omega\\|x\\|^2"
+
+expected_outcome_form: "An estimator with error bounded by O((1-delta)^R)."
+
+source:
+  paper: "Lower Bounds and Accelerated Algorithms in Distributed Stochastic Optimization with Communication Compression"
+  arxiv: "2305.07612"
+  section: "Algorithm 1 & Lemma 1"
+
+tags:
+- Compression
+- Error Feedback
+- Residual Quantization
+- Precision Refinement

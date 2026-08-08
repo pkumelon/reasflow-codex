@@ -1,0 +1,54 @@
+id: PLAN-SUBSPACE-SCAFFOLD-CONVERGENCE
+type: proof_plan
+domain: optimization
+
+title: Convergence Proof for Subspace SCAFFOLD
+description: Roadmap for proving convergence of Federated Learning with subspace-restricted updates and control variates.
+
+problem_pattern:
+  - "Federated Learning with control variates (SCAFFOLD)."
+  - "Updates restricted to random subspace to save memory/comm."
+  - "Non-convex objective."
+
+structural_prerequisites:
+  - "Global objective F(x) = sum F_i(x)."
+  - "Algorithm uses local steps + control variates + subspace projection."
+
+execution_logic:
+  - step: "Decomposition"
+    detail: "Decompose the one-round progress F(x_{t+1}) - F(x_t) separating subspace and residual effects."
+    technique_ref: "TECH-random-subspace-moments"
+
+  - step: "Drift Bounding"
+    detail: "Bound the error caused by local steps (client drift) restricted to the subspace."
+    technique_ref: "TECH-lazy-update-drift-bound"
+
+  - step: "Control Variate Recursion"
+    detail: "Establish contraction. CRITICAL: Target grad(x_t) because it is INDEPENDENT of P_t, allowing clean application of E[P^TP]=rho*I."
+    technique_ref: "TECH-subspace-error-decomposition"
+    algebraic_prototype: "E[||c+ - grad(x_t)||^2] <= (1 - rho/2) E[||c - grad(x_t)||^2] + O(L^2)||x - x_t||^2"
+
+  - step: "Lyapunov Function"
+    detail: "Construct a potential function combining function value and control variate error."
+    algebraic_prototype: "V_t = F(x_t) + beta * ||error_c||^2"
+
+  - step: "Final Rate"
+    detail: "Sum the Lyapunov decrease over T rounds and solve for the rate."
+    algebraic_prototype: "Rate = O(1/rho * T^-1) (Targeting optimal dependency)"
+
+assumptions_required:
+  - "A1: L-Smoothness"
+  - "A2: Bounded Variance"
+  - "A3: Random Subspace (Independent)"
+
+expected_outcome_form: "Convergence rate with dependency on subspace ratio rho = r/d."
+
+source:
+  paper: "Subspace SCAFFOLD derivation"
+  section: "Main Theorem"
+
+tags:
+  - proof_plan
+  - scaffold
+  - subspace
+  - convergence

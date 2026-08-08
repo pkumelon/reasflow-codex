@@ -1,0 +1,57 @@
+id: PLAN-LOCAL-EXACT-DIFFUSION-ANALYSIS
+type: proof_plan
+domain: decentralized_optimization
+title: Local Exact-Diffusion (LED) Analysis Plan
+description: |
+  A comprehensive analysis framework for analyzing "Local Exact-Diffusion" (LED) and similar primal-dual decentralized algorithms with local updates. The core challenge addressed is the bidirectional coupling between the "local drift" and the "consensus/tracking error".
+
+problem_pattern:
+  - "Analyzing a primal-dual algorithm with multiple local steps (tau > 1)."
+  - "Local Drift depends on gradients AND the dual variable."
+  - "Tracking Error depends on the gradients AND the local drift."
+
+structural_prerequisites:
+  - "Algorithm fits the Primal-Dual structure with Local Steps."
+  - "Decomposition into Average and Deviation subspaces is possible."
+
+execution_logic:
+  - step: "Network Reformulation"
+    detail: "Rewrite the algorithm in compact matrix form using Kronecker products. Identify the 'mixing' and 'difference' matrices."
+    algebraic_prototype: "X^{r+1} = W (X^r - alpha * G^r_acc - beta * Y^r)"
+
+  - step: "Local Drift Analysis"
+    detail: "Bound the accumulated deviation of local iterates from the snapshot average. Note the dependency on the Dual Error."
+    algebraic_prototype: "Drift <= tau^2 (GradNorm + DualError + Noise)"
+
+  - step: "Consensus/Tracking Error Dynamics"
+    detail: "Analyze the evolution of the deviation vector d^{r+1} (combining primal and dual deviations). Show it satisfies a contraction."
+    algebraic_prototype: "||d^{r+1}|| <= rho ||d^r|| + alpha (Drift + Gradient)"
+
+  - step: "Descent Lemma with Coupling"
+    detail: "Derive the descent inequality for the objective function f(x_bar). The Error Terms involve both the Drift and the Tracking Error."
+    algebraic_prototype: "f(next) <= f(curr) - Descent + Drift + TrackingError"
+
+  - step: "Lyapunov/Linear System Analysis"
+    detail: "Combine the inequalities into a linear system or a grand Lyapunov function. Tune weights to ensure contraction."
+    algebraic_prototype: "V_r = f(x_bar^r) + c1 ||d^r||^2"
+
+  - step: "Rate Derivation"
+    detail: "Sum the inequalities over R rounds to derive the convergence rate."
+    algebraic_prototype: "Rate <= O(1/sqrt(N tau R))"
+
+assumptions_required:
+  - "L-Smoothness."
+  - "Connected Graph."
+
+expected_outcome_form: "Convergence proof with linear speedup and explicit dependence on tau."
+
+source:
+  paper: "Local Exact-Diffusion"
+  arxiv: "2105.08023"
+  section: "Analysis Section"
+
+tags:
+  - proof-plan
+  - primal-dual
+  - local-updates
+  - coupled-dynamics

@@ -1,0 +1,44 @@
+id: TECH-ERGODIC-CONSENSUS-BOUND
+type: proof_technique
+domain: optimization
+
+title: Ergodic Consensus Bound via Weighted Sum
+description: A technique to bound the weighted sum of consensus errors in strongly convex decentralized optimization.
+
+problem_pattern:
+- "Need to bound Sum(h_k * ||E_k||^2) where E_k is an error term."
+- "The weights h_k are chosen to cancel out linear terms in the descent lemma."
+- "Strongly convex setting where simple averaging is insufficient."
+
+structural_prerequisites:
+- "Error E_k satisfies a contraction E_{k+1} <= rho E_k + Input_k."
+- "Weights h_k satisfy a specific decay property related to the contraction rate."
+
+execution_logic:
+- step: "Weight Selection"
+  detail: "Choose weights h_k such that h_k <= h_{k+1} * (1 + margin)."
+  algebraic_prototype: "h_k = (1 - gamma*mu) * h_{k+1}"
+
+- step: "Unrolling the Sum"
+  detail: "Write the sum Sum(h_k ||E_k||^2). Substitute the recurrence relation for E_k."
+  algebraic_prototype: "Sum(h_k E_k) <= h_0 E_0 + Sum(h_k Input_k) * ScalingFactor"
+
+- step: "Bounding the Input Term"
+  detail: "The input term often involves the objective gap. Keep it on the RHS to be absorbed by the negative descent term."
+  algebraic_prototype: "Sum(h_k ||Z_k||^2) <= Bound + C * Sum(h_k * ObjectiveGap)"
+
+assumptions_required:
+- "Strong Convexity (to allow geometric decay weights)."
+- "Contraction of error term."
+
+expected_outcome_form: "Sum(h_k ||Z_k||^2) <= Constant + small_coeff * Sum(h_k Gap)"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Lemma 8 (Ergodic Consensus Lemma)"
+
+tags:
+- proof-technique
+- weighted-sum
+- strong-convexity

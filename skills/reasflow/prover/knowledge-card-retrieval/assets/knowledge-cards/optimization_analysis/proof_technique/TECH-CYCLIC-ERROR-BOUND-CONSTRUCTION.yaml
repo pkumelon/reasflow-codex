@@ -1,0 +1,48 @@
+id: TECH-CYCLIC-ERROR-BOUND-CONSTRUCTION
+type: proof_technique
+domain: optimization_analysis
+
+title: Cyclic Error Bound Construction
+description: A method to systematically construct a set of inequalities linking multiple error terms (like consensus error, gradient error, and optimality gap) in a cyclic manner to enable the application of the Small-Gain Theorem.
+
+problem_pattern:
+  - "Analyzing complex distributed algorithms with multiple state variables."
+  - "Direct Lyapunov function construction is too difficult."
+  - "Need to prepare the system for Small-Gain analysis."
+
+structural_prerequisites:
+  - "Identified error variables (e.g., q, z, check_y, check_x)."
+  - "Basic bounds connecting adjacent variables in the cycle."
+
+execution_logic:
+  - step: "Identify Cycle Nodes"
+    detail: "Determine the sequence of error variables that form a logical cycle of dependency. For example: z -> check_y -> check_x -> q -> z."
+    algebraic_prototype: "Cycle: z -> y_tilde -> x_tilde -> q"
+
+  - step: "Derive Forward Bounds"
+    detail: "For each pair (current, next), derive an inequality ||next|| <= gamma * ||current|| + noise."
+    algebraic_prototype: "||x_tilde|| <= gamma_3 * ||y_tilde|| + omega_3"
+
+  - step: "Define Gains"
+    detail: "Explicitly calculate the gain coefficients gamma_i as functions of algorithm parameters (step size, spectral gap, etc.)."
+    algebraic_prototype: "gamma_3 = alpha * (1-lambda^B) / ((lambda^B - sigma)(1-lambda))"
+
+  - step: "Handle History"
+    detail: "Use the weighted ergodic norm to handle terms involving past states (convolution-like sums)."
+
+assumptions_required:
+  - "Lipschitz continuity."
+  - "B-connected graph."
+
+expected_outcome_form: "A system of inequalities: ||s_{i+1}|| <= gamma_i ||s_i|| + omega_i"
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Section 3.4 (Proof of Theorem 3.5)"
+
+tags:
+  - small_gain_theorem
+  - error_bounds
+  - inequality_chain
+  - distributed_systems

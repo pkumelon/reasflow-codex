@@ -1,0 +1,54 @@
+id: MECH-RANDOM-PROJECTED-ADAPTIVE-OPTIMIZATION
+type: algorithm_mechanism
+domain: optimization
+
+title: Random Projected Adaptive Optimization (APOLLO)
+description: A memory-efficient optimization mechanism that maintains optimizer states (like first and second moments) in a low-rank subspace via random projection, approximating the channel-wise adaptive learning rates of AdamW.
+
+problem_pattern:
+  - "Training Large Language Models (LLMs) is memory-bound due to optimizer states (typically 2x model size for Adam)."
+  - "Standard low-rank methods (like GaLore) require expensive SVD and frequent subspace switching."
+  - "Need a static, cheap, yet effective way to compress optimizer states without sacrificing convergence."
+
+structural_prerequisites:
+  - "Gradients G_t are projected onto a lower dimension r << m using a fixed random matrix P."
+  - "Optimizer states (M_t, V_t) are updated in the projected space."
+  - "Adaptive updates are computed in the low-rank space and projected back (or broadcast) to scale full gradients."
+
+execution_logic:
+  - step: "Initialization"
+    detail: "Initialize a fixed random matrix P (or regenerate seed-based) to project gradients from dimension m to r."
+    algebraic_prototype: "P ~ N(0, 1/r)"
+
+  - step: "Projected Update"
+    detail: "Project the current gradient (or update) into the low-rank subspace."
+    algebraic_prototype: "g_low = P * g_full"
+
+  - step: "Subspace State Maintenance"
+    detail: "Update first and second moments in the low-rank subspace using standard Adam rules."
+    algebraic_prototype: "m_low = beta1 * m_low + (1-beta1) * g_low; v_low = beta2 * v_low + (1-beta2) * g_low^2"
+
+  - step: "Approximated Scaling Reconstruction"
+    detail: "Compute the adaptive update step in low-rank space and use the projected norm ratio to approximate the full-rank scaling factor, often applying it channel-wise."
+    algebraic_prototype: "update_full = alpha * (m_low / sqrt(v_low)) * P^T (approx) -> Actually solving for channel-wise scales s_j"
+
+  - step: "State-Free Update"
+    detail: "For extreme memory saving, perform Tensor-wise scaling using Rank-1 auxiliary subspace."
+    algebraic_prototype: "Scale entire tensor by scalar computed from low-rank statistics."
+
+assumptions_required:
+  - "Gradients exhibit redundancy that allows coarsened (channel-wise/tensor-wise) scaling."
+  - "Random projection preserves sufficient information about gradient magnitudes for effective scaling."
+
+expected_outcome_form: "Optimizer memory reduced to O(1) or O(low_rank), maintaining training stability comparable to AdamW."
+
+source:
+  paper: "APOLLO: Approximated Gradient Scaling for Memory Efficient LLM Optimization"
+  arxiv: "2412.05270"
+  section: "Section 4"
+
+tags:
+  - memory-efficient
+  - llm-training
+  - random-projection
+  - adaptive-optimizer

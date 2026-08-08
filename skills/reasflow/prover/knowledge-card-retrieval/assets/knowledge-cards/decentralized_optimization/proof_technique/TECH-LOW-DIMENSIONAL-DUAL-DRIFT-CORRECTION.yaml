@@ -1,0 +1,50 @@
+id: TECH-LOW-DIMENSIONAL-DUAL-DRIFT-CORRECTION
+type: proof_technique
+domain: federated_learning
+
+title: Client Drift Mitigation via Low-Dimensional Dual Variables
+description: A technique to correct client drift in Federated Learning by maintaining dual variables in a low-rank subspace, which implicitly track the difference between local and global gradients without full-dimensional communication.
+
+problem_pattern:
+  - "Federated Learning with data heterogeneity (non-IID) causing client drift."
+  - "Communication and memory constraints prohibit transmitting full-dimensional control variates (like SCAFFOLD)."
+  - "Need to maintain drift correction capability while operating in a compressed/subspace regime."
+
+structural_prerequisites:
+  - "Primal-Dual formulation of the consensus optimization problem."
+  - "Availability of projection matrices P projecting full space to low-rank space."
+  - "Assumption that the drift (gradient difference) can be approximated or effectively captured in the subspace."
+
+execution_logic:
+  - step: "Primal-Dual Formulation"
+    detail: "Formulate FL as a constrained optimization problem and introduce dual variables for the consensus constraint x_i = \bar{x}."
+    algebraic_prototype: "min f(x) s.t. Lx = 0 -> min max f(x) + <y, Lx>"
+
+  - step: "Subspace Projection of Duals"
+    detail: "Project the dual update rule into the subspace defined by matrix P. Define low-dim dual lambda = P^T y."
+    algebraic_prototype: "lambda_i^{k+1} = P^T P (lambda_i^k + primal_diff)"
+
+  - step: "Equivalence to Gradient Correction"
+    detail: "Prove that the accumulated dual variable is algebraically equivalent (scaled) to the sum of gradient differences (SCAFFOLD-like correction), even in the subspace."
+    algebraic_prototype: "lambda_i approx Sum(g_global - g_local)"
+
+  - step: "Local Update Modification"
+    detail: "Modify the local primal update to include the projected dual variable, acting as a drift correction term."
+    algebraic_prototype: "x_local_next = x_local - eta * (g_local + (1/eta) * lambda_subspace)"
+
+assumptions_required:
+  - "The projection P preserves sufficient energy of the drift component."
+  - "Dual variables are initialized to zero to ensure zero-mean property across clients."
+
+expected_outcome_form: "A local update rule that converges despite heterogeneity, with communication cost proportional to subspace dimension r rather than full dimension d."
+
+source:
+  paper: "An Efficient Subspace Algorithm for Federated Learning on Heterogeneous Data"
+  arxiv: "2509.05213"
+  section: "Section 3 & Appendix B"
+
+tags:
+  - federated-learning
+  - client-drift
+  - primal-dual
+  - subspace-learning

@@ -1,0 +1,49 @@
+id: TECH-ALGORITHM-REDUCTION-TO-PRIMAL-DUAL
+type: proof_technique
+domain: decentralized_optimization
+title: Algorithm Reduction to Primal-Dual Methods
+description: |
+  A conceptual technique to analyze new distributed algorithms by mapping them to known operator splitting or primal-dual methods (like PDFP2O, Condat-Vu) applied to a reformulated problem.
+
+problem_pattern:
+  - "Analyzing a new algorithm that looks like a heuristic modification of SGD."
+  - "Need to prove stability or convergence without starting from scratch."
+  - "Algorithm involves auxiliary variables resembling dual variables."
+
+structural_prerequisites:
+  - "Problem can be reformulated as min f(x) + g(Lx) where L enforces consensus."
+  - "Algorithm updates match the operator splitting steps."
+
+execution_logic:
+  - step: "Problem Reformulation"
+    detail: "Express the distributed consensus problem as a constrained problem using a difference matrix B (e.g., I-W). min f(x) + Ind(Bx=0)."
+    algebraic_prototype: "min F(x) + G(y) s.t. Ax + By = c"
+
+  - step: "Operator Splitting Application"
+    detail: "Apply a standard primal-dual method (e.g., PDFP2O) to this specific formulation."
+    algebraic_prototype: "x+ = prox(x - grad - A^T y); y+ = prox(y + Ax+)"
+
+  - step: "Variable Mapping"
+    detail: "Map the variables of the standard method to the variables of the specific distributed algorithm. Show equivalence."
+    algebraic_prototype: "Algorithm X is PDFP2O with specific parameters"
+
+  - step: "Analysis Transfer"
+    detail: "Use the established convergence properties of the standard method to infer properties of the new algorithm."
+    algebraic_prototype: "Since PDFP2O converges linearly, Algorithm X converges linearly."
+
+assumptions_required:
+  - "Convexity (usually)."
+  - "Linear Constraints."
+
+expected_outcome_form: "Equivalence proof linking the new algorithm to a known stable method."
+
+source:
+  paper: "Local Exact-Diffusion"
+  arxiv: "2105.08023"
+  section: "Connection to PDFP2O"
+
+tags:
+  - reduction-technique
+  - primal-dual
+  - operator-splitting
+  - theoretical-grounding

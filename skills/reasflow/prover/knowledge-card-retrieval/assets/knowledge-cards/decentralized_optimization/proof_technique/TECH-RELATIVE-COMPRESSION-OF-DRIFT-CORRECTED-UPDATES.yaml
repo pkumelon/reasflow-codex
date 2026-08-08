@@ -1,0 +1,41 @@
+id: TECH-RELATIVE-COMPRESSION-OF-DRIFT-CORRECTED-UPDATES
+domain: Decentralized Optimization
+type: Proof Technique
+title: Relative Compression Analysis of Drift-Corrected Updates
+description: A technique to prove convergence of compressed Federated Learning without assuming bounded data heterogeneity, by compressing the *drift-corrected* difference rather than the raw gradient or model difference.
+
+problem_pattern:
+  - "Standard compressed FL fails or requires bounded heterogeneity because compression noise $E\\|Q(x)-x\\|^2$ scales with $\\|x\\|^2$, and usually $\\|x\\| \\approx \\|\\nabla f_i\\|$ is large."
+  - "Need to compress a quantity that naturally goes to zero as the algorithm converges."
+
+structural_prerequisites:
+  - "Update direction $\\Delta_i$ must be a variance-reduced estimate (e.g., $g_i - c_i + c$)."
+  - "Compressor $Q$ satisfies relative error property: $E\\|Q(x)-x\\|^2 \\le \\omega \\|x\\|^2$."
+
+execution_logic:
+  - step: "Update Decomposition"
+    detail: "Express the local update sum $\\Delta_i$ in terms of the primal gap $(y_{i,k} - x^*)$ and control error $(c_i - c^*)$."
+    algebraic_prototype: "\\|\\Delta_i\\|^2 \\lesssim \\|\\text{Primal Error}\\|^2 + \\|\\text{Control Error}\\|^2"
+
+  - step: "Vanishing Noise Argument"
+    detail: "Since both primal error and control error converge to zero in variance-reduced algorithms, the compression noise variance $\\omega \\|\\Delta_i\\|^2$ also vanishes."
+
+  - step: "Separation from Heterogeneity"
+    detail: "Show that $\\|\\Delta_i\\|$ does NOT depend on $\\|\\nabla f_i - \\nabla f\\|$, decoupling convergence from data heterogeneity."
+
+assumptions_required:
+  - "Variance Reduction mechanism (SCAFFOLD-like structure)."
+  - "Lipschitz Smoothness."
+
+expected_outcome_form: "Convergence bounds where the compression penalty term multiplies the convergence rate (vanishing) rather than the heterogeneity constant (persistent)."
+
+source:
+  paper: "Stochastic Controlled Averaging for Federated Learning with Communication Compression"
+  arxiv: "2308.08165"
+  section: "Analysis Section (Lemma on compression noise)"
+
+tags:
+  - proof-technique
+  - compression
+  - variance-reduction
+  - heterogeneity-robustness

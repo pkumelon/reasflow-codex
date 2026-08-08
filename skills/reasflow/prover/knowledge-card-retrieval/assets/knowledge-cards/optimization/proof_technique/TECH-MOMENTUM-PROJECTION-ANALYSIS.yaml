@@ -1,0 +1,57 @@
+id: TECH-MOMENTUM-PROJECTION-ANALYSIS
+type: proof_technique
+domain: optimization
+title: Momentum Projection Analysis
+description: >
+  A technique for analyzing momentum-based optimization algorithms that operate in changing subspaces. It involves defining a "projected momentum" variable in the full space and analyzing its evolution and error relative to the full gradient.
+tags:
+  - optimization
+  - momentum
+  - subspace-optimization
+  - convergence-analysis
+
+problem_pattern:
+  - "Analyzing momentum-based algorithms in changing subspaces."
+  - "Tracking effective update direction in full parameter space."
+  - "Handling projection errors and restart errors."
+
+structural_prerequisites:
+  - "Algorithm maintains momentum in a low-rank subspace."
+  - "Subspace changes periodically."
+
+execution_logic:
+  - step: "Define Full-Space Momentum"
+    detail: 'Define $\tilde{\mM}^{(t)} = \mP^{(t)}\mM^{(t)}$ (or equivalent for other shapes). This represents the actual update direction applied to the weights.'
+    algebraic_prototype: "tilde{M}_t = P_t M_t"
+
+  - step: "Analyze Recurrence"
+    detail: >
+      Derive the recurrence relation for $\tilde{\mM}^{(t)}$.
+      *   Within a period (fixed subspace): $\tilde{\mM}^{(t)} = (1-\beta_1)\tilde{\mM}^{(t-1)} + \beta_1 \mP^{(t)}(\mP^{(t)})^\top \mG^{(t)}$.
+      *   At subspace change: The momentum is projected from the old subspace to the new one. This introduces a "projection error" or "restart error".
+    algebraic_prototype: "tilde{M}_t = (1-beta)tilde{M}_{t-1} + beta P_t P_t^T G_t"
+
+  - step: "Contraction & Error Decomposition"
+    detail: >
+      Analyze $\|\tilde{\mM}^{(t)} - \nabla f(\vx^{(t)})\|^2$.
+      Use the property that $\tilde{\mM}^{(t)}$ behaves like a momentum estimator of the *projected* gradient.
+      Decompose the error into:
+      *   **Contraction:** $(1 - c)\|\tilde{\mM}^{(t-1)} - \nabla f(\vx^{(t-1)})\|^2$
+      *   **Drift:** Terms involving $\|\nabla f(\vx^{(t)}) - \nabla f(\vx^{(t-1)})\|^2$ (bounded by smoothness).
+      *   **Projection Bias/Variance:** Terms involving $\|(\mI - \mP\mP^\top)\nabla f\|^2$ and gradient noise $\sigma^2$.
+    algebraic_prototype: "||tilde{M}_t - grad f||^2 <= (1-c)||tilde{M}_{t-1} - grad f||^2 + Drift + Bias"
+
+  - step: "Accumulate"
+    detail: "Sum the error inequalities over time to bound the total momentum error, which is then used in the descent lemma."
+    algebraic_prototype: "sum ||tilde{M}_t - grad f||^2 <= Bound"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Bounded Variance"
+
+expected_outcome_form: "Bound on momentum error."
+
+source:
+  paper: "GoLore/GaLore"
+  arxiv: "N/A"
+  section: "N/A"

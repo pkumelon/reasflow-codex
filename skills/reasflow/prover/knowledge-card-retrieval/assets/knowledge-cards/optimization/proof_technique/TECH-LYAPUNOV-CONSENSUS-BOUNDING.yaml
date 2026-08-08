@@ -1,0 +1,49 @@
+id: TECH-LYAPUNOV-CONSENSUS-BOUNDING
+type: proof_technique
+domain: optimization
+
+title: Lyapunov Function for Coupled Consensus Errors
+description: Bounds multiple coupled consensus errors by showing their weighted sum forms a Q-linearly convergent sequence with perturbations.
+
+problem_pattern:
+- "Multiple variables (X, Z, Y, U, G) have coupled consensus dynamics."
+- "Updates involve mixing (contraction) and additions (perturbation)."
+- "Need to prove that all consensus errors remain bounded and decay."
+
+structural_prerequisites:
+- "Linear update rules for consensus variables."
+- "Contraction factor (1-gap) from mixing matrix."
+
+execution_logic:
+- step: "Individual Error Recurrences"
+  detail: "Derive inequalities for ||Con V^{k+1}||^2 for each variable V, separating the contraction part and the perturbation part."
+  algebraic_prototype: "||Con V^{k+1}||^2 <= (1 - gap)||Con V^k||^2 + c * ||Perturbation||^2"
+
+- step: "Weighted Sum Construction"
+  detail: "Define Lyapunov function L^k as a weighted sum of individual errors."
+  algebraic_prototype: "L^k = sum(w_v * ||Con V^k||^2)"
+
+- step: "Coefficient Tuning"
+  detail: "Select weights w_v such that the total Lyapunov function contracts."
+  algebraic_prototype: "L^{k+1} <= (1 - rho)L^k + C * ||Gradient_Diff||^2"
+  dependency_check: "Requires solving a system of linear inequalities for weights."
+
+- step: "Handling Stochasticity"
+  detail: "If updates are stochastic (Bernoulli), take expectations and bound E[L^{k+1}]."
+
+assumptions_required:
+- "Doubly Stochastic Mixing Matrix"
+- "Bounded perturbations (e.g., gradient differences bounded by smoothness)"
+
+expected_outcome_form: "E[L^{k+1}] <= (1 - rho)E[L^k] + ErrorTerm"
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 3.2 (Lemma 10) & 4.3 (Lemma 14)"
+
+tags:
+- lyapunov
+- consensus_error
+- stability_analysis
+- decentralized

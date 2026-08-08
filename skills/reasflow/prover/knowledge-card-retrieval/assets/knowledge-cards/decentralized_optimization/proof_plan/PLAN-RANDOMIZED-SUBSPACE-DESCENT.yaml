@@ -1,0 +1,53 @@
+id: PLAN-RANDOMIZED-SUBSPACE-DESCENT
+type: proof_plan
+domain: optimization
+title: Randomized Subspace Descent Proof Framework
+description: |
+  A general proof framework for analyzing randomized subspace optimization methods. The core idea is to bound the expected descent in the global objective function f(W) by relating it to the progress made in the local subspace subproblem.
+
+problem_pattern:
+  - "Optimization happens in a random lower-dimensional subspace P^k."
+  - "Need to relate subspace gradient P^T g to full gradient g."
+  - "Need to handle inexact subproblem solutions."
+
+structural_prerequisites:
+  - "Subspace projection P satisfies orthogonality/isotropy properties."
+  - "Subproblem is solved to some accuracy epsilon."
+
+execution_logic:
+  - step: "Subproblem Properties"
+    detail: "Establish smoothness and strong convexity (via regularization) of the subproblem g^k(B)."
+    algebraic_prototype: "g^k(B) is L_hat-smooth and mu-strongly convex"
+
+  - step: "Descent Lemma Construction"
+    detail: "Relate the optimal subproblem solution B_star to the current global gradient. Use strong convexity to lower bound the ideal improvement."
+    algebraic_prototype: "g^k(0) - g^k(B_star) >= C * ||P^T grad f(W)||^2"
+
+  - step: "Expectation over Subspace"
+    detail: "Take expectation over the random choice of P^k. Use Gradient Energy Preservation property."
+    algebraic_prototype: "E[||P^T grad f||^2] = (r/d) ||grad f||^2"
+
+  - step: "Inexact Solution Handling"
+    detail: "Account for the error epsilon from the inexact solver."
+    algebraic_prototype: "E[Improvement] >= Ideal - epsilon"
+
+  - step: "Telescoping Sum"
+    detail: "Sum the expected descents over k=0...K-1. Rearrange to bound sum E[||grad f||^2]."
+    algebraic_prototype: "Sum ||grad f||^2 <= (d/r) * (f(0) - f* + K*epsilon)"
+
+assumptions_required:
+  - "L-Smoothness of f(W)."
+  - "Isotropy of P."
+
+expected_outcome_form: "Convergence rate dependent on subspace ratio r/d."
+
+source:
+  paper: "GaLore: Memory-Efficient LLM Training by Gradient Low-Rank Projection"
+  arxiv: "2403.03507"
+  section: "Proof Appendix"
+
+tags:
+  - proof-plan
+  - subspace-descent
+  - randomized-algorithms
+  - non-convex-convergence

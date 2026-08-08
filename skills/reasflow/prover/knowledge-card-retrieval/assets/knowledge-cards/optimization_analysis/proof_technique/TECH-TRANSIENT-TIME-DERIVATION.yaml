@@ -1,0 +1,49 @@
+id: TECH-TRANSIENT-TIME-DERIVATION
+type: proof_technique
+domain: optimization_analysis
+
+title: Transient Time Analysis for Linear Speedup
+description: A methodology to rigorously quantify the "Transient Time"—the number of iterations required for a distributed algorithm to match the convergence rate of its centralized counterpart (Linear Speedup).
+
+problem_pattern:
+  - "Algorithm claims Linear Speedup (O(1/sqrt(nK)))."
+  - "Need to determine *when* this regime begins."
+  - "Need to compare algorithms' sensitivity to network topology (spectral gap)."
+
+structural_prerequisites:
+  - "An explicit upper bound on the convergence error consisting of a dominant stochastic term and higher-order network terms."
+  - "Bound structure: Error <= C1/sqrt(nK) + C2(lambda)/K + ..."
+
+execution_logic:
+  - step: "Identify Dominant Term"
+    detail: "Isolate the term corresponding to the centralized rate (usually O(sigma/sqrt(nK)))."
+
+  - step: "Identify Network Terms"
+    detail: "Isolate terms that depend on the graph spectral gap (lambda) and decay faster (e.g., O(1/K), O(1/K^2))."
+
+  - step: "Set Inequality"
+    detail: "Set the sum of Network Terms less than or equal to the Dominant Term."
+    algebraic_prototype: "C2(lambda)/K <= C1/sqrt(nK)"
+
+  - step: "Solve for K"
+    detail: "Solve the inequality for K. The solution K_transient is the threshold."
+    algebraic_prototype: "K >= (C2(lambda)/C1)^2 * n"
+
+  - step: "Analyze Dependence"
+    detail: "Analyze how K_transient scales with 1/(1-lambda). A smaller exponent implies better robustness to sparse topology."
+
+assumptions_required:
+  - "K is large enough."
+
+expected_outcome_form: "Transient Time = O(n^3 / (1-lambda)^2)"
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 1 & 5"
+
+tags:
+  - complexity_analysis
+  - linear_speedup
+  - network_sensitivity
+  - performance_metric

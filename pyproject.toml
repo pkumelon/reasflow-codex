@@ -1,0 +1,32 @@
+[project]
+name = "reasflow-codex"
+version = "0.1.0"
+description = "Codex resources for running reasflow, an academic paper-writing pipeline."
+requires-python = ">=3.9"
+dependencies = [
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+arxiv = ["arxiv"]
+paper = ["pypdf"]
+experiment = ["optuna"]
+all = [
+    "arxiv",
+    "optuna",
+    "pandas",
+    "seaborn",
+    "matplotlib",
+    "Pillow",
+    "pypdf",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = []

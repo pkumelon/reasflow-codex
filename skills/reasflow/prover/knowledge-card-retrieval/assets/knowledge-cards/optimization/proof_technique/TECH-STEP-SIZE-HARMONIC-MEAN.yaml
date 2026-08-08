@@ -1,0 +1,43 @@
+id: TECH-STEP-SIZE-HARMONIC-MEAN
+type: proof_technique
+domain: optimization
+
+title: Optimal Step Size Selection via Harmonic Mean
+description: A technique to select a single step size that balances multiple error terms (linear and quadratic) in a convergence bound.
+
+problem_pattern:
+  - "Convergence rate bound is a function of step size eta: Bound(eta) = A/eta + B*eta + C*eta^2."
+  - "Step size is constrained by stability: eta <= eta_max."
+  - "Need to find the optimal eta to minimize the bound."
+
+structural_prerequisites:
+  - "A, B, C are positive constants."
+  - "The bound is convex-like for eta > 0."
+
+execution_logic:
+  - step: "Identify Terms"
+    detail: "Isolate the coefficients for 1/eta (initialization), eta (variance), and eta^2 (drift/bias)."
+    algebraic_prototype: "Rate <= A/eta + B*eta + C*eta^2"
+
+  - step: "Harmonic Mean Construction"
+    detail: "Construct eta as the harmonic mean of the optimal unconstrained step sizes and the constraint."
+    algebraic_prototype: "eta = 1 / (1/eta_max + sqrt(B/A) + (C/A)^(1/3))"
+
+  - step: "Substitution"
+    detail: "Substitute back to get the final rate, which will be the sum of the minimums of each term."
+    algebraic_prototype: "Rate <= A/eta_max + 2*sqrt(A*B) + 2*(A^2*C)^(1/3)"
+
+assumptions_required:
+  - "Non-negative coefficients"
+
+expected_outcome_form: "Sum of terms like O(1/T), O(1/sqrt(T)), O(1/T^(2/3))."
+
+source:
+  paper: "Subspace SCAFFOLD derivation"
+  section: "Derivation of the Optimal Convergence Rate"
+
+tags:
+  - step_size
+  - optimization
+  - convergence_rate
+  - harmonic_mean

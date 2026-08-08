@@ -1,0 +1,55 @@
+id: PLAN-LINEAR-GEOMETRIC-CONVERGENCE-SMALL-GAIN
+type: proof_plan
+domain: decentralized_optimization
+
+title: Linear Geometric Convergence via Small-Gain Theorem
+description: A proof roadmap for establishing the R-linear (geometric) convergence of distributed algorithms (like DIGing) by modeling the coupled errors as an interconnected dynamical system and applying the Small-Gain Theorem.
+
+problem_pattern:
+  - "Distributed algorithm with multiple coupled error states (e.g., optimization error, consensus error, tracking error)."
+  - "Convergence analysis requires handling the interplay between these errors over time."
+  - "The graph topology might be time-varying, making standard spectral analysis difficult."
+
+structural_prerequisites:
+  - "Definitions of error variables: Optimality Residual (q), Consensus Error, Gradient Difference (z)."
+  - "Lipschitz continuity and Strong Convexity."
+  - "Mixing matrix with spectral gap property (B-step contraction)."
+
+execution_logic:
+  - step: "Error Variable Definition"
+    detail: "Define the key error quantities: Optimality Residual q(k) = x(k) - x*, and Gradient Difference z(k) = grad(x(k)) - grad(x(k-1))."
+    algebraic_prototype: "q(k) = x(k) - x*, z(k) = grad(x(k)) - grad(x(k-1))"
+
+  - step: "Cyclic Bound Construction"
+    detail: "Derive inequalities that bound the norm of each error variable by a linear combination of the norms of other error variables (possibly from previous steps) plus some decaying terms."
+    algebraic_prototype: "||Error_A|| <= c1 * ||Error_B|| + c2 * ||Error_C||"
+
+  - step: "Weighted Ergodic Norm Formulation"
+    detail: "Adopt a weighted ergodic norm ||.||^{lambda, K} to capture the geometric decay rate lambda."
+    algebraic_prototype: "||s||^{lambda, K} = max_{0<=k<=K} lambda^{-k} ||s(k)||"
+
+  - step: "Small-Gain Application"
+    detail: "Show that the gains in the cyclic inequalities satisfy the Small-Gain condition (product < 1) for a sufficiently small step size and appropriate lambda."
+    algebraic_prototype: "gamma_total < 1"
+
+  - step: "Convergence Conclusion"
+    detail: "Conclude that the weighted norms are bounded, which implies R-linear convergence of the original error sequences."
+    algebraic_prototype: "||x(k) - x*|| = O(lambda^k)"
+
+assumptions_required:
+  - "Strong Convexity of objective functions."
+  - "Lipschitz Continuous Gradients."
+  - "Jointly connected graph sequence (or similar connectivity assumption)."
+
+expected_outcome_form: "R-linear convergence rate O(lambda^k)."
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Section 3"
+
+tags:
+  - small_gain_theorem
+  - geometric_convergence
+  - linear_rate
+  - coupled_errors

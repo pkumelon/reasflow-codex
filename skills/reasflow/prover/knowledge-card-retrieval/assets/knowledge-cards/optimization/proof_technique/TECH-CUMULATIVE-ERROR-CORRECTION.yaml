@@ -1,0 +1,42 @@
+id: TECH-CUMULATIVE-ERROR-CORRECTION
+type: proof_technique
+domain: optimization
+
+title: Steady-State Error Elimination via Cumulative Correction
+description: A technique to modify fixed-step gradient descent to achieve exact convergence by introducing a cumulative correction term (or integral action) that cancels steady-state bias.
+
+problem_pattern:
+  - "Gradient descent with fixed step size stalls at a neighborhood of the solution due to heterogeneous local gradients summing to non-zero vectors locally."
+  - "Consensus error does not vanish asymptotically with fixed step sizes."
+
+structural_prerequisites:
+  - "The update rule must allow for history dependence (momentum-like or difference form)."
+  - "The noise/bias term is constant or slowly varying at the optimal point."
+
+execution_logic:
+  - step: "Identify Steady-State Bias"
+    detail: "Write down the fixed point equation of the standard algorithm. Observe that x* = Wx* - alpha*grad(x*) implies grad(x*) must be 0 for consensus (Wx*=x*), which is false for general heterogeneous functions."
+    algebraic_prototype: "x^{\\infty} = W x^{\\infty} - \\alpha \\nabla f(x^{\\infty}) \\implies \\nabla f(x^{\\infty}) \\in Null(I-W)"
+
+  - step: "Difference Form Derivation"
+    detail: "Subtract the update equation at step k from step k+1. This eliminates the constant bias term implicit in the dynamics."
+    algebraic_prototype: "x^{k+2} - x^{k+1} = W(x^{k+1} - x^k) - \\alpha(\\nabla f(x^{k+1}) - \\nabla f(x^k)) + (CorrectionTerms)"
+  - step: "Telescopic Reconstruction (Integral View)"
+    detail: "Re-interpret the difference form as the original update plus a cumulative sum of past consensus violations. This sum acts as an integral controller driving the steady-state error to zero."
+    algebraic_prototype: "x^{k+1} = W x^k - \\alpha \\nabla f(x^k) - \\sum_{t=0}^{k-1} (W - \\tilde{W}) x^t"
+
+assumptions_required:
+  - "The correction term must span the subspace where the bias exists (typically the orthogonal complement of the consensus subspace)."
+
+expected_outcome_form: "The algorithm fixed point satisfies both x* = Wx* (consensus) and sum(grad(f_i(x*))) = 0 (optimality)."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Section 2.2 & 2.4"
+
+tags:
+  - error_correction
+  - integral_action
+  - difference_form
+  - exact_convergence

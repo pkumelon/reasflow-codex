@@ -1,0 +1,48 @@
+id: TECH-SNAPSHOT-GRADIENT-TRACKING-ANALYSIS
+type: proof_technique
+domain: optimization
+
+title: Snapshot Gradient Tracking Analysis
+description: Analysis framework for gradient tracking methods that use snapshot points to decouple gradient computation from consensus steps.
+
+problem_pattern:
+- "Need to analyze convergence of algorithms with probabilistic updates."
+- "Gradient tracker does not track the current gradient but a snapshot gradient."
+- "Need to bound errors from both consensus and stale gradients."
+
+structural_prerequisites:
+- "Lyapunov function construction involving consensus errors of multiple variables."
+- "Separation of 'average' dynamics and 'consensus' error dynamics."
+
+execution_logic:
+- step: "Consensus Error Bounding"
+  detail: "Construct a Lyapunov function L_con that includes weighted consensus errors of all variables (X, Q, Y, Z, U, G). Show L_con contracts."
+  algebraic_prototype: "L_con^{k+1} <= (1 - rho) L_con^k + Error_gradient"
+
+- step: "Average Dynamics Analysis"
+  detail: "Analyze the evolution of the average variables (x_bar, z_bar, etc.) as a centralized optimization process with noise."
+  algebraic_prototype: "f(x_bar) decreases with rate depending on stepsize and noise from consensus."
+
+- step: "Gradient Difference Bounding"
+  detail: "Bound the difference ||nabla f(X) - nabla f(Q)||^2 using smoothness and the update frequency p."
+  algebraic_prototype: "||g(X) - g(Q)||^2 <= L^2 (||X - x_bar||^2 + ||Q - x_bar||^2) + Smoothness_terms"
+
+- step: "Coupling"
+  detail: "Combine the consensus contraction and average descent into a global Lyapunov function."
+
+assumptions_required:
+- "L-Smoothness and Strong Convexity."
+- "Independence of random updates (Bernoulli sampling)."
+
+expected_outcome_form: "Linear convergence rate with optimal dependence on condition number."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 3.2 and 3.3"
+
+tags:
+- lyapunov_analysis
+- stochastic_analysis
+- snapshot_method
+- gradient_tracking

@@ -1,0 +1,49 @@
+id: MECH-RANDOMIZED-SUBSPACE-OPTIMIZATION
+type: algorithm_mechanism
+domain: optimization
+title: Randomized Subspace Optimization (RSO)
+description: |
+  A framework for reducing memory consumption in training large-scale models by decomposing the high-dimensional problem into a sequence of lower-dimensional subproblems. At each iteration k, a random projection matrix P^k is sampled.
+
+problem_pattern:
+  - "Training Large Language Models (LLMs) requires massive memory for optimizer states."
+  - "High-dimensional gradients are sparse or low-rank in nature."
+  - "Need a memory-efficient optimizer that converges to the original solution."
+
+structural_prerequisites:
+  - "Access to random projection oracle P^k."
+  - "Inner solver for the low-dimensional subproblem."
+
+execution_logic:
+  - step: "Subspace Selection"
+    detail: "Sample a random projection matrix P^k in R^{m x r} with r << m. Typically orthogonal columns."
+    algebraic_prototype: "P^k ~ RandomMatrix(m, r)"
+
+  - step: "Subproblem Formulation"
+    detail: "Formulate the local subproblem on variable B: min_B f(W^k + P^k B) + Reg(B)."
+    algebraic_prototype: "g^k(B) := f(W^k + P^k B) + (1/2eta)||B||^2"
+
+  - step: "Inexact Solving"
+    detail: "Solve the subproblem to find B_tilde^k (inexactly) using an inner optimizer (e.g., Adam)."
+    algebraic_prototype: "B_tilde^k approx argmin g^k(B)"
+
+  - step: "Global Update"
+    detail: "Update global weights by projecting the low-dim solution back."
+    algebraic_prototype: "W^{k+1} <- W^k + P^k * B_tilde^k"
+
+assumptions_required:
+  - "P satisfies E[PP^T] = I (isotropy)."
+  - "Inner solver returns epsilon-approximate solution."
+
+expected_outcome_form: "Memory Efficiency O(r) instead of O(d), with proven convergence rates."
+
+source:
+  paper: "GaLore: Memory-Efficient LLM Training by Gradient Low-Rank Projection"
+  arxiv: "2403.03507"
+  section: "Algorithm 1"
+
+tags:
+  - memory-efficient
+  - subspace-optimization
+  - large-language-models
+  - random-projection

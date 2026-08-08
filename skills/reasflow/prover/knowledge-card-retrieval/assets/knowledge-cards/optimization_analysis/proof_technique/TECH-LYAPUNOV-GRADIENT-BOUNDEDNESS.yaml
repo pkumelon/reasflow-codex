@@ -1,0 +1,43 @@
+id: TECH-LYAPUNOV-GRADIENT-BOUNDEDNESS
+type: proof_technique
+domain: optimization_analysis
+
+title: Gradient Boundedness via Lyapunov Stability
+description: A technique to prove that gradients remain bounded along the optimization trajectory without assuming global gradient boundedness or compact domain, by ensuring the step size is small enough to make a specific Lyapunov function non-increasing.
+
+problem_pattern:
+  - "Standard proofs assume ||\\nabla f(x)|| <= G, which is unrealistic for quadratic functions on unbounded domains."
+  - "Need to prove stability/boundedness of iterates before proving convergence rates."
+
+structural_prerequisites:
+  - "The algorithm can be interpreted as descent on a surrogate function (Lyapunov function)."
+  - "The Lyapunov function must be coercive (levels sets are bounded)."
+
+execution_logic:
+  - step: "Construct Lyapunov Function"
+    detail: "Define a function V(x) that captures both the objective value and the consensus violation (or other structural energies). For DGD, V(x) = sum(f_i) + quadratic_consensus_term."
+    algebraic_prototype: "V(x) = \\sum f_i(x_i) + 0.5 * x^T (I-W) x"
+
+  - step: "Descent Lemma Application"
+    detail: "Apply the Lipschitz continuity of the gradient of V(x). Show that for step size \alpha < 1/L_V, the function V(x) decreases monotonically."
+    algebraic_prototype: "V(x^{k+1}) <= V(x^k) - (1/alpha - L/2) ||step||^2"
+
+  - step: "Level Set Argument"
+    detail: "Since V(x^k) is non-increasing, x^k stays in the level set {x | V(x) <= V(x^0)}. If f is coercive, this set is compact, implying ||x^k|| and ||\nabla f(x^k)|| are bounded."
+
+assumptions_required:
+  - "Step size must be inversely proportional to the Lipschitz constant of the Lyapunov function gradients."
+  - "Objective function is bounded from below."
+
+expected_outcome_form: "||x^k|| <= C and ||\\nabla f(x^k)|| <= D for all k."
+
+source:
+  paper: "On the Convergence of Decentralized Gradient Descent"
+  arxiv: "1310.7063"
+  section: "Section 2.1 (Theorem 1)"
+
+tags:
+  - stability_analysis
+  - lyapunov_function
+  - gradient_bound
+  - coercive_functions

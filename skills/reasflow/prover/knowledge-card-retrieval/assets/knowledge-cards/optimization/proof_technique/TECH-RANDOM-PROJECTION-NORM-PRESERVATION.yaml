@@ -1,0 +1,50 @@
+id: TECH-RANDOM-PROJECTION-NORM-PRESERVATION
+type: proof_technique
+domain: optimization
+
+title: Norm Preservation via Random Projection (JL Lemma Application)
+description: Utilizing the Johnson-Lindenstrauss (JL) Lemma to approximate the norm of high-dimensional gradient vectors using low-dimensional random projections, enabling memory-efficient optimizer state maintenance.
+
+problem_pattern:
+  - "Need to estimate element-wise or channel-wise scaling factors (e.g., adaptive learning rates) without storing full-dimensional statistics."
+  - "High memory cost of optimizer states (e.g., second moments in Adam)."
+  - "Gradient vectors have high dimensionality but may exhibit low effective rank or structural redundancy."
+
+structural_prerequisites:
+  - "The quantity of interest depends primarily on Euclidean norms (e.g., ||g||)."
+  - "Access to a random projection matrix P (fixed or regenerating) with i.i.d. Gaussian entries."
+  - "The projection dimension r satisfies r = O(log(n)/epsilon^2) for desired accuracy."
+
+execution_logic:
+  - step: "Random Projection Setup"
+    detail: "Define a random matrix P in R^{r x m} with entries P_ij ~ N(0, 1/r)."
+    algebraic_prototype: "R_t = P * G_t"
+
+  - step: "Concentration Inequality Application"
+    detail: "Apply the JL Lemma (concentration of chi-squared variables) to bound the distortion of the projected norm."
+    algebraic_prototype: "P((1-eps)||x||^2 <= ||Px||^2 <= (1+eps)||x||^2) >= 1 - delta"
+
+  - step: "Moment Approximation"
+    detail: "Extend norm preservation to exponential moving averages (EMA) of gradients, assuming linearity of projection commutes with EMA updates."
+    algebraic_prototype: "||M_t^R|| approx ||P M_t|| approx ||M_t||"
+
+  - step: "Scaling Factor Ratio Bound"
+    detail: "Bound the ratio of the projected scaling factor to the true scaling factor to justify the approximation accuracy."
+    algebraic_prototype: "s_approx / s_true approx 1 +/- epsilon"
+
+assumptions_required:
+  - "Input vectors are independent of the random projection matrix (or P is refreshed)."
+  - "Sufficient projection dimension r to guarantee high probability bounds."
+
+expected_outcome_form: "A probabilistic bound stating that the adaptive learning rates computed in the low-rank space differ from the full-rank ones by at most epsilon."
+
+source:
+  paper: "APOLLO: Approximated Gradient Scaling for Memory Efficient LLM Optimization"
+  arxiv: "2412.05270"
+  section: "Appendix A.1"
+
+tags:
+  - random-projection
+  - dimension-reduction
+  - memory-efficiency
+  - adaptive-optimization

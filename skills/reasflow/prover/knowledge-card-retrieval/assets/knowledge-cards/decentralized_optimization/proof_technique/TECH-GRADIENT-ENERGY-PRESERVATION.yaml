@@ -1,0 +1,48 @@
+id: TECH-GRADIENT-ENERGY-PRESERVATION
+type: proof_technique
+domain: optimization
+title: Gradient Energy Preservation in Random Subspaces
+description: |
+  A fundamental technique for analyzing randomized subspace methods. It establishes that the expected squared norm of the "projected gradient" (gradient in the subspace) is proportional to the squared norm of the full gradient.
+
+problem_pattern:
+  - "Optimization step uses P^T g instead of g."
+  - "Need to prove that P^T g is a good descent direction in expectation."
+  - "Need to relate E[||P^T g||^2] to ||g||^2."
+
+structural_prerequisites:
+  - "P is a random projection matrix."
+  - "Distribution of P satisfies isotropy condition."
+
+execution_logic:
+  - step: "Trace Formulation"
+    detail: "Write the squared norm as a trace: ||P^T g||^2 = tr(P P^T g g^T)."
+    algebraic_prototype: "||v||^2 = tr(v v^T)"
+
+  - step: "Expectation Swap"
+    detail: "Use linearity of trace and expectation: E[tr(...)] = tr(E[P P^T] g g^T)."
+    algebraic_prototype: "E[tr(A B)] = tr(E[A] B)"
+
+  - step: "Isotropy Property"
+    detail: "Utilize the design of the random sampling which typically ensures E[P P^T] = (r/d) I_d."
+    algebraic_prototype: "E[P P^T] = c * I"
+
+  - step: "Result Simplification"
+    detail: "Simplify the term to (r/d) tr(g g^T) = (r/d) ||g||^2."
+    algebraic_prototype: "E[||P^T g||^2] = c * ||g||^2"
+
+assumptions_required:
+  - "Random Projection P is unbiased/isotropic."
+
+expected_outcome_form: "E[||P^T g||^2] = (r/d) ||g||^2"
+
+source:
+  paper: "GaLore: Memory-Efficient LLM Training by Gradient Low-Rank Projection"
+  arxiv: "2403.03507"
+  section: "Lemma 1"
+
+tags:
+  - probability
+  - linear-algebra
+  - subspace-methods
+  - random-projection

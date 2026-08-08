@@ -1,0 +1,82 @@
+id: PLAN-UNIFIED-DECENTRALIZED-SGD
+type: proof_plan
+domain: optimization
+title: Proof Plan for Unified Decentralized SGD with Changing Topology
+description: >
+  A comprehensive roadmap to prove convergence of Decentralized SGD with changing topology and local updates. 
+  The proof decouples the analysis into a "Descent Lemma" for the virtual average iterate and a "Consensus Recursion" for the disagreement error,
+  handling the multi-step mixing property of the topology.
+
+tags:
+  - decentralized-learning
+  - consensus-optimization
+  - changing-topology
+  - local-sgd
+  - proof-plan
+
+problem_pattern:
+  - "Decentralized optimization with time-varying mixing matrices."
+  - "Local updates (multiple SGD steps before communication)."
+  - "Non-uniform mixing (only contracting every tau steps)."
+
+structural_prerequisites:
+  - "Smoothness of objective functions."
+  - "Bounded variance of stochastic gradients."
+  - "Bounded heterogeneity (gradient diversity) at optimum or bounded gradients."
+  - "Assumption of Expected Consensus Rate (multi-step contraction)."
+
+execution_logic:
+  - step: "Descent Lemma for Virtual Average"
+    detail: >
+      Derive the evolution of the average iterate $\bar{\mathbf{x}}^{(t)}$. Treat it as SGD with an error term coming from the consensus disagreement.
+      Use standard smoothness inequalities. The key is to isolate the $\Xi_t = \frac{1}{n}\sum \|\mathbf{x}_i - \bar{\mathbf{x}}\|^2$ term.
+    lemmas_needed: ["LEMMA-DESCENT-CONVEX", "LEMMA-DESCENT-NONCONVEX"]
+    technique_ref: "TECH-VIRTUAL-AVERAGE-PERTURBED-ITERATE"
+    
+  - step: "Consensus Distance Recursion"
+    detail: >
+      Establish a recursive bound for the consensus error $\Xi_t$.
+      Crucial: The topology only contracts every $\tau$ steps. We must 'unroll' the iterates back to the last effective mixing step $m\tau$.
+      Decompose the error into:
+      1. Mixing contraction part: $(1-p) \Xi_{m\tau}$.
+      2. Accumulated drift from local updates: $\sum \eta^2 \|\text{gradients}\|^2$.
+      3. Stochastic noise accumulation: $\sum \eta^2 \sigma^2$.
+    lemmas_needed: ["LEMMA-CONSENSUS-RECURSION-CONVEX", "LEMMA-CONSENSUS-RECURSION-NONCONVEX"]
+    technique_ref: "TECH-MULTI-STEP-MIXING-CONTRACTION"
+
+  - step: "Virtual Mixing Abstraction"
+    detail: >
+      Map specific algorithm dynamics (like Local SGD periods) into a sequence of mixing matrices W_t.
+      This allows using the generic consensus recursion without re-deriving it for each algorithm variant.
+    technique_ref: "TECH-VIRTUAL-MIXING-ABSTRACTION"
+
+  - step: "Solving the Coupled System"
+    detail: >
+      The consensus recursion gives $\Xi_t$ in terms of past $\Xi$ and gradients.
+      The descent lemma gives $r_{t+1}$ in terms of $\Xi_t$ and gradients.
+      Combine them into a master recursion. Use a lemma to sum up the convolution-like terms arising from the consensus lag.
+    lemmas_needed: ["LEMMA-MAIN-RECURSION-SOLVER"]
+    technique_ref: "TECH-COUPLED-RECURSION-SOLVER"
+
+  - step: "Final Convergence Rate Derivation"
+    detail: >
+      Tune the step size $\eta$ and weights $w_t$ to balance the convergence rate against the noise and consensus error terms.
+      Consider cases for Strongly Convex (linear/sublinear), Convex, and Non-Convex rates.
+    technique_ref: "TECH-FIXED-HORIZON-STEPSIZE-TUNING"
+
+  - step: "Lower Bound"
+    detail: >
+      Construct a hard instance to show that the dependence on heterogeneity (zeta) and topology (p) is necessary for strongly convex cases.
+      Use shifted quadratic functions aligned with the second eigenvector of the mixing matrix.
+    technique_ref: "TECH-EIGENVECTOR-SHIFT-LOWER-BOUND"
+    
+assumptions_required:
+  - "L-smoothness"
+  - "Bounded Noise (affine variance for non-convex)"
+  - "Expected Consensus Rate: E[||X W - \bar{X}||^2] <= (1-p)||X - \bar{X}||^2 over tau steps."
+
+expected_outcome_form: "Convergence rates matching O(1/sqrt(T)) or O(1/T) plus consensus error terms depending on tau and p."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates (arXiv:2003.10422)"
+  section: "Appendix A"

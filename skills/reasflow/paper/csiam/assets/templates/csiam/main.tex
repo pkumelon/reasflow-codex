@@ -1,0 +1,77 @@
+\documentclass[mathpazo]{csiam-am}
+\setcounter{page}{1}
+\renewcommand\thisnumber{x}
+\renewcommand\thisyear{20xx}
+\renewcommand\thismonth{xx}
+\renewcommand\thisvolume{x}
+
+%%%%% author macros %%%%%%%%%
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{silence}
+\WarningFilter{caption}{Unknown document class}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newtheorem{assumption}{Assumption}
+
+% Common math shortcuts (agents may add more as needed)
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+%%%%% end %%%%%%%%%
+
+\begin{document}
+
+%%%%% title %%%%%
+\title{Paper Title}
+
+%%%%% author(s) %%%%%
+\author[Anonymous]{Anonymous Author(s)\corrauth}
+\address{Anonymous Institution}
+\emails{{\tt anonymous@example.com} (Anonymous)}
+
+%%%%% Abstract %%%%%
+\IfFileExists{abstract.tex}{\input{abstract.tex}}{
+\begin{abstract}
+Abstract placeholder.
+\end{abstract}
+}
+
+%%%%% AMS/Keywords %%%%%
+\ams{XX.XX, XX.XX}
+\keywords{keyword1, keyword2, keyword3}
+
+%%%% maketitle %%%%%
+\maketitle
+
+%%%%% Main Sections %%%%%
+\IfFileExists{introduction.tex}{\input{introduction.tex}}{}
+\IfFileExists{related_work.tex}{\input{related_work.tex}}{}
+\IfFileExists{method.tex}{\input{method.tex}}{}
+\IfFileExists{theory.tex}{\input{theory.tex}}{}
+\IfFileExists{experiments.tex}{\input{experiments.tex}}{}
+\IfFileExists{conclusion.tex}{\input{conclusion.tex}}{}
+
+%%%%% Acknowledgments %%%%%
+\section*{Acknowledgments}
+The authors would like to thank the anonymous reviewers for their valuable comments.
+
+%%%%% Bibliography %%%%%
+\IfFileExists{references.bib}{
+  \bibliographystyle{plain}
+  \bibliography{references}
+}{
+  \IfFileExists{references_inline.tex}{\input{references_inline.tex}}{
+    \begin{thebibliography}{99}
+    \bibitem{placeholder}
+    Placeholder reference.
+    \end{thebibliography}
+  }
+}
+
+\end{document}

@@ -1,0 +1,57 @@
+id: PLAN-FEDAVG-LINEAR-SPEEDUP
+type: proof_plan
+domain: optimization
+
+title: Proof Plan for Linear Speedup in FedAvg with Partial Participation
+description: >
+  A comprehensive roadmap to prove linear speedup for Generalized FedAvg under non-IID data and partial worker participation.
+
+problem_pattern:
+- "Proving convergence rate for Federated Averaging (FedAvg) or similar algorithms."
+- "Handling non-IID data distributions across workers."
+- "Incorporating partial worker participation (sampling)."
+- "Aiming to show that increasing the number of workers (m) or local steps (K) linearly speeds up convergence."
+
+structural_prerequisites:
+- "Algorithm structure: Local SGD steps -> Global Aggregation -> Repeat."
+- "Assumptions: L-smoothness, Unbiased gradients, Bounded local and global variance."
+
+execution_logic:
+  - step: "Establish One-Step Descent"
+    detail: "Use L-smoothness to bound the expected decrease in the objective function value for one communication round."
+    algebraic_prototype: "E[f(x_{t+1})] - f(x_t) <= - step_size * ||grad f(x_t)||^2 + Variance_Terms"
+
+  - step: "Bound Local Model Drift"
+    detail: "Prove a lemma bounding the distance between local models and the global model after K steps. This handles the 'non-IID' aspect."
+    algebraic_prototype: "E[||x_{t,k}^i - x_t||^2] <= O(K * eta_L^2 * sigma^2)"
+
+  - step: "Analyze Aggregation Variance (Full Participation)"
+    detail: "Bound the variance of the aggregated update when all workers participate. This isolates the effect of local stochasticity."
+    algebraic_prototype: "E[||bar{Delta}_t||^2] <= O(sigma_L^2 / m)"
+
+  - step: "Analyze Aggregation Variance (Partial Participation)"
+    detail: "Extend the variance analysis to the case where only a subset of workers is sampled. Use sampling lemmas (with/without replacement)."
+    algebraic_prototype: "E[||Delta_t||^2] <= E[||bar{Delta}_t||^2] + Sampling_Noise"
+
+  - step: "Combine and Telescoping Sum"
+    detail: "Substitute the bounds back into the descent inequality, choose appropriate learning rates to make error terms manageable, and sum over T rounds."
+    algebraic_prototype: "sum E[||grad f(x_t)||^2] <= (f(x_0) - f(*)) / (step_size * T) + Constant_Error"
+
+assumptions_required:
+- "L-Smoothness"
+- "Unbiased Local Gradient Estimator"
+- "Bounded Local Variance (sigma_L)"
+- "Bounded Global Variance (sigma_G)"
+
+expected_outcome_form: "O(1/sqrt(mKT)) + O(1/T) convergence rate."
+
+source:
+  paper: "Achieving Linear Speedup with Partial Worker Participation in Non-IID Federated Learning"
+  arxiv: "2101.11203"
+  section: "Section 3 and Appendix I"
+
+tags:
+- federated_learning
+- proof_roadmap
+- linear_speedup
+- non_iid

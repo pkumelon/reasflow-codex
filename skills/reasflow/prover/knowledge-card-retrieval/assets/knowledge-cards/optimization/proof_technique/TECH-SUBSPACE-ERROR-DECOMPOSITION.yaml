@@ -1,0 +1,49 @@
+id: TECH-SUBSPACE-ERROR-DECOMPOSITION
+type: proof_technique
+domain: optimization
+
+title: Orthogonal Subspace Error Decomposition via Independence-Preserving Reference
+description: Decomposes error terms by anchoring to a reference vector that is statistically independent of the current random operator, avoiding bias/scaling artifacts.
+
+problem_pattern:
+  - "Variables are updated using a random operator P (e.g., projection, mask)."
+  - "Direct error analysis w.r.t. current state introduces bias or inverse-scaling factors (e.g., 1/rho)."
+  - "Need to prove contraction using properties like E[P^T P] = rho I."
+
+structural_prerequisites:
+  - "Random operator P is sampled independently at step t."
+  - "Update rule splits space into active (P) and frozen (I-P) components."
+
+execution_logic:
+  - step: "Independence Check [CRITICAL]"
+    detail: "Select a reference vector 'v_ref' that is statistically INDEPENDENT of the current random operator P_t. The current gradient grad(x_{t+1}) depends on P_t and usually FAILS this check."
+    algebraic_prototype: "Select v_ref such that E[P_t | v_ref] = E[P_t]. (Common choice: grad(x_t))"
+
+  - step: "Orthogonal Split on Independent Reference"
+    detail: "Decompose the error relative to the independent reference."
+    algebraic_prototype: "Let e' = c_t - v_ref. Then E[||(I-P^T P)e'||^2] = (1-rho)E[||e'||^2]."
+
+  - step: "Active Component Bound"
+    detail: "Bound the active component (usually noise/drift) in the subspace."
+    algebraic_prototype: "E[||P e'||^2] <= rho ||e'||^2 + noise"
+
+  - step: "Reference Correction (Perturbation)"
+    detail: "Bridge the gap between the independent reference (v_ref) and the true target (grad) using smoothness/Lipschitz properties."
+    algebraic_prototype: "||c - v_ref||^2 <= (1+a)||c - grad_true||^2 + (1+1/a)||grad_true - v_ref||^2"
+
+assumptions_required:
+  - "Independence of P_t and v_ref"
+  - "Orthogonality of P"
+  - "L-Smoothness (for correction)"
+
+expected_outcome_form: "Contraction factor (1-rho) applies cleanly, with O(1) perturbation terms."
+
+source:
+  paper: "Subspace SCAFFOLD derivation"
+  section: "Lemma 3 (Control Variate)"
+
+tags:
+  - decomposition
+  - subspace
+  - independence
+  - error_bound

@@ -1,0 +1,44 @@
+id: TECH-RSC-LINEAR-CONVERGENCE-NEIGHBORHOOD
+type: proof_technique
+domain: convex_analysis
+
+title: Linear Convergence to Error Neighborhood via RSC
+description: A technique to prove that Restricted Strongly Convex (RSC) functions admit linear convergence rates up to a noise floor (error neighborhood), even if the function is not globally strongly convex or if there is persistent additive noise.
+
+problem_pattern:
+  - "Objective function is flat in some directions but curved towards the solution set (RSC)."
+  - "Algorithm has a persistent noise term (e.g., from consensus error or quantization)."
+  - "Need to show linear convergence rate until the noise dominates."
+
+structural_prerequisites:
+  - "Condition: <x-x*, g(x)-g(x*)> >= mu ||x-x*||^2."
+  - "Dynamics: e^{k+1} = (I - alpha*H) e^k + alpha*noise."
+
+execution_logic:
+  - step: "Recurrence Relation with Noise"
+    detail: "Derive the error dynamics for ||x^k - x*||. Keep the noise term explicitly."
+    algebraic_prototype: "||e^{k+1}|| <= (1 - alpha*mu) ||e^k|| + alpha * ||noise||"
+
+  - step: "Analyze Contraction vs. Noise"
+    detail: "Show that as long as (1 - alpha*mu)||e^k|| > alpha * ||noise||, the error decreases geometrically. This defines the threshold for the 'Error Neighborhood'."
+    algebraic_prototype: "Convergence stalls when ||e^k|| approx ||noise|| / mu."
+
+  - step: "Use Young's Inequality"
+    detail: "For squared norms, use ||a+b||^2 <= (1+delta)||a||^2 + (1+1/delta)||b||^2 to handle the cross terms and separate the contraction factor from the noise variance."
+
+assumptions_required:
+  - "Restricted Strong Convexity (RSC)."
+  - "Noise term is bounded."
+
+expected_outcome_form: "||x^k - x*|| <= c^k ||x^0 - x*|| + Constant * ||noise||"
+
+source:
+  paper: "On the Convergence of Decentralized Gradient Descent"
+  arxiv: "1310.7063"
+  section: "Section 2.3 (Theorem 4)"
+
+tags:
+  - linear_convergence
+  - restricted_strong_convexity
+  - noise_tolerance
+  - error_floor

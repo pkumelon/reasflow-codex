@@ -1,0 +1,44 @@
+id: TECH-ERROR-NEIGHBORHOOD-QUANTIFICATION
+type: proof_technique
+domain: decentralized_optimization
+
+title: Consensus Error Quantification via Geometric Series
+description: A technique to bound the deviation of local states from their mean (consensus error) in distributed algorithms, explicitly relating the error magnitude to the step size and spectral gap.
+
+problem_pattern:
+  - "Need to quantify how far agents drift apart in a distributed process."
+  - "The drift is driven by heterogeneous local gradients."
+
+structural_prerequisites:
+  - "The mixing matrix W is doubly stochastic and has a spectral gap (second largest eigenvalue modulus beta < 1)."
+  - "Gradients (driving force) are bounded (possibly via TECH-LYAPUNOV-GRADIENT-BOUNDEDNESS)."
+
+execution_logic:
+  - step: "Unroll Recursion"
+    detail: "Express the current state x^k as a convolution of the mixing matrix powers and past gradients."
+    algebraic_prototype: "x^k = W^k x^0 - alpha * sum_{s=0}^{k-1} W^{k-1-s} g^s"
+
+  - step: "Isolate Mean Deviation"
+    detail: "Subtract the mean evolution. Use the property that W^t - (1/n)11^T contracts vectors orthogonal to the consensus subspace."
+    algebraic_prototype: "||x^k - \bar{x}^k|| = || sum (W^{...} - J) g^s ||"
+
+  - step: "Sum Geometric Series"
+    detail: "Bound the norm using the spectral radius beta. The sum sum_{s=0}^{k-1} beta^{k-1-s} converges to 1/(1-beta)."
+    algebraic_prototype: "Total Deviation <= alpha * D * sum(beta^t) <= alpha * D / (1-beta)"
+
+assumptions_required:
+  - "Bounded gradients (or bounded in the level set)."
+  - "Synchronous updates."
+
+expected_outcome_form: "||x_i - \bar{x}|| <= O(alpha / (1-beta))"
+
+source:
+  paper: "On the Convergence of Decentralized Gradient Descent"
+  arxiv: "1310.7063"
+  section: "Section 2.2 (Lemma 2)"
+
+tags:
+  - error_bound
+  - spectral_gap
+  - geometric_series
+  - consensus_error

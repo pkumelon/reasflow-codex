@@ -1,0 +1,51 @@
+id: MECH-FEDERATED-PARTIAL-PARTICIPATION-ADMM
+type: algorithm_mechanism
+domain: optimization
+
+title: Federated ADMM with Partial Participation (FedADMM)
+description: A mechanism to adapt ADMM for Federated Learning with partial client participation by freezing the state (primal and dual) of inactive clients and aggregating incremental updates.
+
+problem_pattern:
+  - "Applying ADMM to a federated setting where only a subset of clients participate in each round."
+  - "Standard ADMM requires full variable updates which is infeasible in FL."
+  - "Need to handle non-smooth regularizers (like L1) in a distributed manner."
+
+structural_prerequisites:
+  - "Server maintains a global consensus variable."
+  - "Clients maintain local primal and dual variables."
+  - "Communication must support sending compressed/incremental updates to the server."
+
+execution_logic:
+  - step: "Inactive Client State Persistence"
+    detail: "Clients not selected in the current round S_k do not perform any updates. Their primal and dual variables remain at the previous values."
+    dependency_check: "Requires stateful clients."
+    algebraic_prototype: "if i not in S_k: x_i^{k+1} = x_i^k, z_i^{k+1} = z_i^k"
+
+  - step: "Active Client Lagrangian Minimization"
+    detail: "Selected clients update primal variables by minimizing the Augmented Lagrangian with respect to the current global variable and local dual variable."
+    algebraic_prototype: "x_i^{k+1} approx argmin L_i(x_i, x_bar^k, z_i^k)"
+
+  - step: "Dual Variable Update"
+    detail: "Selected clients update their dual variables based on the consensus violation."
+    algebraic_prototype: "z_i^{k+1} = z_i^k + eta * (x_i^{k+1} - x_bar^k)"
+
+  - step: "Incremental Aggregation"
+    detail: "Server aggregates the difference (delta) of the auxiliary variables from active clients to update the global state, avoiding full recalculation."
+    algebraic_prototype: "x_tilde^{k+1} = x_tilde^k + (1/n) * sum_{i in S_k} (hat_x_i^{k+1} - hat_x_i^k)"
+
+assumptions_required:
+  - "Proper sampling scheme (every client has >0 probability of being selected)."
+  - "Bounded variance of stochastic gradients (if local solver is SGD)."
+
+expected_outcome_form: "Convergence to critical point with O(1/k) rate, supporting partial participation."
+
+source:
+  paper: "FedADMM: A Federated Primal-Dual Algorithm Allowing Partial Participation"
+  arxiv: "2203.15104"
+  section: "Algorithm 2"
+
+tags:
+  - federated-learning
+  - admm
+  - partial-participation
+  - primal-dual

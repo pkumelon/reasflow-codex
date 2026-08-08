@@ -1,0 +1,45 @@
+id: TECH-INCREMENTAL-TO-STATE-SPACE-TRANSFORMATION
+type: proof_technique
+domain: algebraic_manipulation
+
+title: Incremental to State-Space Transformation
+description: A change-of-variable technique to transform algorithms with incremental updates (involving differences x(k+1)-x(k) or sums y(k+1)=y(k)+...) into a canonical state-space form suitable for spectral analysis.
+
+problem_pattern:
+  - "Algorithm involves auxiliary variables updating via cumulative sums (e.g., dual variables, integral action)."
+  - "Direct recursion x(k+1) = f(x(k), x(k-1)) is hard to analyze."
+  - "Need to construct a contractive error system."
+
+structural_prerequisites:
+  - "Update rule: y(k+1) = y(k) + B x(k+1) (Integrator structure)."
+
+execution_logic:
+  - step: "Define State Transformation"
+    detail: "Define a new variable z(k) that removes the cumulative nature. Typically z(k) = y(k) - B x(k) (or similar)."
+    algebraic_prototype: "z(k) = y(k) - B x(k)"
+
+  - step: "Derive z-Dynamics"
+    detail: "Substitute the update rules to find the recursion for z(k+1). This usually reveals a static mapping."
+    algebraic_prototype: "z(k+1) = z(k) + B x(k)"
+
+  - step: "Augment State Vector"
+    detail: "Stack [x(k); z(k)] to form the full state system."
+
+  - step: "Identify System Matrix"
+    detail: "The new system matrix is now constant (time-invariant) and amenable to eigenvalue analysis."
+
+assumptions_required:
+  - "Linear update rules."
+
+expected_outcome_form: "e(k+1) = G * e(k) + perturbation"
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 4.1 (Transformation I)"
+
+tags:
+  - change_of_variables
+  - system_transformation
+  - state_space
+  - integral_action

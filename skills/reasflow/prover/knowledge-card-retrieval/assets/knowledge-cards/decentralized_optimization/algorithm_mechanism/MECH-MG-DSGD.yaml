@@ -1,0 +1,44 @@
+id: MECH-MG-DSGD
+type: algorithm_mechanism
+domain: decentralized_optimization
+title: Decentralized SGD with Multiple Gossip (MG-DSGD)
+description: An algorithm for smooth non-convex decentralized stochastic optimization that achieves optimal convergence rates by combining gradient accumulation with multi-round fast gossip averaging.
+
+problem_pattern:
+  - "Convergence rate is dominated by the spectral gap factor (1-beta) in sparse graphs."
+  - "Communication bandwidth is available, but latency or iteration count is the bottleneck."
+  - "Need to reduce the 'Transient Stage' (time to reach linear speedup)."
+
+structural_prerequisites:
+  - "The algorithm update involves a mixing step with matrix W."
+  - "Gradient accumulation is feasible."
+
+execution_logic:
+  - step: "Gradient Accumulation"
+    detail: "Instead of a single stochastic gradient sample per iteration, accumulate gradients over R rounds (or samples R items) to reduce variance."
+    algebraic_prototype: "g_i^{(k)} = (1/R) * sum_{r=1}^R grad(x_i^{(k)}; xi^{(k,r)})"
+
+  - step: "Local Descent"
+    detail: "Standard local SGD update using the accumulated gradient."
+    algebraic_prototype: "phi_i^{(k+1)} = x_i^{(k)} - gamma * g_i^{(k)}"
+
+  - step: "Fast Gossip Averaging"
+    detail: "Applies an accelerated gossip protocol (e.g., Chebyshev acceleration) for R rounds to the intermediate variables."
+    algebraic_prototype: "x^{(k+1)} = FastGossipAverage(phi^{(k+1)}, W, R)"
+
+assumptions_required:
+  - "Doubly Stochastic W."
+  - "Static Topology."
+
+expected_outcome_form: "Achieves optimal complexity O(sigma/sqrt(nT) + 1/(T*sqrt(1-beta))) for non-convex problems."
+
+source:
+  paper: "Revisiting Optimal Convergence Rate for Smooth and Non-convex Stochastic Decentralized Optimization"
+  arxiv: "2210.07863"
+  algorithm: "Algorithm 1"
+
+tags:
+  - acceleration
+  - chebyshev_acceleration
+  - multi_round_gossip
+  - spectral_gap

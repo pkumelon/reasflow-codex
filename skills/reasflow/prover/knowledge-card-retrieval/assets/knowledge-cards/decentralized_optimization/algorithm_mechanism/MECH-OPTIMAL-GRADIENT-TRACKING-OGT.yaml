@@ -1,0 +1,49 @@
+id: MECH-OPTIMAL-GRADIENT-TRACKING-OGT
+type: algorithm_mechanism
+domain: optimization
+
+title: Optimal Gradient Tracking (OGT)
+description: A decentralized optimization algorithm achieving optimal gradient computation and communication complexities by combining Snapshot Gradient Tracking with Loopless Chebyshev Acceleration.
+
+problem_pattern:
+- "Need to improve communication complexity dependence on graph condition number (1/sqrt(gap) instead of 1/gap)."
+- "Standard acceleration techniques (Chebyshev) usually require inner loops."
+- "Gradient Tracking is needed to handle heterogeneous data."
+
+structural_prerequisites:
+- "Augmented gossip matrix W_tilde (2n x 2n) constructed from standard W and spectral gap information."
+- "Snapshot mechanism for gradient tracking."
+- "Momentum variables for acceleration."
+
+execution_logic:
+- step: "Variable Augmentation"
+  detail: "Map n-dim variables to 2n-dim Cat-type variables (stacking the variable twice or maintaining history)."
+  algebraic_prototype: "X_cat = [X; X], W_tilde = [(1+eta)W, -eta I; I, 0]"
+
+- step: "Accelerated Tracking Update"
+  detail: "Update tracking variables using the augmented matrix W_tilde. This implicitly applies Chebyshev polynomials."
+  algebraic_prototype: "Z_tilde^{k+1} = (1+beta)^{-1} W_tilde (Z_tilde^k + beta X_cat^k - eta G_tilde^k + ...)"
+
+- step: "Loopless Execution"
+  detail: "Perform updates sequentially without inner communication loops. The augmented matrix handles the 'acceleration' over time."
+
+- step: "Snapshot Integration"
+  detail: "Use snapshot points updated probabilistically to reduce gradient computation frequency and variance."
+
+assumptions_required:
+- "L-Smoothness and Strong Convexity."
+- "Undirected connected graph."
+- "Knowledge of spectral gap (or estimate) to construct W_tilde."
+
+expected_outcome_form: "Communication complexity O(sqrt(kappa/gap) * log(1/eps)) and Gradient complexity O(sqrt(kappa) * log(1/eps))."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 4 (OGT)"
+
+tags:
+- optimal_complexity
+- chebyshev_acceleration
+- loopless
+- gradient_tracking

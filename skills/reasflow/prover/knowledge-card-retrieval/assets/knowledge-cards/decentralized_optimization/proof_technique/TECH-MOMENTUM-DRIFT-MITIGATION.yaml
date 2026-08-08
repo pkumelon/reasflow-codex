@@ -1,0 +1,44 @@
+id: TECH-MOMENTUM-DRIFT-MITIGATION
+domain: Decentralized Optimization
+type: Proof Technique
+title: Drift Mitigation via Global Momentum Anchoring
+description: A technique to bound the divergence of local models by anchoring their updates to a globally shared, slowly changing momentum vector.
+
+problem_pattern:
+  - "Local updates $x_i^{r,k}$ drift away from $x^r$ due to $\\nabla f_i \\neq \\nabla f$."
+  - "Standard drift bound $E[||x_i - x||^2]$ depends on heterogeneity $\\zeta^2$."
+  - "Need to suppress the heterogeneity term in the drift bound."
+
+structural_prerequisites:
+  - "Update rule must be a convex combination: $\\beta \\text{Local} + (1-\\beta) \\text{Global}$."
+  - "Global term must be constant during the local steps."
+
+execution_logic:
+  - step: "Drift Decomposition"
+    detail: "Decompose the local update variance into a 'momentum' part and a 'gradient' part."
+    algebraic_prototype: "||\\Delta x_i||^2 \\approx \\eta^2 ( \\beta^2 ||\\nabla f_i||^2 + (1-\\beta)^2 ||g^r||^2 )"
+    dependency_check: "Uses Young's Inequality; assumes cross-terms can be bounded or are small."
+
+  - step: "Heterogeneity Suppression"
+    detail: "Observe that the heterogeneity term $||\\nabla f_i - \\nabla f||^2$ is scaled by $\\beta^2$."
+    algebraic_prototype: "Drift \\le K \\eta^2 ( \\beta^2 \\zeta^2 + (1-\\beta)^2 ||g||^2 )"
+
+  - step: "Drift Recursion"
+    detail: "Instead of a static bound, establish a recursion where the drift depends on the momentum error."
+    algebraic_prototype: "U_{r} \\le \\rho U_{r-1} + \\eta^2 \\beta^2 \\text{Noise}"
+
+assumptions_required:
+  - "Bounded Gradient Variance (sigma^2)"
+  - "Lipschitz Smoothness"
+
+expected_outcome_form: "Drift U_r is bounded by momentum error E_r plus small noise, removing direct dependence on zeta."
+
+source:
+  paper: "Momentum Benefits Non-IID Federated Learning Simply and Provably"
+  arxiv: "2306.16504"
+  section: "Lemma 3 & 4"
+
+tags:
+  - drift-analysis
+  - momentum
+  - bounding-technique

@@ -1,0 +1,44 @@
+id: TECH-AMORTIZED-DRIFT-ANALYSIS
+domain: Decentralized Optimization
+type: Proof Technique
+title: Amortized Drift Analysis via Gradient History
+description: A proof technique that bounds the cumulative client drift by the cumulative gradient norm, eliminating the need for bounded heterogeneity assumptions.
+
+problem_pattern:
+  - "Convergence analysis fails because drift bound contains a non-vanishing constant $\\zeta^2$."
+  - "Unbounded data heterogeneity $\\zeta \\to \\infty$."
+  - "Constant learning rate is required (preventing diminishing $\\eta$ solutions)."
+
+structural_prerequisites:
+  - "The drift term $\\Xi_r$ must satisfy a recursive inequality involving $\\|\\nabla f(x^r)\\|^2$."
+  - "The descent lemma must provide a negative $-\\eta \\|\\nabla f(x^r)\\|^2$ term."
+
+execution_logic:
+  - step: "Recursive Drift Bound"
+    detail: "Establish a recursion for the drift proxy (e.g., gradient estimation error or model divergence)."
+    algebraic_prototype: "\\Xi_r \\le (1-\\alpha) \\Xi_{r-1} + C \\eta^2 \\|\\nabla f(x^r)\\|^2 + \\text{Noise}"
+
+  - step: "Telescoping Summation"
+    detail: "Sum the recursion over $r=0 \\dots R-1$. The self-contracting term $(1-\\alpha)$ allows bounding $\\sum \\Xi_r$ by $\\sum \\|\\nabla f(x^r)\\|^2$."
+    algebraic_prototype: "\\sum_{r=0}^{R-1} \\Xi_r \\le \\frac{C}{\\alpha} \\sum_{r=0}^{R-1} \\|\\nabla f(x^r)\\|^2 + \\frac{R}{\\alpha} \\text{Noise}"
+
+  - step: "Absorption into Descent Lemma"
+    detail: "Substitute the summed drift into the global descent inequality. Ensure the coefficient of $\\sum \\|\\nabla f(x^r)\\|^2$ remains negative."
+    dependency_check: "Requires $\\eta$ to be small enough such that $C_{\\text{drift}} < C_{\\text{descent}}$."
+    algebraic_prototype: "Final_Sum \\le ( -\\frac{1}{2} + \\text{Gain}_{\\text{drift}} ) \\sum \\|\\nabla f\\|^2 + \\text{Const}"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Existence of global minimum"
+
+expected_outcome_form: "Total drift is bounded by O(Sum of Gradients), allowing convergence proof."
+
+source:
+  paper: "Momentum Benefits Non-IID Federated Learning Simply and Provably"
+  arxiv: "2306.16504"
+  section: "Lemma 4 & Proof of Theorem 1"
+
+tags:
+  - amortized-analysis
+  - drift-bound
+  - unbounded-heterogeneity

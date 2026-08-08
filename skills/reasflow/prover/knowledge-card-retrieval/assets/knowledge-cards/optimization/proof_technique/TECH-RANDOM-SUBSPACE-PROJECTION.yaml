@@ -1,0 +1,53 @@
+id: TECH-RANDOM-SUBSPACE-PROJECTION
+type: proof_technique
+domain: optimization
+title: Random Subspace Projection for Noise Robustness
+description: >
+  A technique to ensure convergence in subspace optimization when gradient noise is dominant (e.g., near local minima). Instead of using SVD which might capture noise components, use random projections sampled from the Stiefel manifold.
+  This technique relies on the property that random projections are unbiased in expectation (up to a scaling factor) and do not preferentially align with noise directions.
+tags:
+  - optimization
+  - subspace-optimization
+  - random-projection
+  - stochastic-gradient
+  - noise-robustness
+
+problem_pattern:
+  - "Gradient noise dominates signal near convergence."
+  - "SVD-based subspace selection captures noise."
+  - "Need unbiased subspace projection."
+
+structural_prerequisites:
+  - "Algorithm uses subspace projection."
+  - "Random projection matrices sampled from Stiefel manifold."
+
+execution_logic:
+  - step: "Core Idea"
+    detail: >
+      In stochastic optimization, when the true gradient is small (near convergence), the stochastic gradient is dominated by noise. SVD-based subspace selection (like in GaLore) greedily selects the largest singular values, which correspond to noise directions, leading to biased updates and non-convergence.
+      Random subspace projection (as in GoLore) samples projection matrices $\mP \sim \mathcal{U}(\mathrm{St}_{m,r})$ uniformly.
+    algebraic_prototype: "P ~ Uniform(St(m,r))"
+
+  - step: "Key Properties - Unbiasedness"
+    detail: '$\E[\mP\mP^\top] = \frac{r}{m}\mI$.'
+    algebraic_prototype: "E[P P^T] = (r/m) I"
+
+  - step: "Key Properties - Expected Projection Error"
+    detail: 'For any matrix $\mG$, $\E[\|\mP\mP^\top\mG - \mG\|_F^2] = (1 - \frac{r}{m})\|\mG\|_F^2$.'
+    algebraic_prototype: "E[||P P^T G - G||^2] = (1 - r/m)||G||^2"
+
+  - step: "Application in Proofs"
+    detail: >
+      When bounding the error term $\|\tilde{\mM}^{(t)} - \nabla f(\vx^{(t)})\|^2$, the random projection property allows decomposing the error into a contraction part and a noise variance part, without the bias term that appears in SVD-based analysis under anisotropic noise.
+      Specifically, $\E[\|(\beta_1\mP\mP^\top - \mI)\nabla f\|^2] \le (1 - \delta \beta_1)\|\nabla f\|^2$, providing the necessary contraction.
+    algebraic_prototype: "E[||(beta P P^T - I) grad f||^2] <= (1 - delta beta)||grad f||^2"
+
+assumptions_required:
+  - "Random Projection from Stiefel Manifold"
+
+expected_outcome_form: "Unbiased projection error bound."
+
+source:
+  paper: "GoLore"
+  arxiv: "N/A"
+  section: "N/A"

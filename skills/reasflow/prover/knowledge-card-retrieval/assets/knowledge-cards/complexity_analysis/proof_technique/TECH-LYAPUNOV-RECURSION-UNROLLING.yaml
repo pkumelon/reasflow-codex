@@ -1,0 +1,39 @@
+id: TECH-LYAPUNOV-RECURSION-UNROLLING
+domain: Optimization
+type: Proof Technique
+title: Convergence Rate Derivation via Recursion Unrolling
+description: A set of standard lemmas for deriving final convergence rates (linear or sub-linear) from scalar recursive inequalities obtained from Lyapunov analysis.
+
+problem_pattern:
+  - "After Lyapunov analysis, one obtains a recursive inequality of the form $d_r \\le (1 - \\rho) d_{r-1} + C$ or similar."
+  - "Need to solve this recursion to state the final complexity $O(1/T)$ or $O(e^{-\\rho T})$."
+
+structural_prerequisites:
+  - "A non-negative sequence $d_r$ (e.g., squared norm error or function value gap)."
+  - "parameters like step-size $\\eta$, contraction factor $\\mu$."
+
+execution_logic:
+  - step: "Linear Convergence Case"
+    detail: "For $d_r \\le (1 - \\mu \\eta) d_{r-1} + c \\eta^2$, apply weighted averaging with weights $w_r = (1-\\mu\\eta)^{-r}$."
+    algebraic_prototype: "Rate \\approx O(\\mu d_0 \\exp(-\\mu \\eta R) + \\frac{c}{\\mu R})"
+    source_ref: "Lemma 1 (SCAFFOLD)"
+
+  - step: "Sub-linear Convergence Case"
+    detail: "For summations $\\sum d_r \\le \\frac{d_0}{\\eta} + C \\eta R$, optimize $\\eta$."
+    algebraic_prototype: "Rate \\approx O(\\frac{1}{\\sqrt{R}})"
+    source_ref: "Lemma 2 (SCAFFOLD)"
+
+assumptions_required:
+  - "Step-size $\\eta$ must be small enough to ensure coefficients are positive."
+
+expected_outcome_form: "Final convergence rate theorem statement."
+
+source:
+  paper: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+  arxiv: "1910.06378"
+  section: "Appendix A, Lemma 1 & 2"
+
+tags:
+  - proof-technique
+  - convergence-rate
+  - recursion-solver

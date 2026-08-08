@@ -1,0 +1,51 @@
+id: PLAN-SCAFFOLD-CONVERGENCE
+domain: Decentralized Optimization
+type: Proof Plan
+title: Convergence Analysis Plan for SCAFFOLD
+description: A structured proof framework for demonstrating the convergence of SCAFFOLD in convex and non-convex settings, focusing on bounding the coupled errors of model parameters and control variates.
+
+problem_pattern:
+  - "Proving convergence of an algorithm with stateful variables (control variates) that are updated periodically or stochastically."
+  - "Handling the interaction between Client Drift and Control Lag."
+
+structural_prerequisites:
+  - "Lyapunov function approach tracking both Primal Gap $f(x) - f^*$ and Control Lag $\\mathcal{E}_r$."
+  - "Separation of Server Variance, Control Lag evolution, and Client Drift."
+
+execution_logic:
+  - step: "Bound Server Variance"
+    detail: "Express the variance of the aggregated server update in terms of the Control Lag $\\mathcal{E}_{r-1} = \\frac{1}{N} \\sum E||c_i - \\nabla f_i(x^*)||^2$ and Client Drift $\\mathcal{B}_r$."
+    algebraic_prototype: "E||\\Delta x||^2 \\le \\text{const} \\cdot (\\mathcal{E}_{r-1} + \\mathcal{B}_r + \\sigma^2)"
+
+  - step: "Control Lag Recursion"
+    detail: "Derive a recursion for the control variate error (Control Lag). Show it contracts (due to sampling/updating) but increases with drift."
+    algebraic_prototype: "\\mathcal{E}_r \\le (1 - \\frac{S}{N}) \\mathcal{E}_{r-1} + \\text{Drift Terms}"
+
+  - step: "Bound Client Drift"
+    detail: "Bound the accumulated local changes (Drift) $\\mathcal{B}_r$ in terms of the Control Lag and Gradient Norm."
+    algebraic_prototype: "\\mathcal{B}_r \\le \\eta^2 K^2 (\\mathcal{E}_{r-1} + \\text{Gradient} + \\sigma^2)"
+
+  - step: "One-Round Progress (Descent Lemma)"
+    detail: "Combine the above into a potential function descent inequality. Define Lyapunov function $V_r = (f(x^r) - f^*) + \\alpha \\mathcal{E}_r$."
+    algebraic_prototype: "V_r \\le (1 - \\rho) V_{r-1} - \\eta ||\\nabla f||^2 + \\text{Noise}"
+
+  - step: "Telescoping Sum / Unrolling"
+    detail: "Sum the descent inequality over rounds to obtain final convergence rates."
+
+assumptions_required:
+  - "Lipschitz Smoothness"
+  - "Bounded Variance (within-client)"
+  - "(G, B)-Bounded Gradient Dissimilarity is NOT required (unlike FedAvg)."
+
+expected_outcome_form: "Convergence rates O(1/T) or O(1/sqrt(T)) that do not depend on heterogeneity G, proving linear speedup with N."
+
+source:
+  paper: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+  arxiv: "1910.06378"
+  section: "Appendix B (Theorem 1 Proof)"
+
+tags:
+  - proof-plan
+  - convergence-analysis
+  - lyapunov-function
+  - scaffold

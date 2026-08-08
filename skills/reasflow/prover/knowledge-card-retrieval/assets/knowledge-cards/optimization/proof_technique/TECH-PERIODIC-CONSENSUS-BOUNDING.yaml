@@ -1,0 +1,52 @@
+id: TECH-PERIODIC-CONSENSUS-BOUNDING
+type: proof_technique
+domain: optimization
+
+title: Periodic Consensus Bounding with Unified Dominance
+description: A technique to bound the consensus error (distance between local and average iterates) when synchronization happens periodically, handling both communication-dominated and period-dominated regimes.
+
+problem_pattern:
+  - "Need to bound ||x_k - x_bar_k||^2 when global averaging happens every H steps."
+  - "The algorithm mixes local updates (Gossip/SGD) with periodic global synchronization."
+  - "Requires unified analysis for 'sparse/large' networks (beta -> 1) and 'dense/small' networks (beta -> 0)."
+
+structural_prerequisites:
+  - "Global averaging occurs at iterations mod(k, H) == 0."
+  - "Between averaging, iterates evolve via local updates or gossip."
+  - "Network mixing matrix W has spectral gap 1-beta."
+
+execution_logic:
+  - step: "Period-Aware Decomposition"
+    detail: "Decompose the error accumulation starting from the last synchronization step tau(k)."
+    algebraic_prototype: "x_{k+1} - x_bar_{k+1} = (W - J)^{k+1-tau(k)} (x_{tau(k)} - x_bar_{tau(k)}) + Accumulation_Terms"
+    dependency_check: "x_{tau(k)} must equal x_bar_{tau(k)} due to global averaging."
+
+  - step: "Dual-Regime Bounding"
+    detail: "Derive two separate bounds: one dominated by the mixing rate (1/(1-beta)) and one dominated by the period length H."
+    algebraic_prototype: "Bound 1 <= O(H * ...); Bound 2 <= O(1/(1-beta) * ...)"
+
+  - step: "Unified Dominance Construction"
+    detail: "Combine the bounds using the minimum of the two dominance factors."
+    algebraic_prototype: "D_beta = min(H, 1/(1-beta))"
+
+  - step: "Recursive Error Summation"
+    detail: "Sum the errors over the period, applying the unified factor D_beta."
+    algebraic_prototype: "Sum ||x - x_bar||^2 <= O(D_beta * gamma^2 * ...)"
+
+assumptions_required:
+  - "Lipschitz smoothness of objective functions."
+  - "Bounded variance of stochastic gradients."
+  - "Doubly stochastic weight matrix."
+
+expected_outcome_form: "An upper bound on the expected consensus error involving D_beta = min(H, 1/(1-beta)), demonstrating tightness in both regimes."
+
+source:
+  paper: "Accelerating Gossip SGD with Periodic Global Averaging"
+  arxiv: "2105.09080"
+  section: "Lemma 2, 3, 4"
+
+tags:
+  - consensus-error
+  - periodic-averaging
+  - gossip-algorithm
+  - unified-bound

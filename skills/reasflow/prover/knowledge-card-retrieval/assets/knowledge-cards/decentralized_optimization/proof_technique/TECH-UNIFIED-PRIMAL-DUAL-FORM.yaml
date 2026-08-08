@@ -1,0 +1,40 @@
+id: TECH-UNIFIED-PRIMAL-DUAL-FORM
+type: proof_technique
+domain: decentralized_optimization
+
+title: Unified Primal-Dual Algorithmic Form (UDA)
+description: A generalized matrix-vector recurrence relation that encapsulates multiple decentralized optimization algorithms (EXTRA, D^2, Gradient Tracking, DLM) by parameterizing them via polynomial matrices of the graph Laplacian.
+
+problem_pattern:
+  - "Need to analyze or compare multiple decentralized algorithms."
+  - "Algorithms look different (some track gradients, some use differences) but share underlying structure."
+
+structural_prerequisites:
+  - "Algorithms can be written as: x(k+1) = A(C x(k) - alpha grad) - B y(k); y(k+1) = y(k) + B x(k+1)."
+
+execution_logic:
+  - step: "Identify Matrices"
+    detail: "Map the specific algorithm update rules to the matrices A, B, C."
+    algebraic_prototype: "For EXTRA: A=I, B=(I-W)^1/2, C=W."
+
+  - step: "Verify Commutativity"
+    detail: "Ensure A, B, C are polynomials of the mixing matrix W, implying they commute and share eigenvectors."
+
+  - step: "Canonical Error Dynamics"
+    detail: "The unified form allows deriving a single error dynamic system: e(k+1) = G e(k) + perturbation, applicable to all instances."
+
+assumptions_required:
+  - "W is symmetric (for simple polynomial mapping)."
+
+expected_outcome_form: "A single convergence theorem covering multiple algorithms."
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 2"
+
+tags:
+  - unified_framework
+  - primal_dual
+  - algorithm_design
+  - generalized_analysis

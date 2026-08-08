@@ -1,0 +1,49 @@
+id: MECH-FEDSUB-MECHANISM
+type: algorithm_mechanism
+domain: federated_learning
+
+title: FedSub (Subspace Federated Learning with Dual Correction)
+description: An efficient FL algorithm that projects client updates into low-dimensional subspaces to save resources while maintaining low-dimensional dual variables to correct client drift caused by data heterogeneity.
+
+problem_pattern:
+  - "FL with high communication/computation costs (e.g., LLM training)."
+  - "Non-IID data causing slow convergence or divergence."
+  - "Need for a unified solution for efficiency and drift correction."
+
+structural_prerequisites:
+  - "Projection matrices P^k varying per round but shared across clients (or synchronized)."
+  - "Dual variables initialized to zero."
+
+execution_logic:
+  - step: "Local Subspace Update"
+    detail: "Clients update a low-dim variable B_i using projected gradients and a fixed low-dim dual variable Lambda_i."
+    algebraic_prototype: "B_i += -eta * (P^T g_i + Lambda_i/tau)"
+
+  - step: "Compressed Uplink"
+    detail: "Clients send only the low-dim accumulation B_i (size r) to the server."
+    algebraic_prototype: "Send B_i^{tau} in R^r"
+
+  - step: "Dual Variable Update"
+    detail: "Clients update their local dual variable using the difference between their update and the global average update, projected into the *next* subspace."
+    algebraic_prototype: "Lambda_i_next = P_next^T P_curr (Lambda_i + B_i - B_avg)"
+
+  - step: "Global Model Update"
+    detail: "Server aggregates low-dim updates, projects them back to full space, and updates the global model."
+    algebraic_prototype: "x_new = x_old + P_curr * Average(B_i)"
+
+assumptions_required:
+  - "Projection matrices satisfy E[P P^T] = I for unbiasedness."
+  - "Dual update frequency matches global communication frequency."
+
+expected_outcome_form: "Communication O(r), Memory O(r + m), with drift-corrected convergence."
+
+source:
+  paper: "An Efficient Subspace Algorithm for Federated Learning on Heterogeneous Data"
+  arxiv: "2509.05213"
+  section: "Algorithm 1"
+
+tags:
+  - federated-learning
+  - subspace-method
+  - communication-efficient
+  - dual-correction

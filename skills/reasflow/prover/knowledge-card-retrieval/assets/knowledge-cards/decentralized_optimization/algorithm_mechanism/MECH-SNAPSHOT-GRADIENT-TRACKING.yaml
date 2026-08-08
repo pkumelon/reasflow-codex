@@ -1,0 +1,52 @@
+id: MECH-SNAPSHOT-GRADIENT-TRACKING
+type: algorithm_mechanism
+domain: optimization
+
+title: Snapshot Gradient Tracking with Negative Momentum
+description: A gradient tracking mechanism that tracks the gradient of a snapshot point to reduce consensus error, coupled with negative momentum to control drift.
+
+problem_pattern:
+  - "Standard gradient tracking suffers from large consensus errors due to iterate drift."
+  - "Need to decouple the consensus speed from the gradient computation frequency."
+  - "Gradient differences ||∇f(x_k) - ∇f(x_{k-1})|| are too large for standard tracking."
+
+structural_prerequisites:
+  - "Requires a snapshot variable Q updated with probability p (or periodically)."
+  - "Requires a 'magnet' variable U to pull iterates back towards history."
+  - "Assumes consensus matrix W is available."
+
+execution_logic:
+  - step: "Snapshot Update"
+    detail: "Update snapshot point Q and magnet U with probability p. This keeps Q relatively stable."
+    dependency_check: "Bernoulli variable xi must be independent of current gradient noise if any."
+    algebraic_prototype: "Q^{k+1} = (1-xi)Q^k + xi X^k"
+
+  - step: "Gradient Tracker Update"
+    detail: "Track gradient of Q instead of X. When Q doesn't update, just mix G. When Q updates, add difference."
+    algebraic_prototype: "G^{k+1} = W G^k + xi (∇f(X^k) - ∇f(Q^k))"
+
+  - step: "Negative Momentum Coupling"
+    detail: "Use U (which tracks Q's average) in the update of X to prevent X from drifting too far from Q."
+    algebraic_prototype: "X^k = (1 - alpha - tau)Y^k + alpha Z^k + tau U^k"
+
+  - step: "Estimator Construction"
+    detail: "Construct an unbiased gradient estimator using the tracker G and a correction term."
+    algebraic_prototype: "d_k = G^k + zeta (∇f(X^k) - ∇f(Q^k))"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Strong Convexity (for current analysis, though likely relaxable)"
+  - "Connected Graph (Spectral gap > 0)"
+
+expected_outcome_form: "Consensus error of tracker depends on ||∇f(X) - ∇f(Q)||^2 rather than ||∇f(X_k) - ∇f(X_{k-1})||^2."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 3 (SS-GT)"
+
+tags:
+  - gradient_tracking
+  - snapshot
+  - variance_reduction
+  - decentralized

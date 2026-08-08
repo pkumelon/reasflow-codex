@@ -1,0 +1,58 @@
+id: PLAN-OPTIMAL-GRADIENT-TRACKING
+type: proof_plan
+domain: optimization
+
+title: Single-Loop Optimal Gradient Tracking (OGT)
+description: A proof strategy for achieving optimal gradient and communication complexity in decentralized optimization using SS-GT and LCA.
+
+problem_pattern:
+- "Minimize finite sum of strongly convex functions over a network."
+- "Goal: Optimal gradient complexity O(sqrt(kappa)) and communication complexity O(sqrt(kappa/gap))."
+- "Constraint: Single-loop algorithm (no inner consensus loops)."
+
+structural_prerequisites:
+- "Undirected connected graph."
+- "L-smooth and mu-strongly convex functions."
+
+execution_logic:
+- step: "Algorithm Design (SS-GT)"
+  detail: "Adopt Snapshot Gradient Tracking to decouple gradient computation from communication."
+  reference: "TECH-SNAPSHOT-GRADIENT-TRACKING"
+
+- step: "Acceleration (LCA)"
+  detail: "Apply Loopless Chebyshev Acceleration to the consensus variables to improve gap dependence."
+  reference: "TECH-LOOPLESS-CHEBYSHEV-ACCELERATION"
+
+- step: "Average Dynamics Analysis"
+  detail: "Analyze the dynamics of the network averages (bar variables) as a centralized accelerated method with noise."
+  algebraic_prototype: "Analyze bar{x}^{k+1}, bar{z}^{k+1} system."
+
+- step: "Consensus Error Bounding"
+  detail: "Use a global Lyapunov function to bound all consensus errors."
+  reference: "TECH-LYAPUNOV-CONSENSUS-BOUNDING"
+
+- step: "Gradient Difference Bounding"
+  detail: "Bound the gradient difference term ||grad(X) - grad(Q)||^2 appearing in perturbations."
+  algebraic_prototype: "||g(X) - g(Q)||^2 <= L^2(||X-Q||^2) <= ..."
+
+- step: "Total Complexity Proof"
+  detail: "Combine the average dynamics descent and consensus error bounds into a final potential function."
+  algebraic_prototype: "Potential = A*(f(y) - f*) + B*||z - x*||^2 + C*Lyapunov_Consensus"
+
+assumptions_required:
+- "Lipschitz Smoothness"
+- "Strong Convexity"
+- "Symmetric Doubly Stochastic Matrix"
+
+expected_outcome_form: "Linear convergence rate yielding optimal complexities."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 4"
+
+tags:
+- optimal_algorithm
+- decentralized
+- gradient_tracking
+- acceleration

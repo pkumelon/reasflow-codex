@@ -1,0 +1,47 @@
+id: TECH-CONTROL-VARIATE-DRIFT-CORRECTION
+domain: Decentralized Optimization
+type: Proof Technique
+title: Drift Correction via Control Variates
+description: A technique to neutralize the systematic bias (drift) in local updates caused by heterogeneous data by introducing a correction term derived from stateful control variates.
+
+problem_pattern:
+  - "In Federated Learning, $\\nabla f_i(x) \\neq \\nabla f(x)$ causes local updates to drift towards local optima."
+  - "The drift error $||x_i - x||^2$ scales with heterogeneity bounded by $G^2$."
+
+structural_prerequisites:
+  - "Access to an estimate of the global gradient direction $c \\approx \\nabla f(x)$."
+  - "Access to an estimate of the local gradient direction $c_i \\approx \\nabla f_i(x)$."
+
+execution_logic:
+  - step: "Correction Term Construction"
+    detail: "Modify the local gradient oracle to include a shift $(c - c_i)$."
+    algebraic_prototype: "v_i(y) = g_i(y) - c_i + c"
+
+  - step: "Drift Analysis with Correction"
+    detail: "Analyze the deviation of the corrected update from the ideal global update $\\nabla f(y)$."
+    algebraic_prototype: "E||v_i(y) - \\nabla f(y)||^2 \\approx E||(g_i(y) - c_i) - (\\nabla f(y) - c)||^2"
+
+  - step: "Independence from Heterogeneity"
+    detail: "Show that the error depends on the quality of control variate approximation $||c_i - \\nabla f_i(x)||^2$ rather than the dissimilarity $||\\nabla f_i(x) - \\nabla f(x)||^2$."
+    algebraic_prototype: "Error \\le ||c_i - \\nabla f_i(x)||^2"
+
+  - step: "Smoothness Bounding"
+    detail: "Use Lipschitz smoothness to bound the approximation error by the distance moved."
+    algebraic_prototype: "||\\nabla f_i(y) - \\nabla f_i(x)||^2 \\le \\beta^2 ||y - x||^2"
+
+assumptions_required:
+  - "Lipschitz Smoothness of component functions $f_i$."
+  - "Unbiased stochastic gradients."
+
+expected_outcome_form: "The convergence rate's dependence on heterogeneity parameter $G$ is removed or replaced by a decaying term related to the control variate lag."
+
+source:
+  paper: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+  arxiv: "1910.06378"
+  section: "Section 4 and Appendix B (Proof Sketch)"
+
+tags:
+  - proof-technique
+  - variance-reduction
+  - control-variates
+  - heterogeneity-robustness

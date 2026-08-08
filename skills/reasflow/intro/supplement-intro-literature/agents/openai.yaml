@@ -1,0 +1,4 @@
+interface:
+  display_name: "Supplement Intro Literature"
+  short_description: "补齐 Introduction 缺失的可信文献与 BibTeX"
+  default_prompt: "Use $supplement-intro-literature to resolve missing Introduction references with ReaScholar first and Semantic Scholar fallback."

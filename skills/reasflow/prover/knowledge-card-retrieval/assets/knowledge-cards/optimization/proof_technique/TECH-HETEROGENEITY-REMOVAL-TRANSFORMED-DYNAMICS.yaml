@@ -1,0 +1,49 @@
+id: TECH-HETEROGENEITY-REMOVAL-TRANSFORMED-DYNAMICS
+type: proof_technique
+domain: optimization
+
+title: Heterogeneity Removal via Transformed Error Dynamics
+description: A technique to analyze decentralized algorithms (like Exact Diffusion/NIDS) by lifting the state space to decouple consensus error from data heterogeneity bias.
+
+problem_pattern:
+- "Consensus error bound depends on data heterogeneity (bias term) in standard D-SGD analysis."
+- "Algorithm uses momentum or correction steps (like D2/NIDS) to handle heterogeneity."
+- "Need to show that the algorithm converges to the exact solution despite local data differences."
+
+structural_prerequisites:
+- "Algorithm must have a mechanism (e.g., correction step, momentum) that cancels bias at the fixed point."
+- "Update rule can be written as a linear time-invariant system (LTI) with state [X_k; X_{k-1}]."
+
+execution_logic:
+- step: "State Space Lifting"
+  detail: "Rewrite the update rule as a linear system of a larger state vector (e.g., including past iterates)."
+  algebraic_prototype: "U_{k+1} = M U_k + B G_k"
+
+- step: "Fixed Point Subtraction"
+  detail: "Define the fixed point U* satisfying the stationarity conditions (gradients match heterogeneity)."
+  algebraic_prototype: "U_k - U* evolves according to M(U_k - U*) + B(G_k - G*)"
+
+- step: "Modal Decomposition"
+  detail: "Diagonalize the mixing matrix component of M. Separate the eigenvalue 1 (average mode) from eigenvalues < 1 (consensus modes)."
+  algebraic_prototype: "Z_k = T (U_k - U*), where T diagonalizes the mixing block."
+
+- step: "Contraction Analysis"
+  detail: "Show that the transformed variable Z_k (representing consensus error) follows a contraction dynamics Z_{k+1} = Lambda Z_k + Noise, where rho(Lambda) < 1."
+  dependency_check: "Ensure the heterogeneity term (bias) is fully contained in U* and does not appear in the Z_k recurrence."
+
+assumptions_required:
+- "Symmetric, doubly stochastic mixing matrix."
+- "Linear update rule."
+
+expected_outcome_form: "||Z_{k+1}||^2 <= (1-rho)||Z_k||^2 + Constant * ||Gradient_Noise||^2"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Appendix B (Transformed Error Dynamics)"
+
+tags:
+- decentralized-optimization
+- exact-diffusion
+- bias-correction
+- state-space-analysis

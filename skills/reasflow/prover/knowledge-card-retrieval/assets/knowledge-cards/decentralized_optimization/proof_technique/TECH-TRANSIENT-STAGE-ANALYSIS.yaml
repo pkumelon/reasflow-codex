@@ -1,0 +1,44 @@
+id: TECH-TRANSIENT-STAGE-ANALYSIS
+type: proof_technique
+domain: optimization_analysis
+title: Transient Stage Analysis for Linear Speedup
+description: |
+  A technique to quantify the "time to reach linear speedup" for distributed optimization algorithms. It separates the convergence rate into a "dominant term" (stochastic) and "higher-order terms" (network).
+
+problem_pattern:
+  - "Convergence bound has form A/sqrt(T) + B/T."
+  - "Need to define when A/sqrt(T) dominates B/T."
+  - "Comparing algorithms based on their network sensitivity."
+
+structural_prerequisites:
+  - "Explicit convergence rate bound available."
+  - "Terms are polynomials in T."
+
+execution_logic:
+  - step: "Rate Decomposition"
+    detail: "Write the convergence bound in the form O(sigma/sqrt(nT) + E_net(T)). Identify the Linear Speedup Term."
+    algebraic_prototype: "Rate = Term_Stochastic + Term_Network"
+
+  - step: "Inequality Solving"
+    detail: "Set up inequality Term_Network <= Term_Stochastic. Solve for minimal T."
+    algebraic_prototype: "C/T <= sigma/sqrt(T) => T >= (C/sigma)^2"
+
+  - step: "Complexity Comparison"
+    detail: "Compare the required T (Transient Iterations) for different algorithms."
+    algebraic_prototype: "T_transient_A vs T_transient_B"
+
+assumptions_required:
+  - "T is sufficiently large."
+
+expected_outcome_form: "Transient Time expression T >= O(poly(n, 1-beta))."
+
+source:
+  paper: "Accelerating Gossip SGD with Periodic Global Averaging"
+  arxiv: "2105.09080"
+  section: "Discussion"
+
+tags:
+  - complexity-analysis
+  - linear-speedup
+  - transient-time
+  - convergence-rate

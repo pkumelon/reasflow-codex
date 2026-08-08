@@ -1,0 +1,55 @@
+id: PLAN-HYBRID-COMMUNICATION-RATE-ANALYSIS
+type: proof_plan
+domain: optimization
+
+title: Convergence Analysis for Hybrid Communication Algorithms
+description: A proof plan for analyzing algorithms that alternate between different communication primitives (e.g., Gossip and Global Averaging), focusing on unifying consensus bounds across different regimes.
+
+problem_pattern:
+  - "Algorithm switches between two or more communication modes (e.g., Local mixing vs. Global sync)."
+  - "Need to prove that the hybrid approach is strictly better than using either mode exclusively."
+  - "The dominant error source shifts depending on network topology (beta) and period (H)."
+
+structural_prerequisites:
+  - "The algorithm has a periodic structure defined by H."
+  - "Consensus error resets or drastically reduces at specific intervals."
+  - "Standard Descent Lemma applies (objective smoothness)."
+
+execution_logic:
+  - step: "Descent Lemma Establishment"
+    detail: "Establish the standard descent inequality linking objective decrease to gradient norm and consensus error."
+    algebraic_prototype: "f(x_{k+1}) <= f(x_k) - gamma*|grad|^2 + L*gamma*|Consensus_Error|^2"
+
+  - step: "Regime-Specific Consensus Bounding"
+    detail: "Derive separate upper bounds for the consensus error assuming dominance of each communication mode."
+    algebraic_prototype: "Bound_A (Gossip-dominated) vs. Bound_B (Period-dominated)"
+
+  - step: "Unified Bound Construction"
+    detail: "Define a unification factor (e.g., D_beta) that captures the minimum of the regime-specific factors."
+    algebraic_prototype: "Error <= O(min(H, 1/(1-beta)) * ...)"
+
+  - step: "Running Average Aggregation"
+    detail: "Sum the errors over T iterations, carefully handling the periodic reset in the coefficients."
+    algebraic_prototype: "Sum(Error_k) <= C * Sum(Gradient_k) + Constant"
+
+  - step: "Transient Stage Derivation"
+    detail: "Substitute the unified consensus bound into the descent lemma and solve for T to find the linear speedup threshold."
+    algebraic_prototype: "Solve T for Network_Term(T) <= Linear_Term(T)"
+
+assumptions_required:
+  - "Lipschitz smoothness."
+  - "Bounded gradient noise."
+  - "Connected graph (beta < 1)."
+
+expected_outcome_form: "A convergence rate with a unified coefficient D_beta, proving the algorithm adapts to the best-case regime automatically."
+
+source:
+  paper: "Accelerating Gossip SGD with Periodic Global Averaging"
+  arxiv: "2105.09080"
+  section: "Section 3 & Appendix C"
+
+tags:
+  - proof-plan
+  - hybrid-communication
+  - unified-analysis
+  - gossip-pga

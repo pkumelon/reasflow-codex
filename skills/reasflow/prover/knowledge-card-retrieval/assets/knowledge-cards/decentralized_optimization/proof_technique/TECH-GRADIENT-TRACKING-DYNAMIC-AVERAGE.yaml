@@ -1,0 +1,48 @@
+id: TECH-GRADIENT-TRACKING-DYNAMIC-AVERAGE
+type: algorithm_mechanism
+domain: decentralized_optimization
+
+title: Gradient Tracking via Dynamic Average Consensus
+description: A mechanism to allow agents in a distributed network to estimate the global average gradient by maintaining a local auxiliary variable that tracks the dynamic changes in local gradients.
+
+problem_pattern:
+  - "Distributed optimization where local gradients do not sum to zero at the optimum (unlike consensus)."
+  - "Standard distributed gradient descent (DGD) suffers from a steady-state error proportional to the step size."
+  - "Need to correct the local descent direction to align with the global gradient sum."
+
+structural_prerequisites:
+  - "Agents maintain a local estimate y_i of the global average gradient."
+  - "The network topology allows for consensus (e.g., connected, doubly stochastic mixing)."
+
+execution_logic:
+  - step: "Initialize Tracking Variable"
+    detail: "Initialize y_i(0) as the local gradient at the starting point."
+    algebraic_prototype: "y_i(0) = gradient_f_i(x_i(0))"
+
+  - step: "Update Rule Construction"
+    detail: "Update y_i by mixing with neighbors and adding the *difference* of consecutive local gradients (innovation term)."
+    algebraic_prototype: "y(k+1) = W * y(k) + gradient_f(x(k+1)) - gradient_f(x(k))"
+
+  - step: "Conservation Property"
+    detail: "Observe that the sum of y_i over all agents remains equal to the sum of local gradients if the mixing matrix is column-stochastic (or doubly stochastic)."
+    algebraic_prototype: "sum(y_i(k)) = sum(gradient_f_i(x_i(k)))"
+
+  - step: "Convergence to Average"
+    detail: "If x_i converge to a common x, y_i converges to the average of gradients at x, enabling exact convergence to the optimum."
+
+assumptions_required:
+  - "Lipschitz continuous gradients."
+  - "Connected graph."
+
+expected_outcome_form: "y_i -> (1/n) * sum(gradient_f_j)"
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Section 2.1"
+
+tags:
+  - gradient_tracking
+  - dynamic_average_consensus
+  - exact_convergence
+  - variance_reduction

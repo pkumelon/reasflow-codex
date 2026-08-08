@@ -1,0 +1,54 @@
+id: TECH-GRADIENT-TRACKING-ERROR-CYCLE
+type: proof_technique
+domain: decentralized_optimization
+
+title: The Gradient Tracking Error Cycle
+description: The canonical dependency structure used to prove convergence of Gradient Tracking algorithms (like DIGing, EXTRA, NEXT). It models the system as four coupled error variables forming a closed feedback loop.
+
+problem_pattern:
+  - "Proving linear convergence for algorithms that use a 'tracking' variable y to estimate average gradients."
+  - "Directly bounding the distance to optimum is impossible due to consensus errors."
+
+structural_prerequisites:
+  - "Algorithm involves variables: x (decision), y (tracker)."
+  - "Lipschitz continuous gradients."
+
+execution_logic:
+  - step: "Variable 1: Gradient Difference (z)"
+    detail: "Define z(k) = Gradient(x(k)) - Gradient(x(k-1)). This is the 'input' disturbance to the tracker."
+    role: "Source of error for the tracker, bounded by Lipschitz constant * velocity."
+
+  - step: "Variable 2: Tracking Error (y_check)"
+    detail: "Define y_check = y - Average(y). This measures how well agents agree on the gradient direction."
+    role: "Driven by z(k) and the mixing matrix contraction. Drives the Consensus Error."
+    algebraic_dependency: "||y_check|| <= rho * ||y_check_prev|| + ||z||"
+
+  - step: "Variable 3: Consensus Error (x_check)"
+    detail: "Define x_check = x - Average(x). This measures how far agents are from each other."
+    role: "Driven by y_check (incorrect directions pull agents apart). Drives the Optimality Gap."
+    algebraic_dependency: "||x_check|| <= rho * ||x_check_prev|| + alpha * ||y_check||"
+
+  - step: "Variable 4: Optimality Residual (q)"
+    detail: "Define q = x - x_opt. This is the ultimate convergence metric."
+    role: "Driven by x_check (consensus error prevents exact descent). Feeds back into z (via smoothness)."
+    algebraic_dependency: "||q|| <= rho_opt * ||q_prev|| + C * ||x_check||"
+
+  - step: "Closing the Loop"
+    detail: "Use Lipschitz continuity to show ||z|| <= L * ||x(k)-x(k-1)|| <= L * (||q(k)|| + ||q(k-1)||), completing the cycle."
+
+assumptions_required:
+  - "Strong Convexity (for q to decay)."
+  - "Bounded/Contractive Mixing."
+
+expected_outcome_form: "A 4x4 gain matrix or cyclic Small-Gain condition."
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Section 3.4"
+
+tags:
+  - gradient_tracking
+  - error_decomposition
+  - proof_structure
+  - dependency_graph

@@ -1,0 +1,49 @@
+id: TECH-MATRIX-MIXING-CONTRACTION
+type: proof_technique
+domain: algebraic_manipulation
+
+title: B-Step Matrix Mixing Contraction
+description: A fundamental result in consensus theory bounding the contraction of a vector by a product of stochastic matrices over a B-step window.
+
+problem_pattern:
+  - "Need to bound the deviation from consensus (average)."
+  - "The mixing process is time-varying."
+  - "Graph connectivity is guaranteed only over a window of time B."
+
+structural_prerequisites:
+  - "A sequence of doubly stochastic matrices W(k)."
+  - "A joint spectrum property or B-connectedness assumption."
+  - "The vector being contracted is orthogonal to the consensus subspace (span of all-ones vector)."
+
+execution_logic:
+  - step: "Define Product Matrix"
+    detail: "Let W_B(k) be the product of B consecutive mixing matrices."
+    algebraic_prototype: "W_B(k) = W(k) W(k-1) ... W(k-B+1)"
+
+  - step: "Identify Invariant Subspace"
+    detail: "Note that W_B(k) preserves the average (doubly stochastic). The contraction happens on the subspace orthogonal to 1."
+
+  - step: "Apply Joint Spectrum Property"
+    detail: "Use the property that the second largest singular value of the product matrix W_B(k) is strictly less than 1."
+    algebraic_prototype: "sigma(k) = sigma_max(W_B(k) - (1/n)11^T) < 1"
+
+  - step: "Bound the Norm"
+    detail: "The norm of the vector after multiplication is bounded by sigma times the original norm."
+    algebraic_prototype: "|| W_B(k) b ||_Lap <= sigma * || b ||_Lap"
+
+assumptions_required:
+  - "Doubly stochastic matrices."
+  - "Graph is B-connected (or similar spectral condition)."
+
+expected_outcome_form: "||x(k+B) - average|| <= sigma * ||x(k) - average||"
+
+source:
+  paper: "A Linear Geometric Convergence Analysis for Distributed Optimization with Time-Varying Directed Graphs"
+  arxiv: "1607.03218"
+  section: "Lemma 2.4"
+
+tags:
+  - consensus_theory
+  - matrix_analysis
+  - contraction_mapping
+  - time_varying_graphs

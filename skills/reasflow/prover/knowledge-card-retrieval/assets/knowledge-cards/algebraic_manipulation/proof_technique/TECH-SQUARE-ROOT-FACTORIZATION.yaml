@@ -1,0 +1,44 @@
+id: TECH-SQUARE-ROOT-FACTORIZATION
+type: proof_technique
+domain: algebraic_manipulation
+
+title: Coupling Symmetrization via Square-Root Factorization
+description: An algebraic trick to handle coupling terms in Lyapunov analysis by factoring a coupling matrix M into U^2 (or U^T U), allowing cross-terms to be treated as inner products in a transformed space.
+
+problem_pattern:
+  - "Lyapunov analysis involves a term like <x, M y> where M is a positive semidefinite matrix."
+  - "Need to bound or absorb this cross-term into norms like ||x||^2 and ||y||^2."
+  - "Direct Cauchy-Schwarz is too loose or destroys the structure needed for cancellation."
+
+structural_prerequisites:
+  - "The coupling matrix M must be Symmetric Positive Semidefinite (SPSD)."
+  - "The variables x and y must lie in compatible spaces."
+
+execution_logic:
+  - step: "Factorize Coupling Matrix"
+    detail: "Define U = M^{1/2} (or Cholesky factor). This requires M to be SPSD."
+    algebraic_prototype: "Let M = \\tilde{W} - W. Since \\tilde{W} \\succeq W, define U = (\\tilde{W} - W)^{1/2}."
+
+  - step: "Transform Cross-Terms"
+    detail: "Rewrite the bilinear form <x, M y> as <x, U^2 y> = <Ux, Uy>."
+    algebraic_prototype: "2<x, (\\tilde{W}-W)y> = 2<Ux, Uy>"
+
+  - step: "Absorb into Residuals"
+    detail: "Use the identity 2<a, b> = ||a||^2 + ||b||^2 - ||a-b||^2 (or similar) on the transformed variables Ux and Uy. This often matches terms appearing elsewhere in the G-norm expansion."
+    algebraic_prototype: "2<Ux, Uy> cancels with -||Ux||^2 terms from the G-norm difference."
+
+assumptions_required:
+  - "M must be SPSD."
+
+expected_outcome_form: "Complex cross-terms are reduced to sums of squared norms in the range space of U."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Lemma 3.2 (Definition of U)"
+
+tags:
+  - algebra
+  - matrix_factorization
+  - lyapunov_analysis
+  - symmetrization

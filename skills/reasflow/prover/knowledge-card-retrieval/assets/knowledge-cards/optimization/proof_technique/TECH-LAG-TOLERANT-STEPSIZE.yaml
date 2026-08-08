@@ -1,0 +1,55 @@
+id: TECH-LAG-TOLERANT-STEPSIZE
+type: proof_technique
+domain: optimization
+title: Tau-Slow Stepsize Sequences for Lagged Systems
+description: >
+  A technique for defining valid stepsize sequences {eta_t} in systems with time lags, delays, or multi-step accumulation (like Local SGD).
+  It ensures that the stepsize does not decay too fast relative to the system's delay parameter (tau), allowing current bounds to control past errors.
+
+tags:
+  - stepsize-schedule
+  - delay-tolerance
+  - multi-step-methods
+  - convergence-analysis
+
+problem_pattern:
+  - "The error bound involves terms from the past: sum_{j=t-tau}^{t} eta_j^2 * error_j."
+  - "Standard 1/t decay might change too drastically over the interval [t-tau, t], breaking the algebraic bounds."
+  - "Need to bound sum_{j} eta_j^2 by C * eta_t^2 or similar."
+
+structural_prerequisites:
+  - "The lag tau is fixed or bounded."
+  - "The sequence eta_t must be monotonically decreasing."
+
+execution_logic:
+  - step: "Define Smoothness Condition"
+    detail: >
+      Impose a constraint that eta_t / eta_{t+tau} <= C (constant near 1).
+      Formally: eta_t / eta_{t+1} <= 1 + 1/(alpha * tau).
+      This defines a 'tau-slow' decreasing sequence.
+    algebraic_prototype: "eta_t / eta_{t+1} <= 1 + 1/(2*tau)"
+
+  - step: "Verify Standard Schedules"
+    detail: >
+      Check if standard polynomial decay schedules satisfy this.
+      eta_t = 1/(t + beta).
+      (t+1+beta)/(t+beta) = 1 + 1/(t+beta).
+      Require t+beta >= alpha * tau. Thus, the effective stepsize must be 'small enough' initially or the offset beta 'large enough'.
+    algebraic_prototype: "eta_t = eta / (t + sigma); sigma >= O(tau)"
+
+  - step: "Bound Cumulative Lagged Terms"
+    detail: >
+      Use the property to pull eta_t out of summations.
+      Sum_{j=t-tau}^t eta_j^2 <= tau * eta_{t-tau}^2 <= tau * C * eta_t^2.
+      This simplifies complex convolution terms into local terms.
+    algebraic_prototype: "Sum_{lag} eta_j ... <= O(tau) * eta_t ..."
+
+assumptions_required:
+  - "eta_t is positive and decreasing."
+
+expected_outcome_form: "Allows treating past stepsizes eta_{t-tau} as equivalent to current stepsize eta_t (up to a constant)."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates"
+  arxiv: "2003.10422"
+  section: "Appendix B.3 (Definition 3)"

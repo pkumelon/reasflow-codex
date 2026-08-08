@@ -1,0 +1,45 @@
+id: TECH-R-LINEAR-SEQUENCE-BOUNDING
+type: proof_technique
+domain: optimization
+
+title: Bounding R-Linear Sequences with Perturbations
+description: A technique to bound a sequence that decays R-linearly (but not necessarily Q-linearly) with additive error terms, by mapping it to a Q-linear surrogate.
+
+problem_pattern:
+- "Sequence ||E_k||^2 <= C * rho^{2k} * ||E_0||^2 + Sum(rho^{k-i} * Error_i)."
+- "The sequence is not Q-linear (i.e., ||E_{k+1}|| <= rho ||E_k|| does not hold pointwise)."
+- "Need to include this sequence in a Lyapunov analysis."
+
+structural_prerequisites:
+- "The underlying linear system has spectral radius rho < 1."
+- "The propagator matrices have bounded norms (though potentially > 1)."
+
+execution_logic:
+- step: "Surrogate Variable Definition"
+  detail: "Define a scalar sequence c_k that strictly upper bounds the expected error E[||E_k||^2]."
+  algebraic_prototype: "E[||E_k||^2] <= c_k"
+
+- step: "Recursive Construction"
+  detail: "Construct the recurrence for c_k such that it satisfies a Q-linear relation."
+  algebraic_prototype: "c_{k+1} = (1 - gap)*c_k + Perturbation_Term"
+  dependency_check: "Requires the spectral gap to be related to the R-linear rate."
+
+- step: "Lyapunov Integration"
+  detail: "Use the surrogate variable c_k in the global Lyapunov function instead of the original error E[||E_k||^2]."
+  algebraic_prototype: "L_total = ... + weight * c_k"
+
+assumptions_required:
+- "Linear system dynamics"
+- "Bounded perturbations"
+
+expected_outcome_form: "Allows standard Lyapunov analysis for R-linear processes (like Chebyshev accelerated consensus)."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 4.3 (Lemma 13)"
+
+tags:
+- r_linear_convergence
+- sequence_bounding
+- analysis_trick

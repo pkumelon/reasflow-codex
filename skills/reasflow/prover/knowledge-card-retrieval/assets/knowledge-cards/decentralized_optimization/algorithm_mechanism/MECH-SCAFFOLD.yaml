@@ -1,0 +1,49 @@
+id: MECH-SCAFFOLD
+domain: Decentralized Optimization
+type: Algorithm Mechanism
+title: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+description: A variance reduction algorithm for Federated Learning that corrects for client drift using stateful control variates, allowing convergence under arbitrary data heterogeneity.
+
+problem_pattern:
+  - "Client drift caused by data heterogeneity (non-IID data) slows down or destabilizes FedAvg."
+  - "Need to simulate the global update direction on local clients without full communication."
+
+structural_prerequisites:
+  - "Stateful Clients: Clients must store a local control variate vector $c_i$."
+  - "Stateful Server: Server stores a global control variate $c = \\frac{1}{N} \\sum c_i$."
+  - "Two-way communication of both model parameters and control variates (or their updates)."
+
+execution_logic:
+  - step: "Local Drift Correction"
+    detail: "Clients update their local model $y_i$ using a corrected gradient direction."
+    algebraic_prototype: "y_i \\leftarrow y_i - \\eta_l (g_i(y_i) - c_i + c)"
+
+  - step: "Control Variate Update (Option I)"
+    detail: "Compute exact gradient at the server model for the next round's control variate (requires extra pass)."
+    algebraic_prototype: "c_i^+ = \\nabla f_i(x)"
+
+  - step: "Control Variate Update (Option II)"
+    detail: "Estimate new control variate using the average of gradients computed during local steps (cheaper)."
+    algebraic_prototype: "c_i^+ = c_i - c + \\frac{1}{K \\eta_l} (x - y_i)"
+
+  - step: "Aggregation"
+    detail: "Server aggregates model updates and control variate updates."
+    algebraic_prototype: "x \\leftarrow x + \\frac{\\eta_g}{|S|} \\sum (y_i - x); \\quad c \\leftarrow c + \\frac{1}{N} \\sum (c_i^+ - c_i)"
+
+assumptions_required:
+  - "Bounded Variance within clients (sigma)."
+  - "Lipschitz Smoothness."
+  - "Does NOT require bounded gradient dissimilarity (G=0) for convergence."
+
+expected_outcome_form: "Convergence rates matching centralized SGD (linear speedup with N) and independent of heterogeneity G."
+
+source:
+  paper: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+  arxiv: "1910.06378"
+  section: "Algorithm 1"
+
+tags:
+  - federated-learning
+  - variance-reduction
+  - control-variates
+  - client-drift

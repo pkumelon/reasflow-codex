@@ -1,0 +1,47 @@
+id: PLAN-COMPRESSED-VARIANCE-REDUCED-FL
+domain: Decentralized Optimization
+type: Proof Plan
+title: Convergence Analysis Plan for Compressed Variance-Reduced FL
+description: A structured framework for proving convergence of FL algorithms that combine Control Variates (like SCAFFOLD) with Communication Compression, specifically handling Partial Participation.
+
+problem_pattern:
+  - "Analyzing algorithms that have three sources of noise: Stochastic Gradients, Participation Noise, and Compression Noise."
+  - "The standard analysis fails because Compression Noise usually scales with heterogeneity."
+
+structural_prerequisites:
+  - "Algorithm formulation must use variance-reduced updates."
+  - "Lyapunov function including primal gap and control lag."
+
+execution_logic:
+  - step: "Simplified Dynamics Formulation"
+    detail: "Rewrite the algorithm update in a unified form $x_{t+1} = x_t + \\eta \\text{Avg}(Q(\\Delta_i))$."
+
+  - step: "Lyapunov Function Construction"
+    detail: "Define potential function $\\Phi_t = f(x_t) - f^* + \\beta \\|\\text{Control Error}\\|^2$."
+
+  - step: "Noise Decomposition & Bounding"
+    detail: "Bound the variance of the update. Key Step: Use Tech 'Relative Compression of Drift-Corrected Updates' to show compression noise is bounded by Lyapunov terms, not constants."
+    algebraic_prototype: "Var \\le \\text{GradientNoise} + \\text{ParticipationNoise} + \\omega (\\text{PrimalError} + \\text{ControlError})"
+
+  - step: "Descent Inequality"
+    detail: "Establish $\\Phi_{t+1} \\le (1-\\rho)\\Phi_t + \\sigma^2$."
+
+  - step: "Rate Derivation"
+    detail: "Unroll the recursion to show linear speedup $O(1/\\sqrt{ST})$."
+
+assumptions_required:
+  - "Unbiased Compressor (for this specific plan, though adaptable)."
+  - "Lipschitz Smoothness."
+
+expected_outcome_form: "Theorem stating convergence rate is independent of Heterogeneity $G^2$ and Compression Error is absorbed into the rate constant."
+
+source:
+  paper: "Stochastic Controlled Averaging for Federated Learning with Communication Compression"
+  arxiv: "2308.08165"
+  section: "Theorem 1 & 2"
+
+tags:
+  - proof-plan
+  - convergence-analysis
+  - compression
+  - variance-reduction

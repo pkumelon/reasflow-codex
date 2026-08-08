@@ -1,0 +1,51 @@
+id: TECH-CONSENSUS-ERROR-CONTRACTION
+type: proof_technique
+domain: optimization_analysis
+
+title: Consensus Error Contraction Analysis
+description: A method to establish that the consensus error (deviation from the mean) contracts geometrically at each step, despite perturbation from gradients, by carefully tuning coefficient bounds using Jensen's or Young's inequalities.
+
+problem_pattern:
+  - "Need to bound the evolution of the consensus error norm ||z_check(k)||^2."
+  - "The error update involves a contractive matrix D (spectral radius < 1) and additive perturbation terms (gradients)."
+  - "Direct squaring (||Dz + g||^2) creates cross-terms that are difficult to bound directly."
+
+structural_prerequisites:
+  - "Transition matrix D has spectral radius beta < 1."
+  - "Perturbation terms (gradients) are Lipschitz continuous or bounded."
+  - "Step size gamma is adjustable."
+
+execution_logic:
+  - step: "Jensen's/Young's Separation"
+    detail: "Use a weighted inequality ||a+b||^2 <= (1/t)||a||^2 + (1/(1-t))||b||^2 to separate the contractive part from the perturbation. Crucially, choose t = ||D|| (spectral norm) or similar to match the contraction rate."
+    algebraic_prototype: "||D z + g||^2 <= (1/t)||D||^2 ||z||^2 + (1/(1-t)) ||g||^2"
+
+  - step: "Spectral Bounding"
+    detail: "Substitute t = ||D|| so that (1/t)||D||^2 simplifies to ||D|| (or beta). This establishes the base contraction factor."
+    algebraic_prototype: "beta * ||z||^2 + C * ||g||^2"
+
+  - step: "Gradient Perturbation Analysis"
+    detail: "Bound the gradient term ||g||^2 using L-smoothness. This introduces f(x) and ||z||^2 terms. The ||z||^2 term creates a feedback loop."
+    algebraic_prototype: "||g||^2 <= L^2 * ||z||^2 + L * (f(x) - f*)"
+
+  - step: "Coefficient Constraint Solving"
+    detail: "Combine terms. Ensure the total coefficient of ||z||^2 (beta + gamma^2 * L^2) is strictly < 1 (e.g., (1+beta)/2). This imposes a constraint on the step size gamma."
+    algebraic_prototype: "gamma <= sqrt((1-beta)/(2*L^2))"
+
+assumptions_required:
+  - "Spectral Gap exists (beta < 1)."
+  - "Step size is sufficiently small."
+
+expected_outcome_form: "||z(k+1)||^2 <= rho * ||z(k)||^2 + gamma^2 * Noise"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Appendix D (Proof of Lemma 6)"
+
+tags:
+  - consensus_error
+  - contraction_mapping
+  - spectral_radius
+  - lyapunov_stability
+  - perturbation_analysis

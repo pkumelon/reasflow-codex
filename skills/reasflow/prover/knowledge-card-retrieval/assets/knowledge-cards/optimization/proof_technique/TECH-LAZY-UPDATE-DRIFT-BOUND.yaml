@@ -1,0 +1,51 @@
+id: TECH-LAZY-UPDATE-DRIFT-BOUND
+type: proof_technique
+domain: optimization
+
+title: Tight Drift Bounding for Lazy/Subspace Updates
+description: Bounds the client drift with optimal dependency on steps K by separating noise variance (linear in K) from deterministic drift (quadratic in K).
+
+problem_pattern:
+  - "Local updates y_i occur in a subspace P."
+  - "Global model x is updated after K local steps."
+  - "Need to bound sum_k ||y_i^k - x||^2 tightly."
+
+structural_prerequisites:
+  - "Update rule: y_{k+1} = y_k - eta * P * (g - c + c_g)."
+  - "Stochastic gradients g are unbiased and independent across steps."
+  - "Drift starts at 0: y_i^0 = x."
+
+execution_logic:
+  - step: "Drift Decomposition"
+    detail: "Decompose drift into a deterministic mean path (bias) and a zero-mean martingale (noise)."
+    algebraic_prototype: "delta_k = -eta * sum_{j=0}^{k-1} bias_j - eta * sum_{j=0}^{k-1} noise_j"
+
+  - step: "Variance Control (Tight)"
+    detail: "Use independence of noise terms to get linear scaling in K. DO NOT use Cauchy-Schwarz on noise."
+    algebraic_prototype: "E[||sum noise_j||^2] = sum E[||noise_j||^2] = k * sigma^2"
+
+  - step: "Bias Control (Recursive)"
+    detail: "Bound the deterministic bias using Cauchy-Schwarz and smoothness, then solve the recursion."
+    algebraic_prototype: "||sum bias_j||^2 <= k * sum ||bias_j||^2; D_k <= alpha + beta * sum D_j"
+
+  - step: "Final Summation"
+    detail: "Sum the bound over k=0..K-1. Noise term sums to O(K^2), Bias term sums to O(K^3) but with small eta it is controlled."
+    algebraic_prototype: "Sum E[||delta_k||^2] <= O(K^2 * eta^2 * sigma^2) + O(K^3 * eta^2 * drift_error)"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Bounded Variance (Independent)"
+  - "Subspace Projection P is fixed during local steps"
+
+expected_outcome_form: "O(K^2 * eta^2 * sigma^2 + K^3 * eta^2 * error)"
+
+source:
+  paper: "Subspace SCAFFOLD derivation"
+  section: "Lemma 1 (Drift)"
+
+tags:
+  - drift
+  - federated_learning
+  - lazy_update
+  - subspace
+  - tight_bound

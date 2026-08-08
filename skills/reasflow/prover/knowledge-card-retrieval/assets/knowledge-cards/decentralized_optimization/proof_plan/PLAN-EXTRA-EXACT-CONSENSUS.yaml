@@ -1,0 +1,56 @@
+id: PLAN-EXTRA-EXACT-CONSENSUS
+type: proof_plan
+domain: decentralized_optimization
+
+title: Exact Consensus via Correction and G-Norm Analysis
+description: A proof roadmap for achieving exact convergence in decentralized optimization with fixed step sizes, utilizing a difference-form update and composite norm contraction.
+
+problem_pattern:
+  - "Decentralized gradient descent with fixed step size converges to an approximate solution (bias)."
+  - "Diminishing step sizes cause slow sublinear convergence."
+  - "Need to prove linear convergence for consensus optimization without assuming local strong convexity."
+
+structural_prerequisites:
+  - "Network is connected (mixing matrix W has specific spectral properties)."
+  - "Problem formulation allows for a saddle-point or primal-dual interpretation (implicitly or explicitly)."
+
+execution_logic:
+  - step: "Difference Form Construction"
+    detail: "Derive the update rule by taking the difference of two consecutive DGD-like steps. This eliminates the static non-zero gradient residual at the optimal solution."
+    dependency_check: "Requires the mixing matrix W to satisfy W*1 = 1."
+    algebraic_prototype: "x^{k+2} = (I+W)x^{k+1} - \\tilde{W}x^k - \\alpha(\\nabla f(x^{k+1}) - \\nabla f(x^k))"
+
+  - step: "Auxiliary Variable Definition"
+    detail: "Define a cumulative auxiliary variable 'q' that accumulates consensus violations (integral action). Relate 'q' to the primal variable 'x' via specific subspace operators (e.g., U where U^2 = \tilde{W}-W)."
+    algebraic_prototype: "q^{k} = \\sum_{t=0}^k U x^t"
+
+  - step: "State-Space Recursion"
+    detail: "Establish a recurrence relation linking the primal deviation (x - x*) and dual deviation (q - q*). This replaces the standard descent inequality."
+    algebraic_prototype: "(I+W-2\\tilde{W})(x^{k+1}-x^*) + \\tilde{W}(x^{k+1}-x^k) = -U(q^{k+1}-q^*) - \\alpha(\\nabla f(x^k) - \\nabla f(x^*))"
+
+  - step: "G-Norm Contraction"
+    detail: "Construct a composite state vector z = [q; x] and a positive definite matrix G. Prove that ||z - z*||_G^2 is a Lyapunov function that decreases monotonically."
+    dependency_check: "Requires step size alpha < 2*lambda_min(\tilde{W}) / L."
+    algebraic_prototype: "||z^k - z^*||_G^2 - ||z^{k+1} - z^*||_G^2 >= ||z^k - z^{k+1}||_{G'}^2"
+
+  - step: "Rate Analysis"
+    detail: "Use the contraction inequality to derive O(1/k) rates for ergodic/best iterates. For linear rate, apply Restricted Strong Convexity (RSC) to the penalized objective."
+
+assumptions_required:
+  - "Convex objective with Lipschitz continuous gradients."
+  - "Mixing matrices W, \\tilde{W} satisfy spectral bounds (W \\le \\tilde{W})."
+  - "(Optional) Restricted Strong Convexity for linear rate."
+
+expected_outcome_form: "||z^k - z^*||_G^2 converges linearly or O(1/k)."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Section 3 (Convergence Analysis)"
+
+tags:
+  - decentralized
+  - exact_convergence
+  - fixed_step_size
+  - primal_dual
+  - g_norm

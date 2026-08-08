@@ -1,0 +1,49 @@
+id: TECH-MULTI-ROUND-GOSSIP-ACCELERATION
+type: proof_technique
+domain: optimization
+
+title: Multi-Round Gossip Acceleration
+description: Improving network topology dependence by performing multiple rounds of accelerated gossip communication per gradient update.
+
+problem_pattern:
+- "Algorithm performance is bottlenecked by poor network connectivity (1-beta is small)."
+- "Communication is cheaper than computation, or linear speedup is delayed by large consensus error."
+- "Standard D-SGD suffers from heavy transient stages in sparse networks."
+
+structural_prerequisites:
+- "The algorithm structure allows separating the communication (mixing) step from the gradient update."
+- "Access to an accelerated gossip protocol (e.g., Chebyshev acceleration or FastGossip)."
+
+execution_logic:
+- step: "Protocol Substitution"
+  detail: "Replace the single consensus step W with an accelerated operator M_R resulting from R rounds of communication. This operator M_R is often constructed via polynomial filtering (e.g., Chebyshev)."
+  algebraic_prototype: "x_{k+1} = M_R(x_k - gamma * g_k) instead of W(x_k - gamma * g_k)"
+
+- step: "Effective Spectral Gap Analysis"
+  detail: "Analyze the spectral properties of M_R. Typically, the spectral gap improves from (1-beta) to roughly sqrt(1-beta) or (1-sqrt(1-beta)) for R rounds."
+  algebraic_prototype: "rho(M_R - J) <= (1 - sqrt(1-beta))^R"
+
+- step: "Gradient Accumulation"
+  detail: "To balance computation and communication costs, accumulate R gradient samples. This reduces variance sigma^2 to sigma^2/R, effectively increasing the batch size."
+  algebraic_prototype: "g_k = (1/R) * Sum(grad(x_k, xi_r))"
+
+- step: "Rate Substitution"
+  detail: "Substitute the new spectral gap and variance into the original convergence rate. Solve for the new transient stage, which should show weaker dependence on the topology."
+  algebraic_prototype: "Substitute 1-beta -> 1-beta_effective and sigma -> sigma/sqrt(R)"
+
+assumptions_required:
+- "Network topology allows for accelerated gossip (e.g., symmetric weights)."
+- "Communication cost is comparable to or less than computation cost, or topology is the primary bottleneck."
+
+expected_outcome_form: "Transient stage dependence on (1-beta) improves (e.g., from quadratic to linear or square root)."
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Section 5"
+
+tags:
+- proof-technique
+- acceleration
+- multi-round-gossip
+- network-dependence

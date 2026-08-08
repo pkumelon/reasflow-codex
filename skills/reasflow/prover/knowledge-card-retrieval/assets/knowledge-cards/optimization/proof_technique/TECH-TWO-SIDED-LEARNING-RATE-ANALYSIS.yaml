@@ -1,0 +1,51 @@
+id: TECH-TWO-SIDED-LEARNING-RATE-ANALYSIS
+type: proof_technique
+domain: optimization
+
+title: Convergence Analysis with Two-Sided Learning Rates
+description: >
+  A technique to analyze convergence when local updates and global updates have different learning rates, decoupling local and global dynamics.
+
+problem_pattern:
+- "Algorithm uses distinct learning rates for local steps (worker side) and global aggregation (server side)."
+- "Need to analyze how the interaction between local learning rate (eta_L) and global learning rate (eta) affects convergence."
+- "Standard one-step descent analysis needs to account for the accumulated local updates."
+
+structural_prerequisites:
+- "Assumes a specific update rule: x_{t+1} = x_t + eta * Delta_t, where Delta_t is the sum of local updates scaled by eta_L."
+- "Requires L-smoothness of the objective function."
+
+execution_logic:
+  - step: "One-Step Descent with Effective Step Size"
+    detail: "Write the descent inequality using the global effective step size (eta * eta_L * K)."
+    algebraic_prototype: "f(x_{t+1}) <= f(x_t) + <grad f(x_t), E[x_{t+1} - x_t]> + (L/2) E[||x_{t+1} - x_t||^2]"
+
+  - step: "Bounding the Drift Term"
+    detail: "Analyze the inner product term <grad f(x_t), E[Delta_t]>. Decompose Delta_t into the true gradient part and the drift part."
+    algebraic_prototype: "A_1 <= -eta eta_L K ||grad f(x_t)||^2 + Error_Terms"
+
+  - step: "Bounding the Norm of Updates"
+    detail: "Bound E[||Delta_t||^2] by separating the variance of stochastic gradients and the drift caused by local updates."
+    algebraic_prototype: "E[||Delta_t||^2] <= O(eta_L^2 * sigma^2) + O(eta_L^2 * Drift)"
+
+  - step: "Coupling Learning Rates"
+    detail: "Combine the bounds and enforce constraints on eta and eta_L (e.g., eta * eta_L <= 1/KL) to ensure the descent term dominates the error terms."
+    algebraic_prototype: "eta_L <= 1/(8LK), eta * eta_L <= 1/(KL)"
+
+assumptions_required:
+- "L-Smoothness"
+- "Unbiased Gradient Estimator"
+- "Bounded Variance"
+
+expected_outcome_form: "Convergence rate depending on 1/(eta * eta_L * K * T) + Constant_Error_Term"
+
+source:
+  paper: "Achieving Linear Speedup with Partial Worker Participation in Non-IID Federated Learning"
+  arxiv: "2101.11203"
+  section: "Appendix I: Proofs, Section 6.1"
+
+tags:
+- federated_learning
+- learning_rate_scheduling
+- convergence_analysis
+- non_convex_optimization

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reasflow Initializer"
+  short_description: "Initialize a folder as a reasflow Codex project."
+  default_prompt: "Initialize this folder as a reasflow project."

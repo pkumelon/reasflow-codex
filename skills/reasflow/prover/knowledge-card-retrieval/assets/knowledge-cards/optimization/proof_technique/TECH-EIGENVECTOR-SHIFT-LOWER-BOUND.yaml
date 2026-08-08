@@ -1,0 +1,60 @@
+id: TECH-EIGENVECTOR-SHIFT-LOWER-BOUND
+type: proof_technique
+domain: optimization
+title: Lower Bound Construction via Eigenvector-Shifted Quadratics
+description: >
+  A technique for proving lower bounds in decentralized optimization by constructing a "hard instance" using quadratic functions
+  shifted along the eigenvector of the mixing matrix corresponding to the spectral gap (second largest eigenvalue).
+  This aligns the "disagreement" with the slowest decaying mode of the network graph.
+
+tags:
+  - lower-bound
+  - decentralized-optimization
+  - spectral-gap
+  - hard-instance-construction
+
+problem_pattern:
+  - "Need to prove that the convergence rate dependence on the spectral gap (1-p) or graph topology is tight."
+  - "Decentralized averaging or optimization algorithms."
+
+structural_prerequisites:
+  - "Linear mixing update: x_{t+1} = W x_t ..."
+  - "Symmetric, doubly stochastic mixing matrix W."
+
+execution_logic:
+  - step: "Local Function Definition"
+    detail: >
+      Define local objective functions as simple quadratics: f_i(x) = 1/2 ||x - y_i||^2.
+      The gradients are linear: \nabla f_i(x) = x - y_i.
+      The global optimum is x* = 1/n sum y_i.
+    algebraic_prototype: "f_i(x) = 1/2 (x - y_i)^2"
+
+  - step: "Eigenvector Alignment"
+    detail: >
+      Construct the shifts y_i and the initialization x^{(0)} to be aligned with the eigenvector v_2 of W corresponding to lambda_2 (the second largest eigenvalue).
+      Set y = 1 + v_2 and x^{(0)} = v_2 (conceptually).
+      This ensures that the consensus error lies entirely in the subspace where mixing is slowest.
+    algebraic_prototype: "W v_2 = lambda_2 v_2"
+
+  - step: "Dynamics Decomposition"
+    detail: >
+      Decompose the error into 'Optimization Error' (distance of average to optimum) and 'Consensus Error' (distance of individuals to average).
+      Show that the Consensus Error evolves as (lambda_2)^t due to the eigenvector alignment.
+    algebraic_prototype: "||x^{(t)} - \bar{x}^{(t)}||^2 >= (lambda_2)^{2t} ||x^{(0)}||^2"
+
+  - step: "Refutation Argument"
+    detail: >
+      Show that to reduce the total error below epsilon, the algorithm must reduce the Consensus Error (dominated by lambda_2) AND the Optimization Error.
+      Use the slow decay of lambda_2^t (approx 1 - p*t) to establish the lower bound on T.
+      Typically T >= Omega(1/(1-lambda_2) * log(1/eps)).
+
+assumptions_required:
+  - "Algorithm uses fixed mixing matrix W (or analysis applies to the expected W)."
+  - "Spectral gap exists (lambda_2 < 1)."
+
+expected_outcome_form: "T >= Omega( (1/p) * ... )"
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates"
+  arxiv: "2003.10422"
+  section: "Appendix D, Proof of Theorem 3"

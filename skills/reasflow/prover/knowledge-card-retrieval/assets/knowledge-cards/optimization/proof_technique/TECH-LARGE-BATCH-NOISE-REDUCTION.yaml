@@ -1,0 +1,48 @@
+id: TECH-LARGE-BATCH-NOISE-REDUCTION
+type: proof_technique
+domain: optimization
+title: Large Batch Noise Reduction for Subspace Selection
+description: >
+  A technique to salvage the convergence of biased subspace selection methods (like GaLore) by using large-batch gradients specifically for the subspace selection step.
+tags:
+  - optimization
+  - stochastic-gradient
+  - variance-reduction
+  - galore
+
+problem_pattern:
+  - "Biased subspace selection fails when noise dominates signal."
+  - "SVD on stochastic gradients aligns with noise."
+  - "Need to ensure subspace selection captures true gradient direction."
+
+structural_prerequisites:
+  - "Algorithm involves subspace selection step (e.g., SVD)."
+  - "Subspace selection is separate from update step."
+
+execution_logic:
+  - step: "Selective Large Batch"
+    detail: 'Use a large batch size $\mathcal{B}$ *only* for computing the gradient used for subspace selection (SVD). The actual updates can still use smaller batches or the same large batch.'
+    algebraic_prototype: "G_SVD = 1/B sum_{i=1}^B g_i"
+
+  - step: "Noise Variance Scaling"
+    detail: 'The noise variance for the subspace selection step scales as $\sigma^2 / \mathcal{B}$.'
+    algebraic_prototype: "Var(G_SVD) = sigma^2 / B"
+
+  - step: "Condition for Convergence"
+    detail: 'By choosing $\mathcal{B}$ large enough (e.g., $\mathcal{B} \propto \sqrt{T}$ or depending on $\epsilon$), the noise in the subspace selection step is reduced sufficiently so that the SVD captures the true gradient direction (or a direction with sufficient alignment).'
+    algebraic_prototype: "B >= O(sqrt(T))"
+
+  - step: "Analysis"
+    detail: 'The error term involving the projection bias $\|(\mI - \mP\mP^\top)\nabla f\|^2$ now includes a term proportional to $\sigma^2/\mathcal{B}$. If $\mathcal{B}$ grows appropriately, this term vanishes fast enough to ensure convergence.'
+    algebraic_prototype: "||(I - P P^T) grad f||^2 <= Bias + O(sigma^2/B)"
+
+assumptions_required:
+  - "Bounded Variance"
+  - "L-Smoothness"
+
+expected_outcome_form: "Convergence with large batch size condition."
+
+source:
+  paper: "GaLore"
+  arxiv: "N/A"
+  section: "N/A"

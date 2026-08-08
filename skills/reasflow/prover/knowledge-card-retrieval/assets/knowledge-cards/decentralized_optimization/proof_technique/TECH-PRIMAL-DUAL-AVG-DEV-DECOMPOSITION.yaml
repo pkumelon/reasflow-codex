@@ -1,0 +1,45 @@
+id: TECH-PRIMAL-DUAL-AVG-DEV-DECOMPOSITION
+type: proof_technique
+domain: decentralized_optimization
+title: Primal-Dual Average-Deviation Decomposition
+description: |
+  A technique to analyze decentralized algorithms by transforming the primal and dual updates into a deviation-from-average form using specific matrix decompositions. Crucial for analyzing methods like Exact-Diffusion and LED.
+
+problem_pattern:
+  - "Primal and Dual variables are coupled."
+  - "Mixing matrix W acts on the variables."
+  - "Need to separate the consensus dynamics (eigenvalue 1) from the error dynamics."
+
+structural_prerequisites:
+  - "Update rule involves W and I-W."
+  - "W is symmetric and doubly stochastic."
+
+execution_logic:
+  - step: "Network Matrix Decomposition"
+    detail: "Decompose W using an orthogonal matrix Q separating the consensus subspace from the disagreement subspace."
+    algebraic_prototype: "Q^T W Q = diag(1, Lambda_hat)"
+
+  - step: "Variable Transformation"
+    detail: "Transform the coupled primal-dual iterates (x^r, z^r) into subspace coordinates d_hat. Use a matrix V to diagonalize the dynamics."
+    algebraic_prototype: "d_hat = V_inv * [Q^T x; Q^T z]"
+
+  - step: "System Diagonalization"
+    detail: "Show that the error dynamics in the transformed space satisfy a contraction."
+    algebraic_prototype: "E[||d_hat^{r+1}||^2] <= delta E[||d_hat^r||^2] + Noise"
+
+assumptions_required:
+  - "Symmetric W."
+  - "Spectral Gap exists."
+
+expected_outcome_form: "Contractive recurrence for the transformed error state."
+
+source:
+  paper: "Local Exact-Diffusion"
+  arxiv: "2105.08023"
+  section: "Appendix A"
+
+tags:
+  - primal-dual
+  - decomposition
+  - eigenvalue-analysis
+  - decentralized

@@ -1,0 +1,54 @@
+id: PLAN-OPTIMAL-GRADIENT-TRACKING-PROOF
+type: proof_plan
+domain: optimization
+
+title: Proof Plan for Optimal Gradient Tracking (OGT)
+description: A structured proof plan for establishing the optimal convergence rate of OGT using Loopless Chebyshev Acceleration and Snapshot Gradient Tracking.
+
+problem_pattern:
+- "Prove linear convergence of a complex decentralized algorithm with multiple auxiliary variables and acceleration."
+- "Algorithm involves both probabilistic updates (snapshot) and deterministic acceleration (Chebyshev)."
+
+structural_prerequisites:
+- "Decomposition of variables into average and consensus parts."
+- "Specific Lyapunov function for consensus errors under Chebyshev acceleration."
+
+execution_logic:
+- step: "Preliminaries & Notation"
+  detail: "Define average variables, consensus errors, and augmented matrix properties."
+
+- step: "Loopless Chebyshev Lemma"
+  detail: "Prove that ||W_tilde^k v_cat|| decays R-linearly. This is the core technical lemma for acceleration."
+  reference_technique: "TECH-LOOPLESS-CHEBYSHEV-ACCELERATION"
+
+- step: "R-Linear Sequences Construction"
+  detail: "Show that consensus errors of OGT variables (G, U, Z) are dominated by R-linear sequences driven by the Loopless Chebyshev Lemma."
+  reference_technique: "TECH-LOOPLESS-CHEBYSHEV-ACCELERATION"
+
+- step: "Consensus Lyapunov Function"
+  detail: "Construct a weighted sum of the R-linear sequences to form a master Lyapunov function for consensus errors. Prove its contraction."
+  reference_technique: "TECH-SNAPSHOT-GRADIENT-TRACKING-ANALYSIS"
+
+- step: "Average Dynamics & Coupling"
+  detail: "Analyze the descent of the objective function on average variables. Couple with the consensus Lyapunov function to prove global linear convergence."
+  reference_technique: "TECH-SNAPSHOT-GRADIENT-TRACKING-ANALYSIS"
+
+- step: "Complexity Derivation"
+  detail: "Substitute parameter choices to derive the final O(sqrt(kappa/gap)) communication and O(sqrt(kappa)) computation complexities."
+
+assumptions_required:
+- "Strong Convexity and Smoothness."
+- "Undirected connected graph (for spectral gap)."
+- "Bernoulli sampling for snapshots."
+
+expected_outcome_form: "Theorem stating global linear convergence with explicit rate constants."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 4"
+
+tags:
+- proof_plan
+- optimal_complexity
+- chebyshev_acceleration

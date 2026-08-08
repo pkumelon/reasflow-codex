@@ -1,0 +1,44 @@
+id: MECH-SCALLION
+domain: Decentralized Optimization
+type: Algorithm Mechanism
+title: "SCALLION: Stochastic Controlled Averaging with Linear Unbiased Compression"
+description: A communication-efficient Federated Learning mechanism that combines variance reduction (Control Variates) with unbiased compression, characterized by a simplified uplink protocol that halves the communication cost compared to standard SCAFFOLD.
+
+problem_pattern:
+  - "Need to reduce communication bandwidth in FL."
+  - "Standard SCAFFOLD requires sending two vectors (model update + control update), negating some compression benefits."
+  - "Data is heterogeneous, requiring variance reduction to prevent drift."
+
+structural_prerequisites:
+  - "Stateful Clients: Maintain local control variate $c_i$."
+  - "Unbiased Compressor $Q$: Satisfies $E[Q(x)] = x$."
+
+execution_logic:
+  - step: "Drift-Corrected Local Update"
+    detail: "Standard SCAFFOLD-style local updates."
+    algebraic_prototype: "y_{i, k+1} = y_{i, k} - \eta_l (g_{i, k} - c_i + c)"
+
+  - step: "Combined Uplink Compression"
+    detail: "Key Innovation: Compress a single vector that encodes both model progress and control shift."
+    algebraic_prototype: "m_i = Q((y_{i, K} - x) + \eta_l K (c - c_i))"
+
+  - step: "Server Aggregation"
+    detail: "Update global model using the compressed message. Note: Explicit global control update is bypassed/implicit."
+    algebraic_prototype: "x^+ = x + \eta_g \text{Avg}(m_i)"
+
+assumptions_required:
+  - "Unbiased Compression."
+  - "Partial participation is allowed."
+
+expected_outcome_form: "Convergence with linear speedup, independent of heterogeneity, using 50% less uplink bandwidth than SCAFFOLD."
+
+source:
+  paper: "Stochastic Controlled Averaging for Federated Learning with Communication Compression"
+  arxiv: "2308.08165"
+  section: "Algorithm 1"
+
+tags:
+  - algorithm-mechanism
+  - federated-learning
+  - compression
+  - variance-reduction

@@ -1,0 +1,46 @@
+id: MECH-DIFFERENCE-BASED-BIAS-CORRECTION
+type: algorithm_mechanism
+domain: decentralized_optimization
+
+title: Difference-Based Bias Correction
+description: A mechanism to eliminate static data heterogeneity bias in decentralized optimization by incorporating difference terms (e.g., x(k) - x(k-1)) into the update rule, effectively enabling exact convergence to the global optimum.
+
+problem_pattern:
+  - "Standard Decentralized SGD (D-SGD) converges to a biased solution when data is heterogeneous."
+  - "Need to achieve exact convergence without communicating full gradients or hessians."
+  - "Want to correct the gradient direction using only local information and neighbor communication."
+
+structural_prerequisites:
+  - "Algorithm is iterative and maintains a state vector x(k)."
+  - "Communication occurs over a connected graph with mixing matrix W."
+
+execution_logic:
+  - step: "Recursive Correction Injection"
+    detail: "Modify the standard update (x = Wx - alpha*g) by adding a term proportional to the difference of consecutive states or gradients. This acts as an integral controller to cancel static error."
+    algebraic_prototype: "x(k+1) = W * (2*x(k) - x(k-1) - alpha * (g(k) - g(k-1)))"
+
+  - step: "Steady-State Analysis"
+    detail: "Verify that at the fixed point (x(k) = x(k-1) = x*), the update equation implies consensus (x_i = x_j) and optimality (sum of gradients = 0)."
+    algebraic_prototype: "x* = Wx* => x* in Null(I-W); Sum(g*) = 0"
+
+  - step: "Primal-Dual Interpretation"
+    detail: "Show that this second-order difference form is mathematically equivalent to a first-order primal-dual algorithm (e.g., EXTRA, NIDS) by introducing an auxiliary variable."
+    algebraic_prototype: "y(k+1) = y(k) + (I-W)x(k+1); x(k+1) = W(x(k) - alpha*g(k)) - y(k)"
+
+assumptions_required:
+  - "Differentiable Objective Function"
+  - "Connected Graph (Spectral Gap > 0)"
+
+expected_outcome_form: "Bias term b^2 is removed from the convergence rate."
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Section 2.2 & Equation (2.4)"
+
+tags:
+  - bias_correction
+  - exact_convergence
+  - difference_method
+  - nids
+  - extra

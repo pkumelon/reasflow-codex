@@ -1,0 +1,51 @@
+id: TECH-RSC-PENALTY-TRANSFER
+type: proof_technique
+domain: convex_analysis
+
+title: Restricted Strong Convexity Transfer to Penalized Objective
+description: Proves that if a global objective function is Restricted Strongly Convex (RSC), then an augmented/penalized version of the objective (used in the analysis) inherits this property, enabling linear convergence proofs.
+
+problem_pattern:
+  - "Individual local functions f_i are convex but not strongly convex."
+  - "The global sum \bar{f} is strongly convex (or RSC)."
+  - "The algorithm analysis relies on a Lyapunov function that includes a penalty term (e.g., ||x||_{W-W}^2)."
+  - "Need to verify that the Lyapunov function itself satisfies a strong convexity-like condition to get linear rates."
+
+structural_prerequisites:
+  - "The penalized objective is of the form g(x) = f(x) + c * ||x||_M^2."
+  - "The penalty matrix M corresponds to the consensus violation subspace (Null(M) = Span(1))."
+
+execution_logic:
+  - step: "Decompose State Space"
+    detail: "Decompose the variable x into a consensus component (u in Span(1)) and a disagreement component (v in Span(1)_perp)."
+    algebraic_prototype: "x = u + v, where u = \\bar{x}*1, v \\perp 1"
+
+  - step: "Bound Cross Terms"
+    detail: "Use Lipschitz continuity and the orthogonality of the decomposition to bound the cross-terms in the inner product <grad g(x) - grad g(x*), x - x*>."
+    algebraic_prototype: "<grad f(x) - grad f(x*), x-x*> >= mu_f ||u-x*||^2 - 2L ||u-x*|| ||v||"
+
+  - step: "Leverage Penalty Term"
+    detail: "Use the penalty term (which is quadratic in v) to dominate the negative cross-term from the gradient. Since v is in the orthogonal complement, ||v||_M^2 is strictly positive."
+    algebraic_prototype: "c ||x||_M^2 >= c * lambda_min(M) ||v||^2"
+
+  - step: "Combine for Global Bound"
+    detail: "Show that for appropriate c (related to step size), the sum of the RSC bound on u and the penalty bound on v yields a global RSC bound on x."
+    algebraic_prototype: "mu_g ||x-x*||^2 <= <grad g(x) - grad g(x*), x-x*>"
+
+assumptions_required:
+  - "Global function \bar{f} is Restricted Strongly Convex."
+  - "Gradients are Lipschitz continuous."
+  - "Step size alpha is small enough (or penalty parameter large enough)."
+
+expected_outcome_form: "g(x) is restricted strongly convex with parameter mu_g approx mu_f."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Proposition 4.1"
+
+tags:
+  - strong_convexity
+  - linear_convergence
+  - penalized_objective
+  - convex_analysis

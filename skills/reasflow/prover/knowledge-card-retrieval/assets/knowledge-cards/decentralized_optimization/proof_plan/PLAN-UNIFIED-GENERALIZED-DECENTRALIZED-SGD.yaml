@@ -1,0 +1,53 @@
+id: PLAN-UNIFIED-GENERALIZED-DECENTRALIZED-SGD
+type: proof_plan
+domain: decentralized_optimization
+title: Unified Analysis for Generalized Decentralized SGD
+description: |
+  A unified proof framework for Decentralized SGD that accommodates changing topologies, local updates (Local SGD), and decentralized communication (Gossip) under a single analysis. The framework relies on a generalized mixing assumption.
+
+problem_pattern:
+  - "Need to analyze Local SGD, Gossip SGD, and Time-Varying topologies in one go."
+  - "Consensus contraction happens only every tau steps."
+  - "Stepsize eta_t varies."
+
+structural_prerequisites:
+  - "Generalized Expected Consensus Rate assumption: E[||X W - X_bar||^2] <= (1-p)||X - X_bar||^2 over tau steps."
+  - "Affine Noise Bound assumption."
+
+execution_logic:
+  - step: "Metric Decomposition"
+    detail: "Decompose the error into Optimization Error (average to optimum) and Consensus Error (deviation from average)."
+    algebraic_prototype: "Error = ||x_bar - x*||^2 + ||x_i - x_bar||^2"
+
+  - step: "Descent Lemma (Average Iterate)"
+    detail: "Derive the progress of the average iterate x_bar. Includes perturbation term B * eta * Xi_t."
+    algebraic_prototype: "r_{t+1} <= (1 - a*eta)r_t + B*eta*Xi_t + Noise"
+
+  - step: "Consensus Error Recursion (Sequential Mixing)"
+    detail: "Bound the consensus error Xi_t. Unroll the update rule tau times to observe contraction (1-p)."
+    algebraic_prototype: "Xi_{t+tau} <= (1-p)Xi_t + Drift"
+
+  - step: "Coupled Recursion Analysis"
+    detail: "Combine the Descent Lemma and Consensus Recursion. Use a weighted summation technique with 'tau-slow' weights."
+    algebraic_prototype: "Sum w_t r_t <= ... + Sum w_t Xi_t"
+
+  - step: "Final Rate Derivation"
+    detail: "Tune the stepsize eta_t and weights w_t to balance the convergence terms."
+    algebraic_prototype: "Rate <= O(1/sqrt(T))"
+
+assumptions_required:
+  - "L-Smoothness."
+  - "Affine Noise Bound."
+
+expected_outcome_form: "Unified convergence rate covering multiple algorithms by varying p and tau."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates"
+  arxiv: "2003.10422"
+  section: "Proof Strategy"
+
+tags:
+  - unified-analysis
+  - local-sgd
+  - time-varying-topology
+  - generalized-mixing

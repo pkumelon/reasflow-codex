@@ -1,0 +1,48 @@
+id: TECH-PRIMAL-DUAL-LOCAL-DRIFT-BOUND
+type: proof_technique
+domain: decentralized_optimization
+title: Local Drift Bound for Primal-Dual Algorithms
+description: |
+  A technique to bound the "local drift" in decentralized primal-dual algorithms with multiple local updates. Unlike standard Local-SGD, the drift is also driven by the dual (bias-correction) variables.
+
+problem_pattern:
+  - "Local updates involve both gradients and dual variables."
+  - "Need to bound ||x_{i,t} - x_{i,0}||^2."
+  - "Standard drift analysis (O(eta^2 sigma^2)) is insufficient due to dual term."
+
+structural_prerequisites:
+  - "Update rule: x+ = x - alpha*g - beta*y."
+  - "Multiple local steps tau."
+
+execution_logic:
+  - step: "Recursive Unrolling"
+    detail: "Write the local update recursion and unroll it for t=0...tau-1."
+    algebraic_prototype: "phi_{t} = phi_0 - sum(alpha*g + beta*y)"
+
+  - step: "Jensen's Inequality Separation"
+    detail: "Use norm inequality to separate the gradient terms from the dual variable term y_i."
+    algebraic_prototype: "||sum||^2 <= n * sum(||g||^2 + ||y||^2)"
+
+  - step: "Dual Variable Decomposition"
+    detail: "Decompose y_i into its average y_bar and deviation. Link drift to the Consensus Error."
+    algebraic_prototype: "||y_i||^2 <= ||y_i - y_bar||^2 + ||y_bar||^2"
+
+  - step: "Gradient Bounding"
+    detail: "Bound the gradient terms using smoothness and the drift itself, solving the inequality recursively."
+    algebraic_prototype: "Drift <= C * (GradNorm + DualError + Noise)"
+
+assumptions_required:
+  - "Bounded Gradients or Smoothness."
+
+expected_outcome_form: "Drift bound O(tau^2 * (Grad + DualError + Noise))."
+
+source:
+  paper: "Local Exact-Diffusion"
+  arxiv: "2105.08023"
+  section: "Lemma 2"
+
+tags:
+  - drift-analysis
+  - primal-dual
+  - local-updates
+  - inequality-techniques

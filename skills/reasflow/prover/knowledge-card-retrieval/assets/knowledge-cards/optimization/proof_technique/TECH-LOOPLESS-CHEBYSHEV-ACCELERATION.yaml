@@ -1,0 +1,52 @@
+id: TECH-LOOPLESS-CHEBYSHEV-ACCELERATION
+type: proof_technique
+domain: optimization
+
+title: Loopless Chebyshev Acceleration via Augmented Matrix
+description: Achieves the acceleration effect of Chebyshev polynomials without inner loops by lifting the state space with an augmented mixing matrix.
+
+problem_pattern:
+- "Need to improve dependence on graph condition number from O(1/gap) to O(1/sqrt(gap))."
+- "Cannot use inner loops (standard Chebyshev) due to communication/synchronization constraints."
+- "Need a single-loop algorithm with optimal communication complexity."
+
+structural_prerequisites:
+- "Problem must be formulated over an undirected graph (requires real eigenvalues for Chebyshev)."
+- "Requires augmenting the state space to size 2n (storing previous iterate)."
+
+execution_logic:
+- step: "Augmented Matrix Construction"
+  detail: "Construct a 2n x 2n matrix W_tilde using the gossip matrix W and Chebyshev coefficients."
+  algebraic_prototype: |
+    W_tilde = [ (1+eta)W, -eta I ; I, 0 ]
+    where eta is derived from spectral gap.
+
+- step: "Cat-Type Vector Definition"
+  detail: "Define vectors in the lifted space as concatenations of the primal vector."
+  algebraic_prototype: "v_cat = [v; v]"
+
+- step: "R-Linear Convergence Proof"
+  detail: "Prove that powers of W_tilde acting on cat-type vectors decay R-linearly, avoiding the need for Q-linear contraction in a specific norm."
+  dependency_check: "Relies on the specific structure of W_tilde and W being symmetric."
+  algebraic_prototype: "||Con W_tilde^k Con A_cat||^2 <= C * rho^{2k} * ||Con A||^2"
+
+- step: "Polynomial Association"
+  detail: "Relate the action of W_tilde^k to Chebyshev polynomials T_k(W)."
+  algebraic_prototype: "W_tilde^k v_cat = [P_k(W)v; P_{k-1}(W)v]"
+
+assumptions_required:
+- "Symmetric Gossip Matrix"
+- "Spectral Gap Information (to tune eta)"
+
+expected_outcome_form: "Consensus error decays as O((1 - sqrt(gap))^k) instead of O((1 - gap)^k)."
+
+source:
+  paper: "Optimal Gradient Tracking for Decentralized Optimization"
+  arxiv: "2110.05282"
+  section: "Section 4.2"
+
+tags:
+- chebyshev_acceleration
+- acceleration
+- decentralized
+- spectral_gap

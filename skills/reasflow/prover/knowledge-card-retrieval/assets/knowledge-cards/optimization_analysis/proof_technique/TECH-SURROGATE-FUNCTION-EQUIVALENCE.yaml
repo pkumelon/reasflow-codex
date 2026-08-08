@@ -1,0 +1,46 @@
+id: TECH-SURROGATE-FUNCTION-EQUIVALENCE
+type: proof_technique
+domain: optimization_analysis
+
+title: Lyapunov Construction via Surrogate Function Equivalence
+description: A powerful methodology for constructing Lyapunov functions by recognizing that a complex/distributed algorithm is mathematically equivalent to standard Gradient Descent (often with unit step size) on a distinct "Surrogate Function".
+
+problem_pattern:
+  - "Struggling to guess a Lyapunov function for a complex fixed-step algorithm."
+  - "The algorithm looks like gradient descent but has extra terms (e.g., mixing, penalty)."
+  - "Need to prove boundedness/stability on unbounded domains."
+
+structural_prerequisites:
+  - "The update rule is linear in the state plus a gradient term: x+ = Mx - alpha*g(x)."
+  - "The matrix M is symmetric and related to a quadratic form."
+
+execution_logic:
+  - step: "Reverse-Engineer the Gradient"
+    detail: "Rewrite the update rule x^{k+1} = T(x^k) in the form of x^{k+1} = x^k - \\nabla \\xi(x^k). Treat the update vector entirely as a negative gradient."
+    algebraic_prototype: "x^+ = Wx - \\alpha \\nabla f(x) => x^+ = x - ( (I-W)x + \\alpha \\nabla f(x) )"
+
+  - step: "Integrate to Find Surrogate"
+    detail: "Find the scalar function \\xi(x) whose gradient matches the update vector. This \\xi is your natural Lyapunov function."
+    algebraic_prototype: "\\nabla \\xi = (I-W)x + \\alpha \\nabla f \\implies \\xi(x) = 0.5 x^T(I-W)x + \\alpha \\sum f_i(x)"
+  - step: "Analyze Surrogate Properties"
+    detail: "Analyze convexity and Lipschitz continuity of \\xi. The stability condition of the original algorithm simplifies to the step-size condition for GD on \\xi (e.g., step_size_effective < 2/L_xi)."
+    algebraic_prototype: "Effective step size is 1. Condition: 1 <= 1/L_{\\xi}."
+  - step: "Deduce Original Properties"
+    detail: "Since GD on \\xi converges/is bounded, the sequence {x^k} is bounded. This proves stability for the original complex algorithm."
+
+assumptions_required:
+  - "The mixing/weight matrix must be symmetric (to be the Hessian of a quadratic potential)."
+
+expected_outcome_form: "Algorithm A is equivalent to GD on \\xi. Thus x^k stays in LevelSet(\\xi), implying boundedness."
+
+source:
+  paper: "On the Convergence of Decentralized Gradient Descent"
+  arxiv: "1310.7063"
+  section: "Section 2.1 (The Lyapunov function xi_alpha)"
+
+tags:
+  - lyapunov_construction
+  - reverse_engineering
+  - algorithmic_equivalence
+  - stability_analysis
+  - gradient_flow

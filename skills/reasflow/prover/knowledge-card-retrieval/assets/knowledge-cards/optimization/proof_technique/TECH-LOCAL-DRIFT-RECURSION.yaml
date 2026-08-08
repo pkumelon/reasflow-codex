@@ -1,0 +1,46 @@
+id: TECH-LOCAL-DRIFT-RECURSION
+type: proof_technique
+domain: optimization
+
+title: Recursive Bounding of Local Model Drift
+description: >
+  A technique to bound the divergence between a local model and a reference point over multiple stochastic steps, using a specific relaxation of the triangle inequality to manage error accumulation.
+
+problem_pattern:
+- "Need to bound the distance ||x_{t,k}^i - x_t||^2 after k local SGD steps."
+- "Standard triangle inequality leads to loose exponential bounds if not handled carefully."
+- "The drift is caused by both local gradient variance and data heterogeneity."
+
+structural_prerequisites:
+- "Iterative updates: x_{k} = x_{k-1} - eta * g_{k-1}."
+- "Bounded variance of gradients."
+
+execution_logic:
+  - step: "Recursive Inequality Setup"
+    detail: "Apply the relaxed triangle inequality ||a+b||^2 <= (1 + alpha)||a||^2 + (1 + 1/alpha)||b||^2. Choose alpha = 1/(K-1) to balance the accumulation over K steps."
+    algebraic_prototype: "||x_k - x_0||^2 <= (1 + 1/(K-1))||x_{k-1} - x_0||^2 + K * ||update||^2"
+
+  - step: "Unrolling the Recursion"
+    detail: "Unroll the recurrence relation. The term (1 + 1/(K-1))^K approaches e (Euler's number), keeping the growth constant rather than exponential in K."
+    algebraic_prototype: "sum_{p=0}^{K-1} (1 + 1/(K-1))^p <= (K-1)(e - 1) approx O(K)"
+
+  - step: "Final Bound Assembly"
+    detail: "Combine the unrolled terms with the variance bounds."
+    algebraic_prototype: "E[||x_{t,k} - x_t||^2] <= O(K * eta^2 * sigma^2)"
+
+assumptions_required:
+- "Bounded Gradient Variance"
+- "L-Smoothness (optional, but often used to bound gradient norm)"
+
+expected_outcome_form: "O(K * eta^2 * (sigma_L^2 + K * sigma_G^2))"
+
+source:
+  paper: "Achieving Linear Speedup with Partial Worker Participation in Non-IID Federated Learning"
+  arxiv: "2101.11203"
+  section: "Appendix I: Proofs, Lemma 4"
+
+tags:
+- federated_learning
+- drift_analysis
+- recursion_unrolling
+- inequality_relaxation

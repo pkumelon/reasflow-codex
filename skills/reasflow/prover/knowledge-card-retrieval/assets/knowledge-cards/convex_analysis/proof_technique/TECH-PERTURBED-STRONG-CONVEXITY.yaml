@@ -1,0 +1,35 @@
+id: TECH-PERTURBED-STRONG-CONVEXITY
+domain: Optimization
+type: Proof Technique
+title: Perturbed Strong Convexity Inequality
+description: A variation of the standard strong convexity inequality that relates gradients computed at one point to function values at different points, accounting for smoothness.
+
+problem_pattern:
+  - "Need to bound inner product $\\langle \\nabla h(x), z - y \\rangle$ where gradients are evaluated at $x$ but we care about $z$ and $y$."
+  - "Useful when $x$ is a perturbed version of $y$ or $z$ (e.g., in local updates)."
+
+structural_prerequisites:
+  - "Function h is beta-smooth and mu-strongly convex."
+
+execution_logic:
+  - step: "Standard Inequalities"
+    detail: "Write down strong convexity bound for $\\langle \\nabla h(x), x - y \\rangle$ and smoothness bound for $h(z) - h(x)$."
+  - step: "Triangle Inequality Combination"
+    detail: "Combine terms using relaxed triangle inequality on the norm differences."
+    algebraic_prototype: "\\langle \\nabla h(x), z - y \\rangle \\ge h(z) - h(y) + \\frac{\\mu}{4} ||y - z||^2 - \\beta ||z - x||^2"
+
+assumptions_required:
+  - "beta-smoothness"
+  - "mu-strong convexity"
+
+expected_outcome_form: "Lower bound on the inner product that introduces a negative norm term $- \\beta ||z - x||^2$, helpful for canceling positive drift terms."
+
+source:
+  paper: "SCAFFOLD: Stochastic Controlled Averaging for Federated Learning"
+  arxiv: "1910.06378"
+  section: "Appendix B, Lemma 5"
+
+tags:
+  - proof-technique
+  - convexity
+  - inequalities

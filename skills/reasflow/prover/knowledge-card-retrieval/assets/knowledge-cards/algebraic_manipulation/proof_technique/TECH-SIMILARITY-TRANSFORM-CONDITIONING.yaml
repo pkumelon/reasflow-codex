@@ -1,0 +1,45 @@
+id: TECH-SIMILARITY-TRANSFORM-CONDITIONING
+type: proof_technique
+domain: algebraic_manipulation
+
+title: Similarity Transform Conditioning
+description: A technique to implicitly bound the condition number of the similarity transformation matrix X used to diagonalize a system, ensuring it does not introduce scaling factors that depend unfavorably on the problem dimension n or network topology.
+
+problem_pattern:
+  - "Need to diagonalize a non-symmetric block matrix (e.g., [W, -I; I, 0])."
+  - "Direct eigenvalue analysis requires a similarity transform z = X^-1 u."
+  - "The constant ||X|| ||X^-1|| appears in the error bound and might be loose (e.g., depend on n)."
+
+structural_prerequisites:
+  - "The matrix blocks commute or share the same eigenspace (e.g., polynomials of symmetric W)."
+  - "Eigenvectors can be explicitly constructed."
+
+execution_logic:
+  - step: "Explicit Eigenvector Construction"
+    detail: "Construct the columns of X (eigenvectors) explicitly using the eigenvectors of the base matrix W. Since W is symmetric, its eigenvectors q_i are orthonormal."
+    algebraic_prototype: "x_i = [lambda_i * q_i; q_i]"
+
+  - step: "Scaling Factor Optimization"
+    detail: "Introduce a free scalar parameter c in the definition of the transformed variables (e.g., z_check = X_L * u / c). Choose c to balance the norms of the left (X_L) and right (X_R) eigenvector blocks."
+    algebraic_prototype: "c = ||X_L||;  Goal: ||X_L|| ||X_R|| / c approx 1"
+
+  - step: "Spectral Bound Derivation"
+    detail: "Bound the product ||X_L|| ||X_R|| using the eigenvalues of W. Prove that this product is bounded by a small constant or function of spectral gap, independent of dimension n."
+    algebraic_prototype: "||X_L|| ||X_R|| <= 1 / sqrt(1 - lambda_min)"
+
+assumptions_required:
+  - "Symmetric Base Matrix W"
+
+expected_outcome_form: "||X|| ||X^-1|| <= O(1) (independent of n)"
+
+source:
+  paper: "Removing Data Heterogeneity Influence enhances Network Topology Dependence of Decentralized SGD"
+  arxiv: "2105.08023"
+  section: "Lemma 3 & Appendix A"
+
+tags:
+  - matrix_analysis
+  - condition_number
+  - eigenvector_construction
+  - dimension_independence
+  - spectral_analysis

@@ -1,0 +1,45 @@
+id: MECH-INTEGRAL-ACTION-CORRECTION
+type: algorithm_mechanism
+domain: optimization_control
+
+title: Steady-State Bias Elimination via Integral Action
+description: A mechanism to achieve zero steady-state error (exact convergence) in fixed-step algorithms by introducing a cumulative correction term (mathematically equivalent to Integral Action in control theory) that absorbs heterogeneous local gradients.
+
+problem_pattern:
+  - "Fixed step-size gradient descent converges to a biased solution where \\sum \\nabla f_i \\neq 0 locally."
+  - "Need to cancel a constant disturbance/bias that lies in a specific subspace (e.g., the consensus complement)."
+  - "The system has a 'type 0' response (finite gain) to disturbances, need 'type 1' (infinite gain at DC)."
+
+structural_prerequisites:
+  - "The bias vector must lie in the range of the correction operator."
+  - "The algorithm must allow for state expansion (adding memory/auxiliary variables)."
+
+execution_logic:
+  - step: "Diagnose Steady-State Bias"
+    detail: "Write the fixed-point equation x* = T(x*). Identify that without correction, the equilibrium condition requires \\nabla f(x*) = 0, which contradicts the global optimality condition 1^T \\nabla f(x*) = 0 for heterogeneous functions."
+    algebraic_prototype: "x* = Wx* - \\alpha \\nabla f(x*) \\implies \\nabla f(x*) \\in Null(I-W)"
+
+  - step: "Introduce Integral State (Implicitly or Explicitly)"
+    detail: "Add a cumulative term sum(W - \\tilde{W})x^t. In implementation, this is often done compactly via a 'Difference Form' update to avoid storing the infinite sum."
+    algebraic_prototype: "Update: x^{k+1} = x^k + \\Delta x^k; \\Delta x^k depends on (x^k - x^{k-1}) and (\\nabla f^k - \\nabla f^{k-1})."
+
+  - step: "Orthogonal Subspace Targeting"
+    detail: "Ensure the integral action only operates in the subspace where bias exists (e.g., orthogonal to the consensus manifold), preserving the stability of the target subspace."
+    algebraic_prototype: "Correction term C lies in Span(I-W), ensuring 1^T C = 0."
+
+assumptions_required:
+  - "The correction accumulation must be bounded (requires stability analysis)."
+
+expected_outcome_form: "The system reaches an equilibrium where the cumulative correction exactly cancels the local gradient bias, allowing the primal variable to converge to the exact solution."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Section 2.4 (EXTRA as Corrected DGD)"
+
+tags:
+  - control_theory
+  - integral_action
+  - bias_cancellation
+  - exact_convergence
+  - difference_form

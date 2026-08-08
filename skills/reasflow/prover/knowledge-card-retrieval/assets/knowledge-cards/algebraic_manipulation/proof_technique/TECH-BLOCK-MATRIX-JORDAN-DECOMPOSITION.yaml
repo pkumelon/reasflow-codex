@@ -1,0 +1,47 @@
+id: TECH-BLOCK-MATRIX-JORDAN-DECOMPOSITION
+type: proof_technique
+domain: algebraic_manipulation
+
+title: Block Matrix Jordan Decomposition for Stability
+description: A technique to analyze the stability of high-dimensional coupled recurrence relations by decomposing the block transition matrix into lower-dimensional blocks (usually 2x2) using the structure of the underlying graph Laplacian/Adjacency matrix.
+
+problem_pattern:
+  - "System state is a concatenation of multiple variables (x, y, z) per agent."
+  - "The transition matrix involves Kronecker products with the mixing matrix W."
+  - "Need to find the spectral radius or contraction factor."
+
+structural_prerequisites:
+  - "The system matrix G is a block matrix where blocks are polynomials of W."
+  - "W is diagonalizable (e.g., symmetric)."
+
+execution_logic:
+  - step: "Permutation and Block Diagonalization"
+    detail: "Permute rows/cols to group variables by agent/eigenmode rather than by variable type. This transforms G into a block diagonal matrix where each block corresponds to an eigenvalue lambda_i of W."
+    algebraic_prototype: "P G P^T = diag(G_2, G_3, ..., G_n)"
+
+  - step: "Analyze 2x2 Blocks"
+    detail: "For each 2x2 block G_i, compute its eigenvalues. This is much simpler than analyzing the full matrix."
+    algebraic_prototype: "det(G_i - gamma I) = 0"
+
+  - step: "Jordan Decomposition"
+    detail: "If G_i is not diagonalizable (repeated eigenvalues), use Jordan Normal Form G_i = T J T^-1. Bound the norm ||J|| using a small epsilon perturbation if needed."
+    algebraic_prototype: "||J|| <= |gamma| + epsilon"
+
+  - step: "Global Bound"
+    detail: "The norm of the full operator is the maximum norm of the blocks. ||G^k|| <= C * (max|gamma_i|)^k."
+
+assumptions_required:
+  - "Matrices A, B, C commute."
+
+expected_outcome_form: "||e(k+1)|| <= rho * ||e(k)|| + inputs"
+
+source:
+  paper: "A Unified and Refined Convergence Analysis for Non-Convex Decentralized Learning"
+  arxiv: "2110.09993"
+  section: "Section 4.2 & Lemma 1"
+
+tags:
+  - matrix_analysis
+  - stability_theory
+  - jordan_form
+  - spectral_analysis

@@ -1,0 +1,52 @@
+id: MECH-GRADIENT-LOW-RANK-PROJECTION-OPTIMIZATION
+type: algorithm_mechanism
+domain: optimization
+
+title: Gradient Low-Rank Projection (GaLore)
+description: A memory-efficient training strategy that projects gradients into a low-rank subspace via SVD, maintains optimizer states in this compact space, and periodically updates the subspace to allow full-parameter learning over time.
+
+problem_pattern:
+  - "Training Large Language Models (LLMs) requires massive memory for optimizer states (e.g., Adam states are 2x model size)."
+  - "Standard low-rank adaptation (LoRA) restricts the search space permanently, limiting performance."
+  - "Need a way to save memory like LoRA but achieve Full-Rank training performance."
+
+structural_prerequisites:
+  - "Weight matrices are high-dimensional but gradients often exhibit low stable rank during short training windows."
+  - "Access to periodic SVD computation (amortized cost)."
+
+execution_logic:
+  - step: "Subspace Identification"
+    detail: "Periodically (every T steps) compute SVD of the current gradient G_t to identify the dominant r-dimensional subspace P_t."
+    algebraic_prototype: "U, S, V = SVD(G_t); P_t = U[:, :r] (if m <= n)"
+
+  - step: "Gradient Projection"
+    detail: "Project the full-rank gradient G_t onto the current subspace P_t to get a low-rank gradient R_t."
+    algebraic_prototype: "R_t = P_t^T * G_t"
+
+  - step: "Low-Rank Optimization"
+    detail: "Perform optimizer updates (e.g., Adam moments calculation) strictly in the low-rank space R^{r x n}, significantly reducing memory usage."
+    algebraic_prototype: "M_t, V_t updated using R_t; N_t = OptimizerStep(M_t, V_t)"
+
+  - step: "Back-Projection & Weight Update"
+    detail: "Project the low-rank update N_t back to the full parameter space to update the original weights."
+    algebraic_prototype: "W_t = W_{t-1} + eta * P_t * N_t"
+
+  - step: "Subspace Switching"
+    detail: "When P_t changes, either reset optimizer states or inherit them (heuristic), allowing the training trajectory to visit different subspaces over time."
+
+assumptions_required:
+  - "Gradients are effectively low-rank within local time windows."
+  - "The trajectory of the optimization problem can be approximated by a sequence of low-rank updates."
+
+expected_outcome_form: "Optimizer memory reduced from O(mn) to O(mr), achieving performance comparable to full-rank training."
+
+source:
+  paper: "GaLore: Memory-Efficient LLM Training by Gradient Low-Rank Projection"
+  arxiv: "2403.03507"
+  section: "Algorithm 1"
+
+tags:
+  - memory-efficient
+  - low-rank-adaptation
+  - subspace-learning
+  - svd-projection

@@ -1,0 +1,49 @@
+id: PLAN-PRIMAL-DUAL-EXACT-CONSENSUS
+type: proof_plan
+domain: decentralized_optimization
+
+title: Exact Convergence via Primal-Dual Recursive Restructuring
+description: A proof roadmap for proving linear/exact convergence of fixed-step algorithms. Key strategy is restructuring the iteration into a Primal-Dual dynamical system using difference forms to eliminate static bias, then analyzing stability via a composite metric.
+
+problem_pattern:
+  - "Analyzing a distributed algorithm that uses fixed step-sizes but claims exact convergence."
+  - "Standard contraction mapping proofs fail because the operator is only non-expansive, not contractive, at the solution."
+  - "The update rule involves history terms (x^{k-1}, \\nabla f^{k-1})."
+
+structural_prerequisites:
+  - "The problem can be cast as finding a zero of a monotone operator or a saddle point."
+  - "Network mixing matrices satisfy spectral gap conditions."
+
+execution_logic:
+  - step: "Difference Form Transformation"
+    detail: "Convert the algorithmic update into a difference form (x^{k+1} - x^k = ...) to eliminate constant additive terms (like static gradients at optimality). This reveals the underlying error dynamics."
+    algebraic_prototype: "x^{k+2} - x^{k+1} = (I+W)(x^{k+1} - x^k) - ... "
+
+  - step: "Primal-Dual Embedding"
+    detail: "Identify the 'hidden' dual variable. If the update sums history, define q^k as the prefix sum. Map the system to a coupled recursion of (Primal Error, Dual Error)."
+    algebraic_prototype: "Define q^k = \\sum U x^t. Rewrite dynamics as a linear system on [x; q] perturbed by gradient differences."
+
+  - step: "Lyapunov Function Design (The G-Norm)"
+    detail: "Construct a composite energy function V(z) = ||z - z*||_G^2 that couples primal and dual deviations. The matrix G is designed to cancel cross-terms in the dynamics."
+    dependency_check: "Refer to TECH-COMPOSITE-G-NORM-CONTRACTION."
+
+  - step: "Descent Inequality & Rates"
+    detail: "Prove V(z^k) - V(z^{k+1}) >= c ||residual||^2. Use telescoping sums for sublinear rates (O(1/k)) and Restricted Strong Convexity for linear rates."
+
+assumptions_required:
+  - "Objective function is convex and smooth."
+  - "Connectivity (Null(I-W) = Span(1))."
+
+expected_outcome_form: "Establish that the algorithm is an instance of a Primal-Dual method (like Condat-Vu or ADMM) in a disguised metric, guaranteeing convergence."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Section 3 (General Proof Framework)"
+
+tags:
+  - primal_dual
+  - proof_framework
+  - recursive_analysis
+  - decentralized
+  - linear_convergence

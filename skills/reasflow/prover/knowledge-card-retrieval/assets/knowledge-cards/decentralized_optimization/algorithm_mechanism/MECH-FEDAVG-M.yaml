@@ -1,0 +1,46 @@
+id: MECH-FEDAVG-M
+domain: Decentralized Optimization
+type: Algorithm Mechanism
+title: FedAvg with Global Momentum Anchoring
+description: A federated learning mechanism that uses a persistent global momentum buffer to anchor local updates, enabling convergence without bounded heterogeneity assumptions.
+
+problem_pattern:
+  - "Client drift caused by unbounded data heterogeneity."
+  - "Instability when using constant local learning rates in FedAvg."
+  - "Need to incorporate momentum without increasing uplink communication costs."
+
+structural_prerequisites:
+  - "Server maintains a global momentum buffer $g^r$."
+  - "Clients receive $g^r$ at the start of each round."
+  - "Local updates act on a convex combination of local gradient and global momentum."
+
+execution_logic:
+  - step: "Global Broadcast"
+    detail: "Server broadcasts current model $x^r$ and global momentum $g^r$ to selected clients."
+    dependency_check: "$g^r$ must be fixed for the duration of the round (independent of local client index $i$)."
+    algebraic_prototype: "Broadcast(x^r, g^r)"
+
+  - step: "Anchored Local Update"
+    detail: "Clients compute a mixed gradient direction. The global term $(1-\beta)g^r$ acts as a drift-reducing anchor."
+    dependency_check: "Local gradient $\\nabla F_i$ depends on local data; $g^r$ is independent of $i$."
+    algebraic_prototype: "v_i^{r,k} = \\beta \\nabla F_i(x_i^{r,k}) + (1-\\beta) g^r"
+
+  - step: "Momentum Aggregation"
+    detail: "Server updates global momentum based on the aggregated pseudo-gradients from clients."
+    algebraic_prototype: "g^{r+1} = \\frac{1}{\\eta N K} \\sum (x^r - x_i^{r,K})"
+
+assumptions_required:
+  - "L-Smoothness"
+  - "Unbiased Stochastic Gradients"
+
+expected_outcome_form: "Convergence rate O(1/sqrt(NKR)) without dependence on heterogeneity bound sigma_local."
+
+source:
+  paper: "Momentum Benefits Non-IID Federated Learning Simply and Provably"
+  arxiv: "2306.16504"
+  section: "Algorithm 1"
+
+tags:
+  - federated-learning
+  - momentum
+  - client-drift

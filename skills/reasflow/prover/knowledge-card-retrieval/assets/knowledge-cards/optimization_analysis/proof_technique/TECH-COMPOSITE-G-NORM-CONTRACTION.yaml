@@ -1,0 +1,45 @@
+id: TECH-COMPOSITE-G-NORM-CONTRACTION
+type: proof_technique
+domain: optimization_analysis
+
+title: Reverse-Engineered G-Norm Contraction
+description: A methodology for analyzing coupled dynamics by first postulating a G-norm structure and then reverse-engineering the required spectral constraints on algorithmic parameters to ensure contraction.
+
+problem_pattern:
+  - "Designing a new algorithm with coupled variables (e.g., primal-dual) where stability conditions are unknown."
+  - "Need to determine the valid range of mixing matrices or step sizes."
+
+structural_prerequisites:
+  - "The dynamics can be written in a residual form: A(z^{k+1}-z^*) = B(z^k - z^{k+1}) + NonLinearTerms."
+
+execution_logic:
+  - step: "Postulate G-Norm Structure"
+    detail: "Instead of guessing parameters, assume a generic block-diagonal metric G = diag(P, Q) for the composite state z=[u; v]."
+    algebraic_prototype: "||z||_G^2 = ||u||_P^2 + ||v||_Q^2"
+
+  - step: "Expand Descent Inequality"
+    detail: "Write out ||z^k - z^*||_G^2 - ||z^{k+1} - z^*||_G^2 and substitute the algorithmic dynamics."
+
+  - step: "Cancel Cross-Terms via Parameter Choice"
+    detail: "Identify the dangerous cross-terms (e.g., <u, Mv>) that appear in the expansion. Design the relationship between P, Q and the algorithm parameters (like W) specifically to make these terms cancel out or merge into perfect squares."
+    algebraic_prototype: "Require Q - W = U^2 (Positive Semidefinite) to handle coupling."
+
+  - step: "Derive Spectral Constraints"
+    detail: "The requirement that the resulting residual terms be positive (to ensure descent) translates directly into spectral inequalities on the parameters."
+    algebraic_prototype: "Condition for stability: W \\preceq \\tilde{W} \\preceq (I+W)/2"
+
+assumptions_required:
+  - "Parameters must be chosen such that the implied matrices are Positive Definite."
+
+expected_outcome_form: "A set of linear matrix inequalities (LMIs) or spectral bounds defining the stable parameter region."
+
+source:
+  paper: "EXTRA: An Exact First-Order Algorithm for Decentralized Consensus Optimization"
+  arxiv: "1404.6264"
+  section: "Lemma 3.3"
+
+tags:
+  - stability_analysis
+  - reverse_engineering
+  - parameter_tuning
+  - spectral_constraints

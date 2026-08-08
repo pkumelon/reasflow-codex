@@ -1,0 +1,52 @@
+id: TECH-PARTIAL-PARTICIPATION-BOUND
+type: proof_technique
+domain: optimization
+
+title: Variance Bounding for Partial Worker Participation
+description: >
+  A technique to bound the variance introduced by sampling a subset of workers in federated learning, handling both replacement and non-replacement strategies.
+
+problem_pattern:
+- "Need to bound the variance of the aggregated gradient when only a subset of workers participate."
+- "The subset of workers is sampled randomly (with or without replacement)."
+- "The global update direction is an unbiased estimator of the full participation update."
+
+structural_prerequisites:
+- "Assumes unbiased sampling of workers."
+- "Requires bounded variance of local gradients."
+- "Assumes bounded heterogeneity (global variance) among workers."
+
+execution_logic:
+  - step: "Decomposition of Variance"
+    detail: "Decompose the expected norm of the update into variance and bias terms."
+    algebraic_prototype: "E[||Delta_t||^2] = E[||Delta_t - bar{Delta}_t||^2] + E[||bar{Delta}_t||^2]"
+
+  - step: "Handling Sampling Randomness"
+    detail: "Use the properties of sampling (with/without replacement) to bound the variance term. Specifically, relate the variance of the subset sum to the variance of the population."
+    algebraic_prototype: "E[||sum_{i in S_t} X_i||^2] = (n/m) sum ||X_i||^2 + (n(n-1)/(m(m-1))) sum_{i neq j} <X_i, X_j>"
+
+  - step: "Bounding Inner Products"
+    detail: "Rewrite the sum of inner products using the norm of the sum and the sum of norms to isolate the interference terms."
+    algebraic_prototype: "sum_{i neq j} <X_i, X_j> = ||sum X_i||^2 - sum ||X_i||^2"
+
+  - step: "Final Bound Construction"
+    detail: "Combine the terms to get a bound that explicitly depends on the sampling ratio (n/m) and the population variance."
+    algebraic_prototype: "E[||Delta_t||^2] <= (1 - (n-1)/(m-1)) * (Variance_Term) + ||Expected_Update||^2"
+
+assumptions_required:
+- "Unbiased Sampling"
+- "Bounded Local Variance"
+- "Bounded Global Variance (Heterogeneity)"
+
+expected_outcome_form: "O(sigma_L^2/n + sigma_G^2 * (m-n)/(n(m-1)))"
+
+source:
+  paper: "Achieving Linear Speedup with Partial Worker Participation in Non-IID Federated Learning"
+  arxiv: "2101.11203"
+  section: "Appendix I: Proofs, Section 6.2"
+
+tags:
+- federated_learning
+- partial_participation
+- variance_reduction
+- sampling_theory

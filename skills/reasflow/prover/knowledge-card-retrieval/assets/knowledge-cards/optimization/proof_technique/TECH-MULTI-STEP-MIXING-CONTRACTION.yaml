@@ -1,0 +1,63 @@
+id: TECH-MULTI-STEP-MIXING-CONTRACTION
+type: proof_technique
+domain: optimization
+title: Consensus Contraction with Multi-Step Mixing
+description: >
+  Bounds the consensus error when the network topology only guarantees contraction over a multi-step interval (tau steps), rather than at every single step.
+  This is crucial for analyzing time-varying topologies that may be disconnected at individual steps but connected over time.
+
+tags:
+  - consensus-optimization
+  - time-varying-topology
+  - multi-step-contraction
+  - error-bounding
+
+problem_pattern:
+  - "Network topology changes at every step (time-varying)."
+  - "Mixing matrix W_t does not contract at every step (e.g., disconnected)."
+  - "Contraction property holds only for the product of matrices over tau steps: ||X W_{t,tau} - bar{X}|| <= (1-p)||X - bar{X}||."
+  - "Need to bound consensus error Xi_t at an arbitrary step t."
+
+structural_prerequisites:
+  - "Assumption of Expected Consensus Rate over tau steps."
+  - "Boundedness of gradients or variance to handle the 'drift' during non-contracting steps."
+
+execution_logic:
+  - step: "Unrolling to Synchronization Point"
+    detail: >
+      Do not try to bound Xi_t using Xi_{t-1}. Instead, unroll the recursion back to the last 'effective' synchronization point, m*tau (where m = floor(t/tau) - 1).
+      Decompose the current iterate X^{(t)} into the propagated previous iterate and the accumulated updates.
+    algebraic_prototype: "X^{(t)} = X^{(m*tau)} * Product(W) - Sum(Updates * PartialProduct(W))"
+
+  - step: "Applying Multi-Step Contraction"
+    detail: >
+      Apply the multi-step contraction property (Assumption 4) to the first term (propagated iterate).
+      This gives the primary contraction factor (1-p).
+    dependency_check: "Requires indices t and m*tau to be separated by at least tau steps."
+    algebraic_prototype: "E||X^{(m*tau)} * W_{...} - bar{X}||^2 <= (1-p) E||X^{(m*tau)} - bar{X}||^2"
+
+  - step: "Bounding Accumulated Drift"
+    detail: >
+      The second term (accumulated updates) represents the 'drift' or 'noise' added during the mixing interval.
+      Use Young's Inequality (or relaxed triangle inequality) to separate the contraction term from the drift term.
+      Typically requires introducing a relaxation factor (e.g., 1 + p/2) to preserve the contraction.
+      IMPORTANT: The stepsize eta_j must not change drastically over the interval [m*tau, t]. Use 'TECH-LAG-TOLERANT-STEPSIZE' to bound eta_j by eta_{m*tau}.
+    algebraic_prototype: "||A + B||^2 <= (1 + gamma)||A||^2 + (1 + 1/gamma)||B||^2"
+
+  - step: "Drift Term Estimation"
+    detail: >
+      Bound the norm of the accumulated updates.
+      Use standard inequalities: ||Sum(a_i)||^2 <= n * Sum(||a_i||^2).
+      Separate stochastic noise (variance) from deterministic gradient norms (if needed).
+    algebraic_prototype: "||Sum(eta * g_k)||^2 <= tau * sum(eta^2 * ||g_k||^2)"
+
+assumptions_required:
+  - "Expected Consensus Rate (Assumption 4 in paper)"
+  - "Bounded Gradient / Variance"
+
+expected_outcome_form: "Xi_t <= (1 - p/2) Xi_{m*tau} + C * tau * eta^2 * (Noise + GradientNorm)"
+
+source:
+  paper: "A Unified Theory of Decentralized SGD with Changing Topology and Local Updates"
+  arxiv: "2003.10422"
+  section: "Appendix C, Lemma 3"

@@ -1,0 +1,60 @@
+id: PLAN-SUBSPACE-PRIMAL-DUAL-CONVERGENCE
+type: proof_plan
+domain: optimization_analysis
+
+title: Convergence Analysis for Subspace Primal-Dual Federated Learning
+description: A proof framework for analyzing Federated Learning algorithms that combine subspace projection (for efficiency) with Primal-Dual updates (for drift correction), establishing convergence in non-convex settings.
+
+problem_pattern:
+  - "Analyzing FL algorithms that project updates into random or fixed subspaces."
+  - "Algorithms using dual variables or control variates to handle heterogeneity."
+  - "Need to bound the error introduced by subspace projection (I - P P^T)."
+
+structure:
+  - phase: "Primal Recursion Analysis"
+    goal: "Bound the expected progress of the local subspace variables."
+    steps:
+      - "Express local update as SGD with drift correction."
+      - "Bound the distance between local variable and initialization using smoothness."
+      - "Derive a recursion for the expected squared norm of the local update accumulation."
+    key_inequalities:
+      - "||B_i^{t+1}||^2 <= (1 + eps)||B_i^t||^2 + Error"
+
+  - phase: "Dual Recursion Analysis"
+    goal: "Bound the divergence of the dual variables (or gradient tracking error)."
+    steps:
+      - "Formulate the recursion for the dual variable error ||Y - Y_bar||^2."
+      - "Decompose the error into 'projection error' and 'primal drift'."
+      - "Use the Bounded Gradient assumption to bound the variance of the projection term (I - P P^T)."
+
+  - phase: "Lyapunov Function Construction"
+    goal: "Construct a potential function that decreases over rounds."
+    steps:
+      - "Define Omega^k = f(x^k) - f* + C * ||Dual_Error||^2."
+      - "Derive the descent inequality: E[Omega^{k+1}] <= E[Omega^k] - alpha * ||Grad||^2 + Constant_Error."
+      - "Balance the constants C and alpha to ensure the descent term dominates."
+
+  - phase: "Global Convergence Rate"
+    goal: "Sum the descent inequality over K rounds."
+    steps:
+      - "Telescope the Lyapunov function."
+      - "Isolate the minimum gradient norm term."
+      - "Identify the steady-state error term proportional to subspace compression ratio (theta_m - 1)."
+
+assumptions_used:
+  - "L-smoothness of objective functions."
+  - "Unbiasedness of projection matrices: E[P P^T] = I."
+  - "Bounded Gradient Variance (to handle projection variance)."
+
+expected_outcome_form: "Convergence rate O(1/K) + O(Subspace_Error_Variance)."
+
+source:
+  paper: "An Efficient Subspace Algorithm for Federated Learning on Heterogeneous Data"
+  arxiv: "2509.05213"
+  section: "Section 4 & Appendix D"
+
+tags:
+  - convergence-analysis
+  - primal-dual
+  - lyapunov-function
+  - non-convex-optimization

@@ -1,0 +1,47 @@
+id: TECH-SEQUENTIAL-MIXING-CONSENSUS
+type: proof_technique
+domain: optimization_analysis
+title: Sequential Mixing Consensus Analysis
+description: |
+  A technique to bound the consensus error when the network topology changes over time or when communication is infrequent (Local SGD). Instead of assuming contraction at every step, it assumes a contraction factor (1-p) occurs over a period of tau steps.
+
+problem_pattern:
+  - "Consensus error Xi_t needs to be bounded."
+  - "Contraction is not guaranteed at every step t."
+  - "Generalized Mixing assumption holds over tau steps."
+
+structural_prerequisites:
+  - "Mixing Assumption: E[||X W - X_bar||^2] <= (1-p)||X - X_bar||^2 over tau steps."
+
+execution_logic:
+  - step: "Multi-Step Unrolling"
+    detail: "Express x^t in terms of x^{m*tau}. Unroll the update rule for t - m*tau steps."
+    algebraic_prototype: "x^t = x^{m*tau} + Sum(Updates)"
+
+  - step: "Intermediate Bound"
+    detail: "Derive a bound for intermediate steps where contraction might not happen (drift only increases)."
+    algebraic_prototype: "Xi_t <= (1+eps) Xi_{m*tau} + Drift"
+
+  - step: "Period-End Contraction"
+    detail: "Apply the mixing assumption at step t=(m+1)tau."
+    algebraic_prototype: "Xi_{(m+1)tau} <= (1-p)Xi_{m*tau} + Drift"
+
+  - step: "Recursive Formulation"
+    detail: "Formulate a recursion for Xi_t involving past Xi terms and gradient norms."
+    algebraic_prototype: "Xi_t <= (1 - p/2)Xi_{m*tau} + Drift"
+
+assumptions_required:
+  - "Bounded Drift (Gradients)."
+
+expected_outcome_form: "Consensus error bound dependent on tau/p."
+
+source:
+  paper: "A Unified Theory of Decentralized SGD"
+  arxiv: "2003.10422"
+  section: "Lemma 3"
+
+tags:
+  - consensus-error
+  - time-varying-topology
+  - sequential-mixing
+  - drift-analysis
